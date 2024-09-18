@@ -25,13 +25,13 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
-  env('LOCAL_IP')
+  os.getenv('LOCAL_IP', '127.0.0.1')
 ]
 # Application definition
 
@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'TTS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'NAME': env('DB_NAME', default='tts_db'),
+        'USER': env('DB_USER', default='tts_user'),
+        'PASSWORD': env('DB_PASSWORD', default='tts_password'),
         'HOST': env('DB_HOST', default='localhost'),
-        'PORT': '',
+        'PORT': env('DB_PORT', default='5432'),
     }
 }
 
