@@ -1,8 +1,14 @@
 # todo/todo_api/serializers.py
 from rest_framework import serializers
-from .models import Worksite, RiskNote, RiskSurvey
+from .models import Worksite, RiskNote, Survey
+from django.contrib.auth.models import User
 
-class RiskNoteSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RiskNote
         fields = ['id', 'note', 'created_at']
@@ -17,16 +23,16 @@ class RiskNoteSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class RiskSurveySerializer(serializers.ModelSerializer):
+class SurveySerializer(serializers.HyperlinkedModelSerializer):
     risk_notes = RiskNoteSerializer(many=True, read_only=True, source='risknote_set')
     class Meta:
-        model = RiskSurvey
+        model = Survey
         fields = ['id', 'title', 'description', 'created_at', 'risk_notes']
 
     def create(self, validated_data):
         worksite = self.context['worksite']
-        risk_survey = RiskSurvey.objects.create(worksite=worksite, **validated_data)
-        return risk_survey
+        risk_Survey = Survey.objects.create(worksite=worksite, **validated_data)
+        return risk_Survey
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
@@ -35,7 +41,7 @@ class RiskSurveySerializer(serializers.ModelSerializer):
         return instance
 
 class WorksiteSerializer(serializers.ModelSerializer):
-    risk_surveys = RiskSurveySerializer(many=True, read_only=True, source='risksurvey_set')
+    surveys = SurveySerializer(many=True, read_only=True, source='Survey_set')
     class Meta:
         model = Worksite
-        fields = ['id', 'name', 'location', 'risk_surveys']
+        fields = ['id', 'name', 'location', 'surveys']
