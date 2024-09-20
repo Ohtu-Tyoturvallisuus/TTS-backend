@@ -9,7 +9,7 @@ class Worksite(models.Model):
     return self.name
 
 class Survey(models.Model):
-  worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
+  worksite = models.ForeignKey(Worksite, related_name='surveys', on_delete=models.CASCADE)
   overseer = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=False)
   title = models.CharField(max_length=100)
   description = models.TextField(blank=True)
@@ -23,6 +23,11 @@ class RiskNote(models.Model):
   note = models.TextField()
   is_ok = models.BooleanField(default=False)
   is_not_relevant = models.BooleanField(default=False)
+
+  def save(self, *args, **kwargs):
+    if self.is_ok and self.is_not_relevant:
+      raise ValueError("Both 'is_ok' and 'is_not_relevant' cannot be True at the same time.")
+    super().save(*args, **kwargs)
   created_at = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):

@@ -41,7 +41,7 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         return instance
 
 class WorksiteSerializer(serializers.ModelSerializer):
-    surveys = SurveySerializer(many=True, read_only=True, source='Survey_set')
+    surveys = SurveySerializer(many=True, read_only=True)
     class Meta:
         model = Worksite
         fields = ['id', 'name', 'location', 'surveys']

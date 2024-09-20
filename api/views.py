@@ -16,6 +16,13 @@ class WorksiteDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = WorksiteSerializer
     lookup_field = 'pk'
 
+class WorksiteSurveyList(generics.ListAPIView):
+    serializer_class = SurveySerializer
+
+    def get_queryset(self):
+        worksite_id = self.kwargs['worksite_pk']
+        return Survey.objects.filter(worksite_id=worksite_id)
+
 class SurveyList(generics.ListCreateAPIView):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
