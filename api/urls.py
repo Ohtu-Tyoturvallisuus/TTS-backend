@@ -9,6 +9,9 @@ urlpatterns = [
   path('users/', views.UserList.as_view()),
   path('users/<int:pk>/', views.UserDetail.as_view()),
   path('surveys/', views.SurveyList.as_view()),
+  path('users/<int:user_pk>/surveys/', views.UserSurveyList.as_view()),  # Route for user surveys
+
+
 
 ]
 

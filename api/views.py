@@ -22,7 +22,7 @@ class WorksiteSurveyList(generics.ListAPIView):
     def get_queryset(self):
         worksite_id = self.kwargs['worksite_pk']
         return Survey.objects.filter(worksite_id=worksite_id)
-
+    
 class SurveyList(generics.ListCreateAPIView):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
@@ -35,3 +35,10 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'pk'
+
+class UserSurveyList(generics.ListAPIView):
+    serializer_class = SurveySerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_pk']
+        return Survey.objects.filter(overseer_id=user_id)
