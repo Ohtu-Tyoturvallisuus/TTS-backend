@@ -22,10 +22,30 @@ class WorksiteSurveyList(generics.ListAPIView):
     def get_queryset(self):
         worksite_id = self.kwargs['worksite_pk']
         return Survey.objects.filter(worksite_id=worksite_id)
-    
+
+class RiskNoteList(generics.ListCreateAPIView):
+    serializer_class = RiskNoteSerializer
+
+    def get_queryset(self):
+        survey_id = self.kwargs['survey_pk']
+        return RiskNote.objects.filter(survey_id=survey_id)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+class RiskNoteDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = RiskNote.objects.all()
+    serializer_class = RiskNoteSerializer
+    lookup_field = 'pk'
+
 class SurveyList(generics.ListCreateAPIView):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
+
+class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
+    lookup_field = 'pk'
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()

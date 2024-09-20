@@ -7,19 +7,20 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
-
+        
 class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RiskNote
-        fields = ['id', 'note', 'created_at']
+        fields = ['id', 'note', 'description', 'created_at']
     
     def create(self, validated_data):
-        worksite = self.context['worksite']
-        risk_note = RiskNote.objects.create(worksite=worksite, **validated_data)
-        return risk_note
+        survey_id = self.context['request'].parser_context['kwargs']['survey_pk']
+        validated_data['survey_id'] = survey_id
+        return RiskNote.objects.create(**validated_data)
     
     def update(self, instance, validated_data):
         instance.note = validated_data.get('note', instance.note)
+        instance.description = validated_data.get('description', instance.description)
         instance.save()
         return instance
 

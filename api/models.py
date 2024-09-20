@@ -21,18 +21,11 @@ class Survey(models.Model):
 class RiskNote(models.Model):
   survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
   note = models.TextField()
-  is_ok = models.BooleanField(default=False)
-  is_not_relevant = models.BooleanField(default=False)
-
-  def save(self, *args, **kwargs):
-    if self.is_ok and self.is_not_relevant:
-      raise ValueError("Both 'is_ok' and 'is_not_relevant' cannot be True at the same time.")
-    super().save(*args, **kwargs)
+  description = models.TextField(blank=True)
   created_at = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
-    status = "Kunnossa" if self.is_ok else "Ei koske" if self.is_not_relevant else "Vastaamatta"
-    return f"{self.note} ({status} - {self.created_at})"
+    return f"{self.note} ({self.created_at})"
 
 # class Profile(models.Model):
 #     ROLE_CHOICES = [
