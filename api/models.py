@@ -13,7 +13,7 @@ class Survey(models.Model):
   overseer = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=False)
   title = models.CharField(max_length=100)
   description = models.TextField(blank=True)
-  created_at = models.DateTimeField(auto_now_add=True)
+  created_at = models.DateTimeField()
 
   def __str__(self):
     return self.title
@@ -26,7 +26,7 @@ class RiskNote(models.Model):
   created_at = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
-    status = "Kunnossa" if self.is_clear else "Ei koske" if self.is_not_relevant else "Vastaamatta"
+    status = "Kunnossa" if self.is_ok else "Ei koske" if self.is_not_relevant else "Vastaamatta"
     return f"{self.note} ({status} - {self.created_at})"
 
 # class Profile(models.Model):
