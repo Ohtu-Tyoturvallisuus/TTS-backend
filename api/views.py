@@ -1,6 +1,6 @@
-from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 from .models import Worksite, RiskNote
 from .serializers import *
 from django.contrib.auth.models import User
@@ -62,3 +62,22 @@ class UserSurveyList(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['user_pk']
         return Survey.objects.filter(overseer_id=user_id)
+
+class SignIn(generics.CreateAPIView):
+    serializer_class = SignInSerializer
+
+    def create(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        if not username:
+            return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user, created = User.objects.get_or_create(username=username)
+        
+        if created:
+            message = "User created and signed in successfully"
+            status_code = status.HTTP_201_CREATED
+        else:
+            message = "User signed in successfully"
+            status_code = status.HTTP_200_OK
+                
+        return Response({"message": message}, status=status_code)
