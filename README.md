@@ -27,6 +27,9 @@ This is the repository for the backend of this project.
 - **[Timelogs](https://study.cs.helsinki.fi/projekti/timelogs)**
 
 ### Documentation
+- **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-practices.md)**
+- **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/commit-practices.md)**
+- **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/definition-of-done.md)**
 
 ### Installation and running instructions
 
