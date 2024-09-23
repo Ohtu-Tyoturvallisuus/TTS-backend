@@ -1,6 +1,9 @@
 # Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
 <p align="center">
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml" alt="Continuous Integration">
+        <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
+  </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/LICENSE" alt="License">
     <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-frontend"/>
   </a>
