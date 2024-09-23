@@ -1,8 +1,38 @@
-**You can find the frontend repo [here](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend)**
+# Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
-# PostgreSQL Setup and Database Initialization Guide
+<p align="center">
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/LICENSE" alt="License">
+    <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-frontend"/>
+  </a>
+</p>
 
-## Starting PostgreSQL
+This project is part of the autumn 2024 Software Engineering project course [TKT20007](https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/) at the University of Helsinki.
+
+The project aims to develop a mobile application to increase worksite safety by identifying and analyzing possible hazards. This onsite last-minute assessment is meant to be done right before work is commenced and from the perspective of one's work and the work environment.
+
+The [project team](https://github.com/orgs/Ohtu-Tyoturvallisuus/people?query=role%3Aowner) consists of five students.
+
+This is the repository for the backend of this project.
+#
+
+
+## Development
+
+### Links
+
+- **Product Backlog**
+  - [Story list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/1)
+  - [Task list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/2)
+- **Frontend [repository](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend)**
+- **[Timelogs](https://study.cs.helsinki.fi/projekti/timelogs)**
+
+### Documentation
+
+### Installation and running instructions
+
+#### PostgreSQL Setup and Database Initialization Guide
+
+##### Starting PostgreSQL
 
 Assuming PostgreSQL is installed successfully.
 
@@ -17,7 +47,7 @@ Assuming PostgreSQL is installed successfully.
      sudo systemctl start postgresql
      ```
 
-## Creating a Database
+##### Creating a Database
 
 1. **Open PostgreSQL Command Line**:
    - Run `psql` in your terminal or command prompt:
@@ -37,7 +67,7 @@ Assuming PostgreSQL is installed successfully.
      \c tts_testing
      ```
 
-## Applying the Schema
+##### Applying the Schema
 
 1. **Run the Schema File**:
    - Execute the SQL commands in `schema.sql` to set up the database schema:
@@ -49,7 +79,7 @@ Assuming PostgreSQL is installed successfully.
      \i path/to/populate_data.sql
      ```
 
-## Verification
+##### Verification
 
 1. **Verify Tables**:
    - List tables in the `my_app` schema:
@@ -66,7 +96,7 @@ Assuming PostgreSQL is installed successfully.
 ---
 
 
-## Setting Up Django with PostgreSQL
+##### Setting Up Django with PostgreSQL
 
 1. **Set Up Virtual Environment**:
    - Create and activate a virtual environment:
