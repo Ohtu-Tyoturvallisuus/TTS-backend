@@ -2,10 +2,13 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - tts-app
+name: CI - tts-app
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
   workflow_dispatch:
@@ -17,21 +20,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python version
+      - name: Set up Python version 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Create and start virtual environment
+      - name: Install Poetry
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          pip install poetry
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: poetry install
 
       - name: Collect static
-        run: python manage.py collectstatic --noinput
+        run: poetry run python manage.py collectstatic --noinput
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
