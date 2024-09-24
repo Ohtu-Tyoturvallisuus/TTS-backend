@@ -36,7 +36,7 @@ jobs:
         run: poetry run python manage.py collectstatic --noinput
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      -name: Run Pylint
+      - name: Run Pylint
         run: poetry run invoke lint
 
       - name: Zip artifact for deployment
