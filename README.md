@@ -104,19 +104,18 @@ Assuming PostgreSQL is installed successfully.
 
 ##### Setting Up Django with PostgreSQL
 
-1. **Set Up Virtual Environment**:
-   - Create and activate a virtual environment:
-     ```bash
-     python -m venv venv
-     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-     ```
+1. **Ensure Poetry is Installed**:
+    - If you don't have Poetry installed, install it from the official Poetry website: [Poetry Installation](https://python-poetry.org/docs/).
 
-2. **Install Dependencies**:
-   - Use pip to install the dependencies listed in `requirements.txt`:
-     ```bash
-     pip install -r requirements.txt
-     ```
-
+2. **Install Dependencies Using Poetry**:
+    - Install dependencies by running the command:
+         ```bash
+         poetry install
+         ```
+    - Move to virtual environment:
+        ```bash
+         poetry shell
+         ```
 
 3. **Set Up Environment Variables**:
    - Create a `.env` file in the root of your project with the following content (adjust values as needed):
@@ -133,15 +132,14 @@ Assuming PostgreSQL is installed successfully.
      python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
      ```
    
-
 4. **Run Migrations**:
    - Apply the database migrations:
      ```bash
-     python manage.py migrate
+     poetry run invoke migrate
      ```
 
 5. **Start the Server**:
    - Run the Django development server:
      ```bash
-     python manage.py runserver
+     poetry run invoke server
      ```
