@@ -14,8 +14,7 @@ class Survey(models.Model):
   title = models.CharField(max_length=100)
   description = models.TextField(blank=True)
   created_at = models.DateTimeField(auto_now_add=True)
-  scaffold_risks = models.JSONField(default=dict)
-  surroundings_risks = models.JSONField(default=dict)
+  risks = models.JSONField(default=dict)
 
   def __str__(self):
     return self.title
