@@ -24,6 +24,3 @@ def unittest(ctx):
 def coverage(ctx):
     ctx.run("pytest --cov=api --cov-report=html:docs/coverage --cov-report=term-missing ./api/tests/unit")
 
-@task(coverage)
-def coverage_report(ctx):
-    print("Coverage report generated in HTML format in the docs/coverage directory. Check the htmlcov directory.")
