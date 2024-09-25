@@ -35,10 +35,12 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
     worksite = serializers.ReadOnlyField(source='worksite.name')
     overseer = serializers.ReadOnlyField(source='overseer.username')
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
+    scaffold_risks = serializers.JSONField()
+    surroundings_risks = serializers.JSONField()
 
     class Meta:
         model = Survey
-        fields = ['id', 'worksite', 'overseer', 'title', 'description',  'created_at', 'risk_notes']
+        fields = ['id', 'worksite', 'overseer', 'title', 'description',  'created_at', 'risk_notes', 'scaffold_risks', 'surroundings_risks']
 
 class WorksiteSerializer(serializers.HyperlinkedModelSerializer):
     surveys = serializers.HyperlinkedRelatedField(

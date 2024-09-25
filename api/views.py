@@ -40,19 +40,25 @@ class SurveyList(generics.ListCreateAPIView):
     serializer_class = SurveySerializer
 
     def get_queryset(self):
-        worksite_id = self.kwargs['worksite_pk']
-        return Survey.objects.filter(worksite_id=worksite_id)
+        worksite_id = self.kwargs.get('worksite_pk')
+        if worksite_id:
+            return Survey.objects.filter(worksite_id=worksite_id)
+        return Survey.objects.all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         worksite_id = self.kwargs.get('worksite_pk')
-        context['worksite'] = Worksite.objects.get(pk=worksite_id)
+        if worksite_id:
+            context['worksite'] = Worksite.objects.get(pk=worksite_id)
         return context
 
     def perform_create(self, serializer):
-        worksite_id = self.kwargs['worksite_pk']
-        worksite = Worksite.objects.get(pk=worksite_id)
-        serializer.save(worksite=worksite, overseer=self.request.user)
+        worksite_id = self.kwargs.get('worksite_pk')
+        if worksite_id:
+            worksite = Worksite.objects.get(pk=worksite_id)
+            serializer.save(worksite=worksite)
+        else:
+            serializer.save()
 
 # <GET, PUT, PATCH, DELETE, HEAD, OPTIONS> 
 # /api/worksites/<worksite_id>/surveys/<survey_id> or /api/surveys/<id>/
