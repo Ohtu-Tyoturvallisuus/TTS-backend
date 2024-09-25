@@ -10,7 +10,7 @@ class Worksite(models.Model):
 
 class Survey(models.Model):
   worksite = models.ForeignKey(Worksite, related_name='surveys', on_delete=models.CASCADE)
-  overseer = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=False)
+  overseer = models.ForeignKey('auth.User', related_name='surveys', on_delete=models.CASCADE)
   title = models.CharField(max_length=100)
   description = models.TextField(blank=True)
   created_at = models.DateTimeField(auto_now_add=True)
@@ -19,22 +19,11 @@ class Survey(models.Model):
     return self.title
 
 class RiskNote(models.Model):
-  survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+  survey = models.ForeignKey(Survey, related_name="risk_notes", on_delete=models.CASCADE)
   note = models.TextField()
   description = models.TextField(blank=True)
-  status = models.TextField()
+  status = models.TextField(blank=True)
   created_at = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
     return f"{self.note} ({self.created_at})"
-
-# class Profile(models.Model):
-#     ROLE_CHOICES = [
-#         ('overseer', 'Overseer'),
-#         ('worker', 'Worker'),
-#     ]
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-
-#     def __str__(self):
-#         return f"{self.user.username} - {self.role}"

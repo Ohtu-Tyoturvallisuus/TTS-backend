@@ -3,35 +3,28 @@ from rest_framework import serializers
 from .models import Worksite, RiskNote, Survey
 from django.contrib.auth.models import User
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
-class OverseerSerializer(serializers.ModelSerializer):
+class OverseerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['username']
 
-
-class SignInSerializer(serializers.Serializer):
-    username = serializers.CharField()
-        
 class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
-    def __init__(self, *args, **kwargs):
-        many = kwargs.pop('many', True)
-        super(RiskNoteSerializer, self).__init__(many=many, *args, **kwargs)
-
     class Meta:
         model = RiskNote
         fields = ['id', 'note', 'description', 'status', 'created_at']
-    
+
     def create(self, validated_data):
-        survey_id = self.context['request'].parser_context['kwargs']['survey_pk']
-        validated_data['survey_id'] = survey_id
-        return RiskNote.objects.create(**validated_data)
-    
+        # Ensure the survey is passed to the RiskNote from the context
+        survey = self.context.get('survey')
+        return RiskNote.objects.create(survey=survey, **validated_data)
+
     def update(self, instance, validated_data):
+        # Standard update operation
         instance.note = validated_data.get('note', instance.note)
         instance.description = validated_data.get('description', instance.description)
         instance.status = validated_data.get('status', instance.status)
@@ -39,26 +32,22 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
         return instance
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
-    risk_notes = RiskNoteSerializer(many=True, read_only=True, source='risknote_set')
-    overseer = OverseerSerializer(read_only=True)
+    worksite = serializers.ReadOnlyField(source='worksite.name')
+    overseer = serializers.ReadOnlyField(source='overseer.username')
+    risk_notes = RiskNoteSerializer(many=True, read_only=True)
 
     class Meta:
         model = Survey
-        fields = ['id', 'title', 'description', 'overseer', 'created_at', 'risk_notes']
+        fields = ['id', 'worksite', 'overseer', 'title', 'description',  'created_at', 'risk_notes']
 
-    def create(self, validated_data):
-        worksite = self.context['worksite']
-        risk_survey = Survey.objects.create(worksite=worksite, **validated_data)
-        return risk_survey
+class WorksiteSerializer(serializers.HyperlinkedModelSerializer):
+    surveys = serializers.HyperlinkedRelatedField(
+        many=True, view_name='survey-detail', read_only=True
+    )
 
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-        instance.save()
-        return instance
-
-class WorksiteSerializer(serializers.ModelSerializer):
-    surveys = SurveySerializer(many=True, read_only=True)
     class Meta:
         model = Worksite
         fields = ['id', 'name', 'location', 'surveys']
+
+class SignInSerializer(serializers.HyperlinkedModelSerializer):
+    username = serializers.CharField()
