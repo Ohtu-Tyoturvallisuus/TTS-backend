@@ -9,18 +9,23 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view 
 from rest_framework.response import Response
 from rest_framework.reverse import reverse 
+from django.shortcuts import render
+
+
+def api_root(request):
+    return render(request, 'api/index.html')
 
 # Url-links to the API endpoints
-@api_view(["GET"]) 
-def api_root(request, format=None):
-    return Response(
-        {
-            "worksites": reverse("worksite-list", request=request, format=format),
-            "surveys": reverse("survey-list", request=request, format=format),
-            "risk_notes": reverse("risknote-list", request=request, format=format),
-            "users": reverse("user-list", request=request, format=format),
-        }
-    )
+# @api_view(["GET"]) 
+# def api_root(request, format=None):
+#     return Response(
+#         {
+#             "worksites": reverse("worksite-list", request=request, format=format),
+#             "surveys": reverse("survey-list", request=request, format=format),
+#             "risk_notes": reverse("risknote-list", request=request, format=format),
+#             "users": reverse("user-list", request=request, format=format),
+#         }
+#     )
 
 # <GET, POST, HEAD, OPTIONS> /api/worksites/
 class WorksiteList(generics.ListCreateAPIView):
