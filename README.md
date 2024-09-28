@@ -1,11 +1,11 @@
 # Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
 <p align="center">
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml" alt="Continuous Integration">
-        <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/tts-backend/actions/workflows/main_tts-app.yml" alt="Continuous Integration">
+        <img src="https://github.com/Ohtu-Tyoturvallisuus/tts-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
   </a>
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/LICENSE" alt="License">
-    <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-frontend"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/LICENSE" alt="License">
+    <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/tts-frontend"/>
   </a>
 </p>
 
@@ -26,13 +26,13 @@ This is the repository for the backend of this project.
 - **Product Backlog**
   - [Story list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/1)
   - [Task list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/2)
-- **Frontend [repository](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend)**
+- **Frontend [repository](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend)**
 - **[Timelogs](https://study.cs.helsinki.fi/projekti/timelogs)**
 
 ### Documentation
-- **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-practices.md)**
-- **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/commit-practices.md)**
-- **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/definition-of-done.md)**
+- **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/branching-practices.md)**
+- **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/commit-practices.md)**
+- **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/definition-of-done.md)**
 
 ### Installation and running instructions
 

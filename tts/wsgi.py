@@ -1,7 +1,7 @@
 """
 tts/wsgi.py
 
-WSGI config for TTS project.
+WSGI config for tts project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

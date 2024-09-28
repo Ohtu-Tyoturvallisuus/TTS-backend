@@ -1,7 +1,7 @@
 """
 tts/asgi.py
 
-ASGI config for TTS project.
+ASGI config for tts project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
