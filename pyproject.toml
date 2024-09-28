@@ -23,6 +23,7 @@ sqlparse = "^0.5.1"
 tzdata = "^2024.2"
 invoke = "^2.2.0"
 pytest-django = "^4.9.0"
+whitenoise = "^6.7.0"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3.1"
