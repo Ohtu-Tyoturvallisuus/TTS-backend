@@ -7,6 +7,8 @@ from rest_framework import permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from django.shortcuts import render
+
 from django.contrib.auth import get_user_model
 
 from .models import Worksite, RiskNote, Survey
@@ -23,13 +25,11 @@ User = get_user_model()
 # Url-links to the API endpoints
 @api_view(["GET"])
 def api_root(request, format=None):
-    """API root view"""
-    return Response({
-        "worksites": reverse("worksite-list", request=request, format=format),
-        "surveys": reverse("survey-list", request=request, format=format),
-        "risk_notes": reverse("risknote-list", request=request, format=format),
-        "users": reverse("user-list", request=request, format=format),
-    })
+    context = {
+        "worksites_url": reverse("worksite-list", request=request, format=format),
+        "surveys_url": reverse("survey-list", request=request, format=format),
+    }
+    return render(request, 'api/index.html', context)
 
 # <GET, POST, HEAD, OPTIONS> /api/worksites/
 class WorksiteList(generics.ListCreateAPIView):
@@ -52,19 +52,25 @@ class SurveyList(generics.ListCreateAPIView):
     serializer_class = SurveySerializer
 
     def get_queryset(self):
-        worksite_id = self.kwargs['worksite_pk']
-        return Survey.objects.filter(worksite_id=worksite_id)
+        worksite_id = self.kwargs.get('worksite_pk')
+        if worksite_id:
+            return Survey.objects.filter(worksite_id=worksite_id)
+        return Survey.objects.all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         worksite_id = self.kwargs.get('worksite_pk')
-        context['worksite'] = Worksite.objects.get(pk=worksite_id)
+        if worksite_id:
+            context['worksite'] = Worksite.objects.get(pk=worksite_id)
         return context
 
     def perform_create(self, serializer):
-        worksite_id = self.kwargs['worksite_pk']
-        worksite = Worksite.objects.get(pk=worksite_id)
-        serializer.save(worksite=worksite, overseer=self.request.user)
+        worksite_id = self.kwargs.get('worksite_pk')
+        if worksite_id:
+            worksite = Worksite.objects.get(pk=worksite_id)
+            serializer.save(worksite=worksite)
+        else:
+            serializer.save()
 
 # <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
 # /api/worksites/<worksite_id>/surveys/<survey_id> or /api/surveys/<id>/
@@ -91,11 +97,7 @@ class RiskNoteCreateView(generics.ListCreateAPIView):
         survey_id = self.kwargs['survey_id']
         context['survey'] = Survey.objects.get(id=survey_id)
         return context
-
-    # Tän vois poistaa kokonaan jos ei kutsu kuin superia?
-    #def create(self, request, *args, **kwargs):
-    #    return super().create(request, *args, **kwargs)
-
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
         serializer.is_valid(raise_exception=True)
