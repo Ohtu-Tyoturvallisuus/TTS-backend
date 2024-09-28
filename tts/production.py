@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'api',
 ]
 
+ROOT_URLCONF = 'tts.urls'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -49,8 +51,23 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'tts.wsgi.application'
+
+LANGUAGE_CODE = 'en-us'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+TIME_ZONE = 'Europe/Helsinki'
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
 conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
