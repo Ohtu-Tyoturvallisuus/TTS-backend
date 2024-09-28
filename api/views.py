@@ -82,9 +82,6 @@ class RiskNoteCreateView(generics.ListCreateAPIView):
         survey_id = self.kwargs['survey_id']
         context['survey'] = Survey.objects.get(id=survey_id)
         return context
-
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
