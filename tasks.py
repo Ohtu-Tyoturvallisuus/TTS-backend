@@ -15,3 +15,12 @@ def server(ctx):
 @task
 def lint(ctx):
     ctx.run("pylint .", warn=True)
+
+@task
+def unittest(ctx):
+    ctx.run("pytest ./api/tests/unit")
+
+@task
+def coverage(ctx):
+    ctx.run("pytest --cov=api --cov-report=html:docs/coverage --cov-report=term-missing ./api/tests/unit")
+

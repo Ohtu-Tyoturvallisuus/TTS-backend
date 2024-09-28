@@ -1,6 +1,7 @@
 # Python
 *.pyc
 __pycache__/
+**/__pycache__/
 
 # Django
 *.log
@@ -17,6 +18,12 @@ local_settings.py
 venv/
 env/
 .env
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Coverage
+/.coverage
 
 # Ignore IDE specific files
 .vscode/

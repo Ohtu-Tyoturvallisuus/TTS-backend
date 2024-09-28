@@ -404,6 +404,9 @@ logging-modules=logging
 load-plugins=pylint_django
 django-settings-module=tts.settings
 
+# Test files exluded from linting
+ignore-patterns=test_*.py
+
 [MESSAGES CONTROL]
 
 # Only show warnings with the listed confidence levels. Leave empty to show

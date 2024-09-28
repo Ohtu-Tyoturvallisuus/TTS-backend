@@ -7,7 +7,7 @@ import sys
 if __name__ == '__main__':
     # If WEBSITE_HOSTNAME is defined as an environment variable, then we're running
     # on Azure App Service and should use the production settings.
-    SETTINGS_MODULE = "tts.production" if 'WEBSITE_HOSTNAME' in os.environ else 'tts.settings'
+    SETTINGS_MODULE = 'tts.production' if 'WEBSITE_HOSTNAME' in os.environ else 'tts.settings'
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', SETTINGS_MODULE)
 
     try:
