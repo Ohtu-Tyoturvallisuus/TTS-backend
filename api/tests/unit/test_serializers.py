@@ -70,7 +70,8 @@ def test_survey_serializer(create_survey):
         'title': survey.title,
         'description': survey.description,
         'created_at': created_at_local,
-        'risk_notes': []
+        'risk_notes': [],
+        'risks': survey.risks
     }
 
 def test_survey_deserializer(create_survey):
@@ -80,13 +81,15 @@ def test_survey_deserializer(create_survey):
         'worksite': survey.worksite.id,
         'overseer': survey.overseer.id,
         'title': 'New Survey',
-        'description': 'New Description'
+        'description': 'New Description',
+        'risks': {'risk1': 'High', 'risk2': 'Low'}
     }
     serializer = SurveySerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
         'title': 'New Survey',
-        'description': 'New Description'
+        'description': 'New Description',
+        'risks': {'risk1': 'High', 'risk2': 'Low'}
     }
 
 def test_risk_note_serializer(create_risk_note):

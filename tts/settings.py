@@ -121,6 +121,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+TIME_ZONE = 'Europe/Helsinki'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
