@@ -1,5 +1,5 @@
 """
-This module contains view functions for the TTS application.
+This module contains view functions for the tts application.
 """
 
 from django.shortcuts import render
