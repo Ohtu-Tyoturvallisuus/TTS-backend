@@ -7,7 +7,7 @@ name: Build and deploy Python app to Azure Web App - tts-app
 on:
   push:
     branches:
-      - main
+      - risksurvey
   workflow_dispatch:
 
 jobs:
@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'tts-app'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3DD3C1BD5DCD4DD28B8AF1055E80A0FB }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4C48DEC15E344F12B76C9BF80EF4D063 }}
