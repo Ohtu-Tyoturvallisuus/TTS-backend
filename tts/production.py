@@ -4,6 +4,7 @@ import os
 
 from .middleware import COMMON_MIDDLEWARE
 from .settings import BASE_DIR
+from .settings import *
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
@@ -40,6 +41,8 @@ TEMPLATES = [
 MIDDLEWARE = COMMON_MIDDLEWARE + [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+ROOT_URLCONF = 'tts.urls'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
