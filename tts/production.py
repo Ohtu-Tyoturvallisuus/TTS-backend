@@ -9,6 +9,17 @@ from .settings import BASE_DIR
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'api',
+]
+
 # WhiteNoise configuration
 MIDDLEWARE = COMMON_MIDDLEWARE + [
     'whitenoise.middleware.WhiteNoiseMiddleware',
