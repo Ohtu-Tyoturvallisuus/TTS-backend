@@ -20,6 +20,22 @@ INSTALLED_APPS = [
     'api',
 ]
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],  # Empty list for custom template directories
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 # WhiteNoise configuration
 MIDDLEWARE = COMMON_MIDDLEWARE + [
     'whitenoise.middleware.WhiteNoiseMiddleware',
