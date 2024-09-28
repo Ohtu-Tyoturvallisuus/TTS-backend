@@ -4,6 +4,9 @@ import os
 from .settings import BASE_DIR
 from .settings import *
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = [
