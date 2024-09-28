@@ -10,9 +10,15 @@ from .settings import BASE_DIR
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
 # WhiteNoise configuration
-MIDDLEWARE = COMMON_MIDDLEWARE + [
+MIDDLEWARE = [                                                                   
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',                      
+    'django.middleware.common.CommonMiddleware',                                 
+    'django.middleware.csrf.CsrfViewMiddleware',                                 
+    'django.contrib.auth.middleware.AuthenticationMiddleware',                   
+    'django.contrib.messages.middleware.MessageMiddleware',                      
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',                    
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -29,5 +35,3 @@ DATABASES = {
         'PASSWORD': conn_str_params['password'],
     }
 }
-
-PORT = int(os.environ.get('PORT', 8000))
