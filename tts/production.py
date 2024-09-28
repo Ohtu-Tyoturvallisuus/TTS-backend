@@ -28,3 +28,5 @@ DATABASES = {
         'PASSWORD': conn_str_params['password'],
     }
 }
+
+PORT = int(os.environ.get('PORT', 8000))
