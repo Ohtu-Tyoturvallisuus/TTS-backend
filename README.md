@@ -1,11 +1,11 @@
 # Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
 <p align="center">
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml" alt="Continuous Integration">
-        <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/tts-backend/actions/workflows/main_tts-app.yml" alt="Continuous Integration">
+        <img src="https://github.com/Ohtu-Tyoturvallisuus/tts-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
   </a>
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/LICENSE" alt="License">
-    <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-frontend"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/LICENSE" alt="License">
+    <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/tts-frontend"/>
   </a>
 </p>
 
@@ -26,13 +26,13 @@ This is the repository for the backend of this project.
 - **Product Backlog**
   - [Story list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/1)
   - [Task list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/2)
-- **Frontend [repository](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend)**
+- **Frontend [repository](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend)**
 - **[Timelogs](https://study.cs.helsinki.fi/projekti/timelogs)**
 
 ### Documentation
-- **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-practices.md)**
-- **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/commit-practices.md)**
-- **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/definition-of-done.md)**
+- **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/branching-practices.md)**
+- **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/commit-practices.md)**
+- **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/definition-of-done.md)**
 
 ### Installation and running instructions
 
@@ -104,19 +104,18 @@ Assuming PostgreSQL is installed successfully.
 
 ##### Setting Up Django with PostgreSQL
 
-1. **Set Up Virtual Environment**:
-   - Create and activate a virtual environment:
-     ```bash
-     python -m venv venv
-     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-     ```
+1. **Ensure Poetry is Installed**:
+    - If you don't have Poetry installed, install it from the official Poetry website: [Poetry Installation](https://python-poetry.org/docs/).
 
-2. **Install Dependencies**:
-   - Use pip to install the dependencies listed in `requirements.txt`:
-     ```bash
-     pip install -r requirements.txt
-     ```
-
+2. **Install Dependencies Using Poetry**:
+    - Install dependencies by running the command:
+         ```bash
+         poetry install
+         ```
+    - Move to virtual environment:
+        ```bash
+         poetry shell
+         ```
 
 3. **Set Up Environment Variables**:
    - Create a `.env` file in the root of your project with the following content (adjust values as needed):
@@ -133,15 +132,14 @@ Assuming PostgreSQL is installed successfully.
      python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
      ```
    
-
 4. **Run Migrations**:
    - Apply the database migrations:
      ```bash
-     python manage.py migrate
+     poetry run invoke migrate
      ```
 
 5. **Start the Server**:
    - Run the Django development server:
      ```bash
-     python manage.py runserver
+     poetry run invoke server
      ```

@@ -1,0 +1,3 @@
+[run]
+source = api
+omit = api/**/__init__.py,api/tests/**,api/migrations/**,api/admin.py,api/apps.py,api/urls.py

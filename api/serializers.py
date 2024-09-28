@@ -1,20 +1,30 @@
+""" api/serializers.py """
+
 # todo/todo_api/serializers.py
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Worksite, RiskNote, Survey
-from django.contrib.auth.models import User
+
+User = get_user_model()
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    """Class for UserSerializer"""
     class Meta:
+        """Meta class for UserSerializer"""
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
 class OverseerSerializer(serializers.HyperlinkedModelSerializer):
+    """Class for OverseerSerializer"""
     class Meta:
+        """Meta class for OverseerSerializer"""
         model = User
         fields = ['username']
 
 class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
+    """Class for RiskNoteSerializer"""
     class Meta:
+        """Meta class for RiskNoteSerializer"""
         model = RiskNote
         fields = ['id', 'note', 'description', 'status', 'created_at']
 
@@ -32,6 +42,7 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
         return instance
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
+    """Class for SurveySerializer"""
     worksite = serializers.ReadOnlyField(source='worksite.name')
     overseer = serializers.ReadOnlyField(source='overseer.username')
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
@@ -45,15 +56,19 @@ class SurveyNestedSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='survey-detail', read_only=True)
 
     class Meta:
+        """Meta class for SurveySerializer"""
         model = Survey
         fields = ['url', 'id', 'title', 'created_at']
 
 class WorksiteSerializer(serializers.HyperlinkedModelSerializer):
+    """Class for WorksiteSerializer"""
     surveys = SurveyNestedSerializer(many=True, read_only=True)
 
     class Meta:
+        """Meta class for WorksiteSerializer"""
         model = Worksite
         fields = ['id', 'name', 'location', 'surveys']
 
 class SignInSerializer(serializers.HyperlinkedModelSerializer):
+    """Class for SignInSerializer"""
     username = serializers.CharField()
