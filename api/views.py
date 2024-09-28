@@ -25,6 +25,7 @@ User = get_user_model()
 # Url-links to the API endpoints
 @api_view(["GET"])
 def api_root(request, format=None):
+    """ API root view """
     context = {
         "worksites_url": reverse("worksite-list", request=request, format=format),
         "surveys_url": reverse("survey-list", request=request, format=format),
@@ -97,7 +98,7 @@ class RiskNoteCreateView(generics.ListCreateAPIView):
         survey_id = self.kwargs['survey_id']
         context['survey'] = Survey.objects.get(id=survey_id)
         return context
-    
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
         serializer.is_valid(raise_exception=True)

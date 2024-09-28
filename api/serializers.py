@@ -50,9 +50,15 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Survey
-        fields = ['id', 'worksite', 'overseer', 'title', 'description',  'created_at', 'risk_notes', 'risks']
+        fields = [
+            'id', 'worksite', 'overseer', 'title', 'description', 
+            'created_at', 'risk_notes', 'risks'
+        ]
 
 class SurveyNestedSerializer(serializers.ModelSerializer):
+    """
+    Serializer for nested Survey objects.
+    """
     url = serializers.HyperlinkedIdentityField(view_name='survey-detail', read_only=True)
 
     class Meta:
