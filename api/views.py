@@ -8,13 +8,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.shortcuts import render
-
 from django.contrib.auth import get_user_model
-
 from .models import Worksite, RiskNote, Survey
 from .serializers import (
     WorksiteSerializer,
     SurveySerializer,
+    SurveyNestedSerializer,
     RiskNoteSerializer,
     UserSerializer,
     SignInSerializer

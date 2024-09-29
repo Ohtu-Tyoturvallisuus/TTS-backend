@@ -44,20 +44,20 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
     worksite = serializers.ReadOnlyField(source='worksite.name')
-    overseer = serializers.ReadOnlyField(source='overseer.username')
+    # overseer = serializers.ReadOnlyField(source='overseer.username')
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
     risks = serializers.JSONField()
 
     class Meta:
         model = Survey
         fields = [
-            'id', 'worksite', 'overseer', 'title', 'description', 
+            'id', 'worksite', 'title', 'description', 
             'created_at', 'risk_notes', 'risks'
         ]
 
 class SurveyNestedSerializer(serializers.ModelSerializer):
     """
-    Serializer for nested Survey objects.
+    Serializer for nested Survey objects. Contains url field for full detail view.
     """
     url = serializers.HyperlinkedIdentityField(view_name='survey-detail', read_only=True)
 

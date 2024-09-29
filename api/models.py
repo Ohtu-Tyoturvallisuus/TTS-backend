@@ -14,7 +14,7 @@ class Worksite(models.Model):
 class Survey(models.Model):
     """Class for Survey model"""
     worksite = models.ForeignKey(Worksite, related_name='surveys', on_delete=models.CASCADE)
-    overseer = models.ForeignKey(get_user_model(), related_name='surveys', on_delete=models.CASCADE)
+    # overseer = models.ForeignKey(get_user_model(), related_name='surveys', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
