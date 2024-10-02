@@ -4,6 +4,14 @@ from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
+""" 
+survey/
+survey/<id> 
+survey/<id>/risks
+survey/<id>/risks/
+survey/<id>/risks/<risk_id>
+"""
+
 # .../api/...
 urlpatterns = [
     path(
@@ -11,28 +19,36 @@ urlpatterns = [
         views.api_root,
         name='api-root'
     ),
-
     path(
-        'worksites/',
-        views.WorksiteList.as_view(),
-        name='worksite-list'
+        'projects/',
+        views.ProjectList.as_view(),
+        name='project-list'
     ),
     path(
-        'worksites/<int:pk>/',
-        views.WorksiteDetail.as_view(),
-        name='worksite-detail'
+        'projects/<int:pk>/',
+        views.ProjectDetail.as_view(),
+        name='project-detail'
     ),
     path(
-        'worksites/<int:worksite_pk>/surveys/',
+        'projects/<int:project_pk>/surveys/',
         views.SurveyList.as_view(),
-        name='worksite-survey-list'
+        name='survey-list'
     ),
     path(
-        'worksites/<int:worksite_pk>/surveys/<int:pk>/',
+        'projects/<int:project_pk>/surveys/<int:pk>/',
         views.SurveyDetail.as_view(),
-        name='worksite-survey-detail'
+        name='survey-detail'
     ),
-
+    path(
+        'projects/<int:project_pk>/surveys/<int:survey_pk>/risk_notes/',
+        views.RiskNoteCreate.as_view(),
+        name='risknote-create'
+    ),
+    path(
+        'projects/<int:project_pk>/surveys/<int:survey_pk>/risk_notes/<int:pk>/',
+        views.RiskNoteDetail.as_view(),
+        name='risknote-detail'
+    ),
     path(
         'surveys/',
         views.SurveyList.as_view(),
@@ -44,19 +60,19 @@ urlpatterns = [
         name='survey-detail'
     ),
     path(
-        'surveys/<int:survey_id>/risk_notes/',
-        views.RiskNoteCreateView.as_view(),
+        'surveys/<int:survey_pk>/risk_notes/',
+        views.RiskNoteCreate.as_view(),
         name='risknote-create'
     ),
 
     path(
         'risk_notes/',
-        views.RiskNoteListView.as_view(),
+        views.RiskNoteList.as_view(),
         name='risknote-list'
     ),
     path(
         'risk_notes/<int:pk>/',
-        views.RiskNoteUpdateView.as_view(),
+        views.RiskNoteUpdate.as_view(),
         name='risknote-update'
     ),
 

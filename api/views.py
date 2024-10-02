@@ -11,9 +11,10 @@ from django.shortcuts import render
 
 from django.contrib.auth import get_user_model
 
-from .models import Worksite, RiskNote, Survey
+from .models import Project, RiskNote, Survey
+from rest_framework.permissions import IsAdminUser
 from .serializers import (
-    WorksiteSerializer,
+    ProjectSerializer,
     SurveySerializer,
     RiskNoteSerializer,
     UserSerializer,
@@ -27,54 +28,63 @@ User = get_user_model()
 def api_root(request, format=None):
     """ API root view """
     context = {
-        "worksites_url": reverse("worksite-list", request=request, format=format),
+        "projects_url": reverse("project-list", request=request, format=format),
         "surveys_url": reverse("survey-list", request=request, format=format),
     }
     return render(request, 'api/index.html', context)
 
-# <GET, POST, HEAD, OPTIONS> /api/worksites/
-class WorksiteList(generics.ListCreateAPIView):
-    """Class for WorksiteList"""
-    queryset = Worksite.objects.all()
-    serializer_class = WorksiteSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+# <GET, POST, HEAD, OPTIONS> /api/projects/
+class ProjectList(generics.ListCreateAPIView):
+    """Class for ProjectList"""
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
 
-# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS> /api/worksites/<id>/
-class WorksiteDetail(generics.RetrieveUpdateDestroyAPIView):
-    """Class for WorksiteDetail"""
-    queryset = Worksite.objects.all()
-    serializer_class = WorksiteSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [IsAdminUser()]
+
+# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS> /api/projects/<id>/
+class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
+    """Class for ProjectDetail"""
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = (IsAdminUser,)
     lookup_field = 'pk'
 
-# <GET, POST, HEAD, OPTIONS> /api/worksites/<id>/surveys/ or /api/surveys/
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [IsAdminUser()]
+
+# <GET, POST, HEAD, OPTIONS> /api/projects/<id>/surveys/ or /api/surveys/
 class SurveyList(generics.ListCreateAPIView):
     """Class for SurveyList"""
     serializer_class = SurveySerializer
 
     def get_queryset(self):
-        worksite_id = self.kwargs.get('worksite_pk')
-        if worksite_id:
-            return Survey.objects.filter(worksite_id=worksite_id)
+        project_id = self.kwargs.get('project_pk')
+        if project_id:
+            return Survey.objects.filter(project_id=project_id)
         return Survey.objects.all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        worksite_id = self.kwargs.get('worksite_pk')
-        if worksite_id:
-            context['worksite'] = Worksite.objects.get(pk=worksite_id)
+        project_id = self.kwargs.get('project_pk')
+        if project_id:
+            context['project'] = Project.objects.get(pk=project_id)
         return context
 
     def perform_create(self, serializer):
-        worksite_id = self.kwargs.get('worksite_pk')
-        if worksite_id:
-            worksite = Worksite.objects.get(pk=worksite_id)
-            serializer.save(worksite=worksite)
+        project_id = self.kwargs.get('project_pk')
+        if project_id:
+            project = Project.objects.get(pk=project_id)
+            serializer.save(project=project)
         else:
             serializer.save()
 
 # <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
-# /api/worksites/<worksite_id>/surveys/<survey_id> or /api/surveys/<id>/
+# /api/projects/<project_id>/surveys/<survey_id> or /api/surveys/<id>/
 class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
     """Class for SurveyDetail"""
     queryset = Survey.objects.all()
@@ -84,36 +94,57 @@ class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
 
 # <GET, POST, HEAD, OPTIONS> /api/surveys/<id>/risk_notes/
 # + Supports list of risk_notes as payload
-class RiskNoteCreateView(generics.ListCreateAPIView):
-    """Class for RiskNoteCreateView"""
+class RiskNoteCreate(generics.ListCreateAPIView):
+    """
+    Handles the creation and listing of RiskNote objects. 
+    Supports a list of RiskNote:s as payload.
+    """
     serializer_class = RiskNoteSerializer
 
     def get_queryset(self):
-        survey_id = self.kwargs['survey_id']
-        return RiskNote.objects.filter(survey_id=survey_id)
+        survey_id = self.kwargs.get('survey_pk')
+        if survey_id:
+            return RiskNote.objects.filter(survey_id=survey_id)
+        return RiskNote.objects.all()
 
     def get_serializer_context(self):
         # Pass the survey to the serializer context
         context = super().get_serializer_context()
-        survey_id = self.kwargs['survey_id']
-        context['survey'] = Survey.objects.get(id=survey_id)
+        survey_id = self.kwargs.get('survey_pk')
+        if survey_id:
+            context['survey'] = Survey.objects.get(id=survey_id)
         return context
+    
+    def perform_create(self, serializer):
+        survey_id = self.kwargs.get('survey_pk')
+        if survey_id:
+            survey = Survey.objects.get(pk=survey_id)
+            serializer.save(survey=survey)
+        else:
+            serializer.save()
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+class RiskNoteDetail(generics.RetrieveUpdateDestroyAPIView):
+    """Class for RiskNoteDetail"""
+    queryset = RiskNote.objects.all()
+    serializer_class = RiskNoteSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    lookup_field = 'pk'
+
 # <GET, HEAD, OPTIONS> /api/risk_notes/
-class RiskNoteListView(generics.ListAPIView):
-    """Class for RiskNoteListView"""
+class RiskNoteList(generics.ListAPIView):
+    """Class for RiskNoteList"""
     queryset = RiskNote.objects.all()
     serializer_class = RiskNoteSerializer
 
 # <PUT/PATCH> /api/risk_notes/<id>/
-class RiskNoteUpdateView(generics.UpdateAPIView):
-    """Class for RiskNoteUpdateView"""
+class RiskNoteUpdate(generics.UpdateAPIView):
+    """Class for RiskNoteUpdate"""
     queryset = RiskNote.objects.all()
     serializer_class = RiskNoteSerializer
 
