@@ -2,6 +2,7 @@
 
 # todo/todo_api/serializers.py
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from rest_framework import serializers
 from .models import Project,  RiskNote, Survey
 
@@ -50,12 +51,22 @@ class SurveyNestedSerializer(serializers.ModelSerializer):
     """
     Serializer for nested Survey objects.
     """
-    url = serializers.HyperlinkedIdentityField(view_name='survey-detail', read_only=True)
+    url = serializers.SerializerMethodField()
 
     class Meta:
         """Meta class for SurveySerializer"""
         model = Survey
         fields = ['id', 'url', 'title', 'created_at']
+
+    def get_url(self, obj):
+        request = self.context.get('request')
+        project_id = obj.project.id
+        survey_id = obj.id
+        relative_url = reverse(
+            'survey-detail',
+            kwargs={'project_pk': project_id, 'pk': survey_id}
+        )
+        return request.build_absolute_uri(relative_url)
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     """Class for ProjectSerializer"""
@@ -66,6 +77,22 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         model = Project
         fields = ['id', 'project_id', 'project_name', 'dimension_display_value', 'project_group', 'surveys']
 
+class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
+    """Class for ProjectListSerializer"""
+    url = serializers.HyperlinkedIdentityField(view_name='project-detail')
+    last_survey_date = serializers.SerializerMethodField()
+
+    class Meta:
+        """Meta class for ProjectListSerializer"""
+        model = Project
+        fields = ['id', 'url', 'project_id', 'project_name', 'dimension_display_value', 'project_group', 'last_survey_date']
+
+    def get_last_survey_date(self, obj):
+        last_survey = obj.surveys.order_by('-created_at').first()
+        if last_survey:
+            return last_survey.created_at
+        return None
+    
 class SignInSerializer(serializers.HyperlinkedModelSerializer):
     """Class for SignInSerializer"""
     username = serializers.CharField()

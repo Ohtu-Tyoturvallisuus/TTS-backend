@@ -15,6 +15,7 @@ from .models import Project, RiskNote, Survey
 from rest_framework.permissions import IsAdminUser
 from .serializers import (
     ProjectSerializer,
+    ProjectListSerializer,
     SurveySerializer,
     RiskNoteSerializer,
     UserSerializer,
@@ -37,7 +38,7 @@ def api_root(request, format=None):
 class ProjectList(generics.ListCreateAPIView):
     """Class for ProjectList"""
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectListSerializer
 
     def get_permissions(self):
         if self.request.method == 'GET':
