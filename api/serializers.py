@@ -49,7 +49,7 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
 class SurveyNestedSerializer(serializers.ModelSerializer):
     """
-    Serializer for nested Survey objects.
+    Serializer for nested Survey objects. Contains url field for full detail view.
     """
     url = serializers.SerializerMethodField()
 
