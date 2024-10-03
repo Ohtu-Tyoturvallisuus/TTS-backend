@@ -28,12 +28,12 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
         update(instance, validated_data):
             Updates and returns an existing RiskNote instance with the validated data.
     """
-    survey = serializers.ReadOnlyField(source='survey.title')
+    survey_id = serializers.ReadOnlyField(source='survey.id')
     
     class Meta:
         """Meta class for RiskNoteSerializer"""
         model = RiskNote
-        fields = ['id', 'survey', 'note', 'description', 'status', 'created_at']
+        fields = ['id', 'survey_id', 'note', 'description', 'status', 'created_at']
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
@@ -43,8 +43,8 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Survey
         fields = [
-            'id', 'project_name', 'title', 'description', 
-            'created_at', 'risk_notes'
+            'id', 'project_name', 'description',  'task', 
+            'scaffold_type', 'created_at', 'risk_notes'
         ]
 
 class SurveyNestedSerializer(serializers.ModelSerializer):
@@ -56,7 +56,7 @@ class SurveyNestedSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class for SurveySerializer"""
         model = Survey
-        fields = ['id', 'url', 'title', 'created_at']
+        fields = ['id', 'url', 'task', 'scaffold_type', 'created_at']
 
     def get_url(self, obj):
         request = self.context.get('request')
