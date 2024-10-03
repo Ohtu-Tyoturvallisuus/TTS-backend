@@ -6,11 +6,17 @@ from invoke.tasks import task
 
 @task
 def migrate(ctx):
-    ctx.run("python3 manage.py migrate")
+    if sys.platform.startswith("win"):
+        ctx.run("py manage.py migrate")
+    else:
+        ctx.run("python3 manage.py migrate")
 
 @task
 def server(ctx):
-    ctx.run("python3 manage.py runserver 0.0.0.0:8000")
+    if sys.platform.startswith("win"):
+        ctx.run("py manage.py runserver 0.0.0.0:8000")
+    else:
+        ctx.run("python3 manage.py runserver 0.0.0.0:8000")
 
 @task
 def lint(ctx):
