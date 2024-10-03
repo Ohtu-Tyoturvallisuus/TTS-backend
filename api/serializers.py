@@ -37,13 +37,13 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
-    project = serializers.ReadOnlyField(source='project.project_name')
+    project_name = serializers.ReadOnlyField(source='project.project_name')
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
 
     class Meta:
         model = Survey
         fields = [
-            'id', 'project', 'title', 'description', 
+            'id', 'project_name', 'title', 'description', 
             'created_at', 'risk_notes'
         ]
 
@@ -96,3 +96,8 @@ class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
 class SignInSerializer(serializers.HyperlinkedModelSerializer):
     """Class for SignInSerializer"""
     username = serializers.CharField()
+
+    class Meta:
+        """Meta class for SignInSerializer"""
+        model = User
+        fields = ['username']
