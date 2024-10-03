@@ -4,14 +4,6 @@ from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
-""" 
-survey/
-survey/<id> 
-survey/<id>/risks
-survey/<id>/risks/
-survey/<id>/risks/<risk_id>
-"""
-
 # .../api/...
 urlpatterns = [
     path(
@@ -64,18 +56,6 @@ urlpatterns = [
         views.RiskNoteCreate.as_view(),
         name='risknote-create'
     ),
-
-    path(
-        'risk_notes/',
-        views.RiskNoteList.as_view(),
-        name='risknote-list'
-    ),
-    path(
-        'risk_notes/<int:pk>/',
-        views.RiskNoteUpdate.as_view(),
-        name='risknote-update'
-    ),
-
     path(
         'users/',
         views.UserList.as_view(),
@@ -86,7 +66,6 @@ urlpatterns = [
         views.UserDetail.as_view(),
         name='user-detail'
     ),
-
     path(
         'signin/',
         views.SignIn.as_view(),

@@ -137,18 +137,6 @@ class RiskNoteDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     lookup_field = 'pk'
 
-# <GET, HEAD, OPTIONS> /api/risk_notes/
-class RiskNoteList(generics.ListAPIView):
-    """Class for RiskNoteList"""
-    queryset = RiskNote.objects.all()
-    serializer_class = RiskNoteSerializer
-
-# <PUT/PATCH> /api/risk_notes/<id>/
-class RiskNoteUpdate(generics.UpdateAPIView):
-    """Class for RiskNoteUpdate"""
-    queryset = RiskNote.objects.all()
-    serializer_class = RiskNoteSerializer
-
 # <GET, POST, HEAD, OPTIONS> /api/users/
 class UserList(generics.ListCreateAPIView):
     """Class for UserList"""
