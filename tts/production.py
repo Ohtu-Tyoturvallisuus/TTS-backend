@@ -1,8 +1,7 @@
 """ tts/production.py """
 
 import os
-from .settings import BASE_DIR
-from .settings import *
+from .settings import * # pylint: disable=wildcard-import, unused-wildcard-import
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False

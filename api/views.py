@@ -5,6 +5,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.shortcuts import render
@@ -12,7 +13,6 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model
 
 from .models import Project, RiskNote, Survey
-from rest_framework.permissions import IsAdminUser
 from .serializers import (
     ProjectSerializer,
     ProjectListSerializer,
@@ -115,7 +115,7 @@ class RiskNoteCreate(generics.ListCreateAPIView):
         if survey_id:
             context['survey'] = Survey.objects.get(id=survey_id)
         return context
-    
+
     def perform_create(self, serializer):
         survey_id = self.kwargs.get('survey_pk')
         if survey_id:

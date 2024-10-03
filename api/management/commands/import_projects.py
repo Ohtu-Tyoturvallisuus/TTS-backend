@@ -1,8 +1,11 @@
+""" api/management/commands/import_projects.py """
+
 import json
 from django.core.management.base import BaseCommand
-from api.models import Project  # Ensure the correct import path for your Project model
+from api.models import Project
 
 class Command(BaseCommand):
+    """Custom Django management command to import projects from a JSON file"""
     help = 'Import projects from a local JSON file'
 
     def add_arguments(self, parser):
@@ -21,6 +24,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f'Error decoding JSON from {file_path}'))
 
     def import_projects(self, data):
+        """Import projects from JSON data"""
         imported_count = 0
         projects = data.get("Projekti", [])
         for item in projects:
@@ -50,5 +54,6 @@ class Command(BaseCommand):
                 else:
                     self.stdout.write(self.style.SUCCESS(f'Updated project {project.project_name}'))
             else:
-                self.stdout.write(self.style.WARNING(f'Skipped project with ID {project_id} (does not contain exactly two hyphens)'))
+                self.stdout.write(self.style.WARNING(
+                    f'Skipped project with ID {project_id} (does not contain exactly two hyphens)'))
         self.stdout.write(self.style.SUCCESS(f'Imported {imported_count} projects'))

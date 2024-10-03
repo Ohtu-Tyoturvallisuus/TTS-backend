@@ -1,5 +1,5 @@
 """ tasks.py """
-# pylint:   disable-all
+# pylint: disable-all
 
 import sys
 from invoke.tasks import task
@@ -10,6 +10,13 @@ def migrate(ctx):
         ctx.run("py manage.py migrate")
     else:
         ctx.run("python3 manage.py migrate")
+
+@task
+def makemigrations(ctx):
+    if sys.platform.startswith("win"):
+        ctx.run("py manage.py makemigrations")
+    else:
+        ctx.run("python3 manage.py makemigrations")
 
 @task
 def server(ctx):

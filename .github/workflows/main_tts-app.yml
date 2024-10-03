@@ -2,10 +2,13 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - tts-app
+name: CI - HazardHunt
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
   workflow_dispatch:
@@ -13,29 +16,53 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: github_actions
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python version
+      - name: Set up Python version 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          export PATH="$HOME/.local/bin:$PATH"
-
+          pip install poetry
       - name: Install dependencies
         run: poetry install
-
-      # - name: Run tests
-      #   run: poetry run pytest ./api/tests/unit
+      - name: Start postgres
+        run: sudo systemctl start postgresql
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+      - name: Run migrations
+        run: poetry run invoke migrate
+      - name: Run Pylint
+        run: poetry run pylint .
+      - name: Run unit tests
+        run: poetry run pytest --cov=api --cov-report=xml
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
-
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
