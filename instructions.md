@@ -2,8 +2,11 @@
 
 Lisää .env-tiedostoon seuraavat rivit:
 
-SPEECH_KEY=<your_speech_key>
-SPEECH_SERVICE_REGION=<your_speech_service_region>
+
+SPEECH_KEY='<your_speech_key>'
+
+SPEECH_SERVICE_REGION='<your_speech_service_region>'
+
 
 Speech key ja service region löytyvät seuraavasti:
 
