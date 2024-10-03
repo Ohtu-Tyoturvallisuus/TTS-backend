@@ -2,7 +2,10 @@
 
 <p align="center">
   <a href="https://github.com/Ohtu-Tyoturvallisuus/tts-backend/actions/workflows/main_tts-app.yml" alt="Continuous Integration">
-        <img src="https://github.com/Ohtu-Tyoturvallisuus/tts-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/tts-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
+  </a>
+  <a href="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-backend" > 
+    <img src="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-backend/graph/badge.svg?token=AA5KQ8B86A"/> 
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/LICENSE" alt="License">
     <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/tts-frontend"/>
