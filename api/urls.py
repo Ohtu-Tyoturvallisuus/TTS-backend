@@ -71,6 +71,11 @@ urlpatterns = [
         views.SignIn.as_view(),
         name='signin'
     ),
+    path(
+        'transcribe/',
+        views.TranscribeAudio.as_view(),
+        name='transcribe_audio'
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

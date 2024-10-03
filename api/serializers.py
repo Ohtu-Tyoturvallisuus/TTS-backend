@@ -49,7 +49,7 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
 class SurveyNestedSerializer(serializers.ModelSerializer):
     """
-    Serializer for nested Survey objects.
+    Serializer for nested Survey objects. Contains url field for full detail view.
     """
     url = serializers.SerializerMethodField()
 
@@ -101,3 +101,7 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for SignInSerializer"""
         model = User
         fields = ['username']
+
+class AudioUploadSerializer(serializers.Serializer):
+    """Serializer for audio file upload."""
+    audio = serializers.FileField(required=True)
