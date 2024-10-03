@@ -101,3 +101,7 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for SignInSerializer"""
         model = User
         fields = ['username']
+
+class AudioUploadSerializer(serializers.Serializer):
+    """Serializer for audio file upload."""
+    audio = serializers.FileField(required=True)

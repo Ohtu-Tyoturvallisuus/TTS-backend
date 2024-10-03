@@ -1,6 +1,7 @@
 """ api/views.py """
 # pylint: disable=redefined-builtin
 
+import os
 from rest_framework import generics
 from rest_framework import status
 from rest_framework import permissions
@@ -19,8 +20,13 @@ from .serializers import (
     SurveyNestedSerializer,
     RiskNoteSerializer,
     UserSerializer,
-    SignInSerializer
+    SignInSerializer,
+    AudioUploadSerializer
 )
+from pydub import AudioSegment
+from django.conf import settings
+from azure.cognitiveservices.speech import SpeechConfig, AudioConfig, SpeechRecognizer, ResultReason, CancellationReason, translation
+
 
 User = get_user_model()
 
@@ -182,3 +188,118 @@ class SignIn(generics.CreateAPIView):
             status_code = status.HTTP_200_OK
 
         return Response({"message": message}, status=status_code)
+
+class TranscribeAudio(generics.CreateAPIView):
+    """Class for uploading, converting audio, and transcribing using Azure Speech SDK."""
+    serializer_class = AudioUploadSerializer
+
+    def create(self, request, *args, **kwargs):
+        # Get the uploaded file from the request
+        file = request.FILES.get('audio')
+        recognition_language = 'fi-FI'
+        target_language = 'en'
+
+        if not file:
+            return Response({"error": "Audio file is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Define file paths
+        input_path = os.path.join(settings.MEDIA_ROOT, file.name)
+        output_path = os.path.join(settings.MEDIA_ROOT, f"{os.path.splitext(file.name)[0]}.wav")
+
+        # Save the uploaded file
+        with open(input_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        try:
+            # Convert to WAV using pydub
+            audio = AudioSegment.from_file(input_path)
+            audio.export(output_path, format="wav")
+
+            if recognition_language == target_language:
+                # Perform transcription using Azure Speech SDK
+                transcription = self.transcribe_with_azure(output_path, recognition_language)
+                if transcription is None:
+                    return Response({"error": "Failed to transcribe the audio"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                message = f"Audio file '{file.name}' successfully converted to WAV and transcribed."
+                return Response({"message": message, "transcription": transcription}, status=status.HTTP_201_CREATED)
+            else:
+                transcription = self.transcribe_and_translate(output_path, recognition_language, target_language)
+                if transcription is None:
+                    return Response({"error": "Failed to translate the audio"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
+                message = f"Audio file '{file.name}' successfully converted to WAV, transcribed and translated."
+                return Response({"message": message, "transcription": transcription}, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def transcribe_with_azure(self, wav_file_path, recognition_language):
+        try:
+            # Initialize the Azure Speech SDK
+            speech_key = settings.SPEECH_KEY
+            service_region = settings.SPEECH_SERVICE_REGION
+            speech_config = SpeechConfig(subscription=speech_key, region=service_region)
+            speech_config.speech_recognition_language = recognition_language
+
+            # Create an AudioConfig instance from the WAV file
+            audio_config = AudioConfig(filename=wav_file_path)
+
+            # Initialize the recognizer
+            recognizer = SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+
+            # Perform the transcription
+            result = recognizer.recognize_once()
+
+            # Check the result and return the transcription text
+            if result.reason == ResultReason.RecognizedSpeech:
+                return result.text
+            elif result.reason == ResultReason.NoMatch:
+                return "No speech could be recognized"
+            elif result.reason == ResultReason.Canceled:
+                return f"Recognition canceled: {result.cancellation_details.reason}"
+
+        except Exception as e:
+            return f"Azure transcription failed: {e}"
+    
+    def transcribe_and_translate(self, wav_file_path, recognition_language='en-US', target_language='fi'):
+        """Translates text using Azure Translator API"""
+        try:
+            speech_key = settings.SPEECH_KEY
+            service_region = settings.SPEECH_SERVICE_REGION
+            speech_translation_config = translation.SpeechTranslationConfig(subscription=speech_key, region=service_region)
+
+            speech_translation_config.speech_recognition_language = recognition_language
+            speech_translation_config.add_target_language(target_language)
+
+            audio_config = AudioConfig(filename=wav_file_path)
+
+            translation_recognizer = translation.TranslationRecognizer(
+                translation_config=speech_translation_config,
+                audio_config=audio_config
+            )
+
+            translation_recognition_result = translation_recognizer.recognize_once_async().get()
+
+            # Handle the result based on the outcome
+            if translation_recognition_result.reason == ResultReason.TranslatedSpeech:
+                translated_text = translation_recognition_result.translations[target_language]
+
+                # Return the recognized and translated text
+                return translated_text
+
+            elif translation_recognition_result.reason == ResultReason.NoMatch:
+                return "error: No speech could be recognized"
+
+            elif translation_recognition_result.reason == ResultReason.Canceled:
+                cancellation_details = translation_recognition_result.cancellation_details
+                err = f"error: Speech Recognition canceled: {cancellation_details.reason}"
+                if cancellation_details.reason == CancellationReason.Error:
+                    return f"{err}, details: {cancellation_details.error_details}"
+                else:
+                    return err
+
+
+        except Exception as e:
+            return f"Translation failed: {e}"
