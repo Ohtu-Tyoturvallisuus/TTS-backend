@@ -5,9 +5,10 @@
 name: CI - HazardHunt
 
 on:
-  #push:
-  #  branches:
-  #    - main
+  push:
+    branches:
+      - main
+      - luo_testit_viewsille
   #pull_request:
   #  branches:
   #    - main
