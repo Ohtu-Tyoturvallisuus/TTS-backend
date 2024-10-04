@@ -207,15 +207,15 @@ class TranscribeAudio(generics.CreateAPIView):
             if recognition_language == target_language:
                 # Perform transcription using Azure Speech SDK
                 transcription = self.transcribe_with_azure(output_path, recognition_language)
-                if transcription is None:
-                    return Response({"error": "Failed to transcribe the audio"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                if transcription is None or transcription.startswith('error'):
+                    return Response({"error": "Failed to transcribe the audio", "returnvalue": transcription}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
                 message = f"Audio file '{file.name}' successfully converted to WAV and transcribed."
                 return Response({"message": message, "transcription": transcription}, status=status.HTTP_201_CREATED)
             else:
                 transcription = self.transcribe_and_translate(output_path, recognition_language, target_language)
-                if transcription is None:
-                    return Response({"error": "Failed to translate the audio"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                if transcription is None or transcription.startswith('error'):
+                    return Response({"error": "Failed to translate the audio", "returnvalue": transcription}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 
                 message = f"Audio file '{file.name}' successfully converted to WAV, transcribed and translated."
                 return Response({"message": message, "transcription": transcription}, status=status.HTTP_201_CREATED)
@@ -244,9 +244,9 @@ class TranscribeAudio(generics.CreateAPIView):
             if result.reason == ResultReason.RecognizedSpeech:
                 return result.text
             elif result.reason == ResultReason.NoMatch:
-                return "No speech could be recognized"
+                return "error: No speech could be recognized"
             elif result.reason == ResultReason.Canceled:
-                return f"Recognition canceled: {result.cancellation_details.reason}"
+                return f"error: Recognition canceled: {result.cancellation_details.reason}"
 
         except Exception as e:
             return f"Azure transcription failed: {e}"
