@@ -14,7 +14,7 @@ def test_survey_str():
                       dimension_display_value='Value', project_group='Group')
     survey = Survey(project=project, description='Test Description',
                     task='Test Task', scaffold_type='Test Scaffold')
-    assert str(survey) == f'{survey.task} ({survey.scaffold_type})'
+    assert str(survey) == f'{survey.task} - {survey.scaffold_type}'
 
 def test_risk_note_str():
     """Test RiskNote model __str__ method"""

@@ -44,6 +44,11 @@ def create_user_fixture():
     """Fixture to create a User object"""
     return User.objects.create(username='testuser')
 
+@pytest.fixture(name='create_superuser')
+def create_superuser_fixture():
+    """Fixture to create a superuser"""
+    return User.objects.create_superuser('admin')
+
 @pytest.fixture(name='create_survey')
 def create_survey_fixture(create_project):
     """Fixture to create a Survey object"""

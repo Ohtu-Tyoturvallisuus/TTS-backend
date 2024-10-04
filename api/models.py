@@ -21,7 +21,7 @@ class Survey(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.task} ({self.scaffold_type})"
+        return f"{self.task} - {self.scaffold_type}"
 
 class RiskNote(models.Model):
     """Class for RiskNote model"""
