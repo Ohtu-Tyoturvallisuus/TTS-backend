@@ -8,10 +8,11 @@ from rest_framework import (
     permissions
 )
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework.permissions import IsAdminUser
-from django.shortcuts import render
+from rest_framework import serializers
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import get_user_model
 from django.conf import settings
 
@@ -92,11 +93,12 @@ class SurveyList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         project_id = self.kwargs.get('project_pk')
-        if project_id:
-            project = Project.objects.get(pk=project_id)
-            serializer.save(project=project)
-        else:
-            serializer.save()
+        if not project_id:
+            raise serializers.ValidationError(
+                {"project": "A project is required to create a survey."}
+            )
+        project = get_object_or_404(Project, pk=project_id)
+        serializer.save(project=project)
 
 # <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
 # /api/projects/<project_id>/surveys/<survey_id> or /api/surveys/<id>/
@@ -108,6 +110,7 @@ class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
 
 # <GET, POST, HEAD, OPTIONS> /api/surveys/<id>/risk_notes/
+# or /api/projects/<project_id>/surveys/<survey_id>/risk_notes/
 # + Supports list of risk_notes as payload
 class RiskNoteCreate(generics.ListCreateAPIView):
     """
@@ -117,26 +120,21 @@ class RiskNoteCreate(generics.ListCreateAPIView):
     serializer_class = RiskNoteSerializer
 
     def get_queryset(self):
-        survey_id = self.kwargs.get('survey_pk')
-        if survey_id:
-            return RiskNote.objects.filter(survey_id=survey_id)
-        return RiskNote.objects.all()
+        survey_id = self.kwargs.get('survey_pk') # no need to check if survey_id is None
+        return RiskNote.objects.filter(survey_id=survey_id)
 
     def get_serializer_context(self):
         # Pass the survey to the serializer context
         context = super().get_serializer_context()
         survey_id = self.kwargs.get('survey_pk')
         if survey_id:
-            context['survey'] = Survey.objects.get(id=survey_id)
+            context['survey'] = get_object_or_404(Survey, id=survey_id)
         return context
 
     def perform_create(self, serializer):
-        survey_id = self.kwargs.get('survey_pk')
-        if survey_id:
-            survey = Survey.objects.get(pk=survey_id)
-            serializer.save(survey=survey)
-        else:
-            serializer.save()
+        survey_id = self.kwargs.get('survey_pk') # no need to check if survey_id is None
+        survey = get_object_or_404(Survey, pk=survey_id)
+        serializer.save(survey=survey)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
@@ -144,6 +142,8 @@ class RiskNoteCreate(generics.ListCreateAPIView):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
+# /api/projects/<project_id>/surveys/<survey_id>/risk_notes/<id>/
 class RiskNoteDetail(generics.RetrieveUpdateDestroyAPIView):
     """Class for RiskNoteDetail"""
     queryset = RiskNote.objects.all()

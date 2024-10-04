@@ -1,43 +1,15 @@
 """ api/tests/unit/test_serializers.py """
+
 import pytest
 import pytz
-from django.contrib.auth import get_user_model
-from api.serializers import ProjectSerializer, SurveySerializer, RiskNoteSerializer
-from api.models import Project, Survey, RiskNote
-
-User = get_user_model()
+from django.test import RequestFactory
+from django.urls import reverse
+from api.serializers import (
+    ProjectSerializer, ProjectListSerializer,
+    SurveySerializer, SurveyNestedSerializer,
+    RiskNoteSerializer, SignInSerializer)
 
 pytestmark = pytest.mark.django_db
-
-@pytest.fixture(name='create_project')
-def create_project_fixture():
-    """Fixture to create a Project object"""
-    return Project.objects.create(
-        project_id='test_project_id',
-        project_name='Test Project',
-        dimension_display_value='Test Dimension',
-        project_group='Test Group'
-    )
-
-@pytest.fixture(name='create_user')
-def create_user_fixture():
-    """Fixture to create a User object"""
-    return User.objects.create(username='testuser')
-
-@pytest.fixture(name='create_survey')
-def create_survey_fixture(create_project, create_user):
-    """Fixture to create a Survey object"""
-    return Survey.objects.create(
-        project=create_project,
-        title='Test Survey',
-        description='Test Description'
-    )
-
-@pytest.fixture(name='create_risk_note')
-def create_risk_note_fixture(create_survey):
-    """Fixture to create a RiskNote object"""
-    return RiskNote.objects.create(survey=create_survey, note='Test Risk Note')
-
 
 def test_project_serializer(create_project):
     """Test ProjectSerializer for serialization"""
@@ -65,6 +37,50 @@ def test_project_deserializer(create_project):
     assert serializer.is_valid()
     assert serializer.validated_data == data
 
+def test_project_list_serializer(create_project):
+    """Test ProjectListSerializer for serialization"""
+    project = create_project
+    rf = RequestFactory()
+    request = rf.get('/')
+    serializer = ProjectListSerializer(project, context={'request': request})
+    assert serializer.data == {
+        'id': project.id,
+        'url': request.build_absolute_uri(reverse('project-detail', kwargs={'pk': project.id})),
+        'project_id': project.project_id,
+        'project_name': project.project_name,
+        'dimension_display_value': project.dimension_display_value,
+        'project_group': project.project_group,
+        'last_survey_date': None,
+    }
+
+def test_project_list_deserializer(create_project):
+    """Test ProjectListSerializer for deserialization"""
+    project = create_project
+    data = {
+        'project_id': 'new_project_id',
+        'project_name': 'New Project',
+        'dimension_display_value': 'New Dimension',
+        'project_group': 'New Group'
+    }
+    serializer = ProjectListSerializer(project, data=data)
+    assert serializer.is_valid()
+    assert serializer.validated_data == data
+
+def test_project_list_serializer_get_last_survey_date(create_project_with_surveys):
+    """Test ProjectListSerializer's get_last_survey_date method"""
+    project = create_project_with_surveys
+    last_survey = project.surveys.order_by('-created_at').first()
+    last_survey_created_at = last_survey.created_at.isoformat() if last_survey else None
+    if last_survey_created_at:
+        last_survey_created_at = last_survey_created_at.replace('T', ' ')
+    rf = RequestFactory()
+    request = rf.get('/')
+
+    serializer = ProjectListSerializer(project, context={'request': request})
+    last_survey_date_from_serializer = str(serializer.data['last_survey_date'])
+
+    assert last_survey_date_from_serializer == last_survey_created_at
+
 def test_survey_serializer(create_survey):
     """Test SurveySerializer for serialization"""
     survey = create_survey
@@ -73,9 +89,10 @@ def test_survey_serializer(create_survey):
     created_at_local = survey.created_at.astimezone(local_tz).isoformat()
     assert serializer.data == {
         'id': survey.id,
-        'project': survey.project.project_name,
-        'title': survey.title,
+        'project_name': survey.project.project_name,
         'description': survey.description,
+        'task': survey.task,
+        'scaffold_type': survey.scaffold_type,
         'created_at': created_at_local,
         'risk_notes': [],
     }
@@ -85,15 +102,63 @@ def test_survey_deserializer(create_survey):
     survey = create_survey
     data = {
         'project': survey.project.id,
-        'title': 'New Survey',
         'description': 'New Description',
+        'task': 'New Task',
+        'scaffold_type': 'New Scaffold',
     }
     serializer = SurveySerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
-        'title': 'New Survey',
         'description': 'New Description',
+        'task': 'New Task',
+        'scaffold_type': 'New Scaffold',
     }
+
+def test_survey_nested_serializer(create_survey):
+    """Test SurveyNestedSerializer for serialization"""
+    survey = create_survey
+    project_id = survey.project.id
+    rf = RequestFactory()
+    request = rf.get('/')
+    serializer = SurveyNestedSerializer(survey, context={'request': request})
+    local_tz = pytz.timezone('Europe/Helsinki')
+    created_at_local = survey.created_at.astimezone(local_tz).isoformat()
+    assert serializer.data == {
+        'id': survey.id,
+        'url': request.build_absolute_uri(reverse(
+            'survey-detail', kwargs={'project_pk': project_id, 'pk': survey.id}
+            )),
+        'task': survey.task,
+        'scaffold_type': survey.scaffold_type,
+        'created_at': created_at_local,
+    }
+
+def test_survey_nested_deserializer(create_survey):
+    """Test SurveyNestedSerializer for deserialization"""
+    survey = create_survey
+    data = {
+        'description': 'New Description',
+        'task': 'New Task',
+        'scaffold_type': 'New Scaffold',
+    }
+    serializer = SurveyNestedSerializer(survey, data=data)
+    assert serializer.is_valid()
+    assert serializer.validated_data == {
+        'task': 'New Task',
+        'scaffold_type': 'New Scaffold',
+    }
+
+def test_survey_nested_serializer_get_url(create_survey, rf):
+    """Test SurveyNestedSerializer's get_url method"""
+    survey = create_survey
+    rf = RequestFactory()
+    request = rf.get('/')
+    serializer_context = {'request': request}
+    serializer = SurveyNestedSerializer(survey, context=serializer_context)
+    expected_url = request.build_absolute_uri(
+        reverse('survey-detail', kwargs={'project_pk': survey.project.id, 'pk': survey.id})
+    )
+    assert serializer.data['url'] == expected_url
 
 def test_risk_note_serializer(create_risk_note):
     """Test RiskNoteSerializer for serialization"""
@@ -103,7 +168,7 @@ def test_risk_note_serializer(create_risk_note):
     created_at_local = risk_note.created_at.astimezone(local_tz).isoformat()
     assert serializer.data == {
         'id': risk_note.id,
-        'survey': risk_note.survey.title,
+        'survey_id': risk_note.survey.id,
         'note': risk_note.note,
         'description': '',
         'status': '',
@@ -114,7 +179,7 @@ def test_risk_note_deserializer(create_risk_note):
     """Test RiskNoteSerializer for deserialization"""
     risk_note = create_risk_note
     data = {
-        'survey': risk_note.survey.id,
+        'survey_id': risk_note.survey.id,
         'note': 'New Risk Note',
         'description': 'Updated Description',
         'status': 'Updated Status'
@@ -127,32 +192,24 @@ def test_risk_note_deserializer(create_risk_note):
         'status': 'Updated Status'
     }
 
-# def test_risk_note_creation(create_survey):
-#     """Test RiskNoteSerializer for creation of a new RiskNote"""
-#     data = {
-#         'note': 'New Risk Note',
-#         'description': 'New Description',
-#         'status': 'Pending'
-#     }
-#     serializer = RiskNoteSerializer(data=data, context={'survey': create_survey})
-#     assert serializer.is_valid()
-#     risk_note = serializer.save()
-#     assert risk_note.note == data['note']
-#     assert risk_note.description == data['description']
-#     assert risk_note.status == data['status']
-#     assert risk_note.survey == create_survey
-
-def test_risk_note_update(create_risk_note):
-    """Test RiskNoteSerializer for updating an existing RiskNote"""
-    risk_note = create_risk_note
+def test_signin_serializer():
+    """Test SignInSerializer for serialization"""
     data = {
-        'note': 'Updated Risk Note',
-        'description': 'Updated Description',
-        'status': 'Closed'
+        'username': 'testuser',
+        'password': 'testpassword'
     }
-    serializer = RiskNoteSerializer(risk_note, data=data, partial=True)
+    serializer = SignInSerializer(data=data)
     assert serializer.is_valid()
-    updated_risk_note = serializer.save()
-    assert updated_risk_note.note == data['note']
-    assert updated_risk_note.description == data['description']
-    assert updated_risk_note.status == data['status']
+    assert serializer.validated_data == {'username': 'testuser'}
+    assert serializer.data == {'username': 'testuser'}
+
+def test_signin_deserializer():
+    """Test SignInSerializer for deserialization"""
+    data = {
+        'username': 'testuser',
+        'password': 'testpassword'
+    }
+    serializer = SignInSerializer(data=data)
+    assert serializer.is_valid()
+    assert serializer.validated_data == {'username': 'testuser'}
+    assert serializer.data == {'username': 'testuser'}

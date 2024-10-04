@@ -1,10 +1,9 @@
 """ api/serializers.py """
 
-# todo/todo_api/serializers.py
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import serializers
-from .models import Project,  RiskNote, Survey
+from .models import Project, RiskNote, Survey
 
 User = get_user_model()
 
@@ -24,12 +23,13 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
             fields (list): List of fields to be included in the serialization.
     Methods:
         create(validated_data):
-            Creates and returns a new RiskNote instance, ensuring the survey is passed from the context.
+            Creates and returns a new RiskNote instance,
+            ensuring the survey is passed from the context.
         update(instance, validated_data):
             Updates and returns an existing RiskNote instance with the validated data.
     """
     survey_id = serializers.ReadOnlyField(source='survey.id')
-    
+
     class Meta:
         """Meta class for RiskNoteSerializer"""
         model = RiskNote
@@ -43,7 +43,7 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Survey
         fields = [
-            'id', 'project_name', 'description',  'task', 
+            'id', 'project_name', 'description', 'task',
             'scaffold_type', 'created_at', 'risk_notes'
         ]
 
@@ -59,6 +59,7 @@ class SurveyNestedSerializer(serializers.ModelSerializer):
         fields = ['id', 'url', 'task', 'scaffold_type', 'created_at']
 
     def get_url(self, obj):
+        """Method to get the URL of the survey"""
         request = self.context.get('request')
         project_id = obj.project.id
         survey_id = obj.id
@@ -75,7 +76,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         """Meta class for ProjectSerializer"""
         model = Project
-        fields = ['id', 'project_id', 'project_name', 'dimension_display_value', 'project_group', 'surveys']
+        fields = ['id', 'project_id', 'project_name',
+                  'dimension_display_value', 'project_group', 'surveys']
 
 class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
     """Class for ProjectListSerializer"""
@@ -85,14 +87,16 @@ class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         """Meta class for ProjectListSerializer"""
         model = Project
-        fields = ['id', 'url', 'project_id', 'project_name', 'dimension_display_value', 'project_group', 'last_survey_date']
+        fields = ['id', 'url', 'project_id', 'project_name',
+                  'dimension_display_value', 'project_group', 'last_survey_date']
 
     def get_last_survey_date(self, obj):
+        """Method to get the last survey date"""
         last_survey = obj.surveys.order_by('-created_at').first()
         if last_survey:
             return last_survey.created_at
         return None
-    
+
 class SignInSerializer(serializers.HyperlinkedModelSerializer):
     """Class for SignInSerializer"""
     username = serializers.CharField()
@@ -105,3 +109,11 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
 class AudioUploadSerializer(serializers.Serializer):
     """Serializer for audio file upload."""
     audio = serializers.FileField(required=True)
+
+    def create(self, validated_data):
+        """Handle creation logic. Not used in this serializer."""
+        raise NotImplementedError("Create method not implemented.")
+
+    def update(self, instance, validated_data):
+        """Handle update logic. Not used in this serializer."""
+        raise NotImplementedError("Update method not implemented.")
