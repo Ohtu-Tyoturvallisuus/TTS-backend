@@ -2,31 +2,39 @@
 # pylint: disable=redefined-builtin
 
 import os
-from rest_framework import generics
-from rest_framework import status
-from rest_framework import permissions
+from rest_framework import (
+    generics,
+    status,
+    permissions
+)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.permissions import IsAdminUser
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
+from django.conf import settings
+
+from pydub import AudioSegment
+from azure.cognitiveservices.speech import (
+    SpeechConfig,
+    AudioConfig,
+    SpeechRecognizer,
+    ResultReason,
+    CancellationReason,
+    translation
+)
 
 from .models import Project, RiskNote, Survey
-from rest_framework.permissions import IsAdminUser
 from .serializers import (
     ProjectSerializer,
     ProjectListSerializer,
     SurveySerializer,
-    SurveyNestedSerializer,
     RiskNoteSerializer,
     UserSerializer,
     SignInSerializer,
     AudioUploadSerializer
 )
-from pydub import AudioSegment
-from django.conf import settings
-from azure.cognitiveservices.speech import SpeechConfig, AudioConfig, SpeechRecognizer, ResultReason, CancellationReason, translation
-
 
 User = get_user_model()
 
@@ -121,7 +129,7 @@ class RiskNoteCreate(generics.ListCreateAPIView):
         if survey_id:
             context['survey'] = Survey.objects.get(id=survey_id)
         return context
-    
+
     def perform_create(self, serializer):
         survey_id = self.kwargs.get('survey_pk')
         if survey_id:
@@ -208,22 +216,43 @@ class TranscribeAudio(generics.CreateAPIView):
                 # Perform transcription using Azure Speech SDK
                 transcription = self.transcribe_with_azure(output_path, recognition_language)
                 if transcription is None or transcription.startswith('error'):
-                    return Response({"error": "Failed to transcribe the audio", "returnvalue": transcription}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return Response(
+                        {"error": "Failed to transcribe the audio", "returnvalue": transcription},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
 
                 message = f"Audio file '{file.name}' successfully converted to WAV and transcribed."
-                return Response({"message": message, "transcription": transcription}, status=status.HTTP_201_CREATED)
-            else:
-                transcription = self.transcribe_and_translate(output_path, recognition_language, target_language)
-                if transcription is None or transcription.startswith('error'):
-                    return Response({"error": "Failed to translate the audio", "returnvalue": transcription}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-                
-                message = f"Audio file '{file.name}' successfully converted to WAV, transcribed and translated."
-                return Response({"message": message, "transcription": transcription}, status=status.HTTP_201_CREATED)
+                return Response(
+                    {"message": message, "transcription": transcription},
+                    status=status.HTTP_201_CREATED
+                )
 
-        except Exception as e:
+            transcription = self.transcribe_and_translate(
+                output_path,
+                recognition_language,
+                target_language
+            )
+            if transcription is None or transcription.startswith('error'):
+                return Response(
+                    {"error": "Failed to translate the audio", "returnvalue": transcription},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
+            message = (
+                f"Audio file '{file.name}' successfully converted to WAV, "
+                "transcribed and translated."
+            )
+
+            return Response(
+                {"message": message, "transcription": transcription},
+                status=status.HTTP_201_CREATED
+            )
+
+        except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def transcribe_with_azure(self, wav_file_path, recognition_language):
+        """Method for transcribing speech to text written in the same language"""
         try:
             # Initialize the Azure Speech SDK
             speech_key = settings.SPEECH_KEY
@@ -243,20 +272,29 @@ class TranscribeAudio(generics.CreateAPIView):
             # Check the result and return the transcription text
             if result.reason == ResultReason.RecognizedSpeech:
                 return result.text
-            elif result.reason == ResultReason.NoMatch:
+            if result.reason == ResultReason.NoMatch:
                 return "error: No speech could be recognized"
-            elif result.reason == ResultReason.Canceled:
+            if result.reason == ResultReason.Canceled:
                 return f"error: Recognition canceled: {result.cancellation_details.reason}"
+            raise ValueError("Unexpected result reason")
 
-        except Exception as e:
+        except ValueError as e:
             return f"Azure transcription failed: {e}"
-    
-    def transcribe_and_translate(self, wav_file_path, recognition_language='en-US', target_language='fi'):
+
+    def transcribe_and_translate(
+        self,
+        wav_file_path,
+        recognition_language='en-US',
+        target_language='fi'
+    ):
         """Translates text using Azure Translator API"""
         try:
             speech_key = settings.SPEECH_KEY
             service_region = settings.SPEECH_SERVICE_REGION
-            speech_translation_config = translation.SpeechTranslationConfig(subscription=speech_key, region=service_region)
+            speech_translation_config = translation.SpeechTranslationConfig(
+                subscription=speech_key,
+                region=service_region
+            )
 
             speech_translation_config.speech_recognition_language = recognition_language
             speech_translation_config.add_target_language(target_language)
@@ -277,17 +315,16 @@ class TranscribeAudio(generics.CreateAPIView):
                 # Return the recognized and translated text
                 return translated_text
 
-            elif translation_recognition_result.reason == ResultReason.NoMatch:
+            if translation_recognition_result.reason == ResultReason.NoMatch:
                 return "error: No speech could be recognized"
 
-            elif translation_recognition_result.reason == ResultReason.Canceled:
+            if translation_recognition_result.reason == ResultReason.Canceled:
                 cancellation_details = translation_recognition_result.cancellation_details
                 err = f"error: Speech Recognition canceled: {cancellation_details.reason}"
                 if cancellation_details.reason == CancellationReason.Error:
                     return f"{err}, details: {cancellation_details.error_details}"
-                else:
-                    return err
+                return err
+            raise ValueError("Unexpected result reason")
 
-
-        except Exception as e:
+        except ValueError as e:
             return f"Translation failed: {e}"
