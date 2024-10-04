@@ -109,3 +109,11 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
 class AudioUploadSerializer(serializers.Serializer):
     """Serializer for audio file upload."""
     audio = serializers.FileField(required=True)
+
+    def create(self, validated_data):
+        """Handle creation logic. Not used in this serializer."""
+        raise NotImplementedError("Create method not implemented.")
+
+    def update(self, instance, validated_data):
+        """Handle update logic. Not used in this serializer."""
+        raise NotImplementedError("Update method not implemented.")
