@@ -29,6 +29,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 
+# Get speech key and service region from .env
+SPEECH_KEY = os.getenv('SPEECH_KEY')
+SPEECH_SERVICE_REGION = os.getenv('SPEECH_SERVICE_REGION')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

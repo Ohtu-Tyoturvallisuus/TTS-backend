@@ -48,13 +48,15 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 class SurveyNestedSerializer(serializers.ModelSerializer):
-    """Serializer for nested Survey objects"""
+    """
+    Serializer for nested Survey objects. Contains url field for full detail view.
+    """
     url = serializers.SerializerMethodField()
 
     class Meta:
         """Meta class for SurveySerializer"""
         model = Survey
-        fields = ['id', 'url', 'task', 'scaffold_type','created_at']
+        fields = ['id', 'url', 'task', 'scaffold_type', 'created_at']
 
     def get_url(self, obj):
         """Method to get the URL of the survey"""
@@ -103,3 +105,7 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for SignInSerializer"""
         model = User
         fields = ['username']
+
+class AudioUploadSerializer(serializers.Serializer):
+    """Serializer for audio file upload."""
+    audio = serializers.FileField(required=True)
