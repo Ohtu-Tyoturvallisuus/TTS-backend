@@ -52,6 +52,10 @@ jobs:
           done
       - name: Run migrations
         run: poetry run invoke migrate
+# ffmpeg may be needed on some machines for converting audio files to .wav.
+# Try uncommenting the following, if audio transcription does not work in the cloud.
+#      - name: Install ffmpeg
+#        run: sudo apt-get install ffmpeg
       - name: Run Pylint
         run: poetry run pylint .
       - name: Run unit tests
