@@ -1,4 +1,5 @@
 """ api/tests/unit/conftest.py """
+from unittest import mock
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
@@ -63,3 +64,11 @@ def create_survey_fixture(create_project):
 def create_risk_note_fixture(create_survey):
     """Fixture to create a RiskNote object"""
     return RiskNote.objects.create(survey=create_survey, note='Test Risk Note')
+
+@pytest.fixture(name='mock_file')
+def mock_file_fixture():
+    """Fixture to mock a file object"""
+    file = mock.MagicMock(spec=['name', 'chunks'])
+    file.name = 'test_file.mp3'
+    file.chunks.return_value = [b'testchunk']
+    return file

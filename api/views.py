@@ -185,6 +185,7 @@ class SignIn(generics.CreateAPIView):
 
         return Response({"message": message}, status=status_code)
 
+# <POST> /api/transcribe/
 class TranscribeAudio(generics.CreateAPIView):
     """Class for uploading, converting audio, and transcribing using Azure Speech SDK."""
     serializer_class = AudioUploadSerializer
