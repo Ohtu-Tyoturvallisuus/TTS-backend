@@ -1,23 +1,40 @@
 """ api/views.py """
 # pylint: disable=redefined-builtin
 
-from rest_framework import generics
-from rest_framework import status
-from rest_framework import permissions
+import os
+from rest_framework import (
+    generics,
+    status,
+    permissions
+)
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from django.shortcuts import render
-
+from rest_framework import serializers
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
-from .models import Worksite, RiskNote, Survey
+from pydub import AudioSegment
+from azure.cognitiveservices.speech import (
+    SpeechConfig,
+    AudioConfig,
+    SpeechRecognizer,
+    ResultReason,
+    CancellationReason,
+    translation
+)
+
+from .models import Project, RiskNote, Survey
 from .serializers import (
-    WorksiteSerializer,
+    ProjectSerializer,
+    ProjectListSerializer,
     SurveySerializer,
     RiskNoteSerializer,
     UserSerializer,
-    SignInSerializer
+    SignInSerializer,
+    AudioUploadSerializer
 )
 
 User = get_user_model()
@@ -27,54 +44,64 @@ User = get_user_model()
 def api_root(request, format=None):
     """ API root view """
     context = {
-        "worksites_url": reverse("worksite-list", request=request, format=format),
+        "projects_url": reverse("project-list", request=request, format=format),
         "surveys_url": reverse("survey-list", request=request, format=format),
     }
     return render(request, 'api/index.html', context)
 
-# <GET, POST, HEAD, OPTIONS> /api/worksites/
-class WorksiteList(generics.ListCreateAPIView):
-    """Class for WorksiteList"""
-    queryset = Worksite.objects.all()
-    serializer_class = WorksiteSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+# <GET, POST, HEAD, OPTIONS> /api/projects/
+class ProjectList(generics.ListCreateAPIView):
+    """Class for ProjectList"""
+    queryset = Project.objects.all()
+    serializer_class = ProjectListSerializer
 
-# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS> /api/worksites/<id>/
-class WorksiteDetail(generics.RetrieveUpdateDestroyAPIView):
-    """Class for WorksiteDetail"""
-    queryset = Worksite.objects.all()
-    serializer_class = WorksiteSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [IsAdminUser()]
+
+# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS> /api/projects/<id>/
+class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
+    """Class for ProjectDetail"""
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = (IsAdminUser,)
     lookup_field = 'pk'
 
-# <GET, POST, HEAD, OPTIONS> /api/worksites/<id>/surveys/ or /api/surveys/
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [IsAdminUser()]
+
+# <GET, POST, HEAD, OPTIONS> /api/projects/<id>/surveys/ or /api/surveys/
 class SurveyList(generics.ListCreateAPIView):
     """Class for SurveyList"""
     serializer_class = SurveySerializer
 
     def get_queryset(self):
-        worksite_id = self.kwargs.get('worksite_pk')
-        if worksite_id:
-            return Survey.objects.filter(worksite_id=worksite_id)
+        project_id = self.kwargs.get('project_pk')
+        if project_id:
+            return Survey.objects.filter(project_id=project_id)
         return Survey.objects.all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        worksite_id = self.kwargs.get('worksite_pk')
-        if worksite_id:
-            context['worksite'] = Worksite.objects.get(pk=worksite_id)
+        project_id = self.kwargs.get('project_pk')
+        if project_id:
+            context['project'] = Project.objects.get(pk=project_id)
         return context
 
     def perform_create(self, serializer):
-        worksite_id = self.kwargs.get('worksite_pk')
-        if worksite_id:
-            worksite = Worksite.objects.get(pk=worksite_id)
-            serializer.save(worksite=worksite)
-        else:
-            serializer.save()
+        project_id = self.kwargs.get('project_pk')
+        if not project_id:
+            raise serializers.ValidationError(
+                {"project": "A project is required to create a survey."}
+            )
+        project = get_object_or_404(Project, pk=project_id)
+        serializer.save(project=project)
 
 # <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
-# /api/worksites/<worksite_id>/surveys/<survey_id> or /api/surveys/<id>/
+# /api/projects/<project_id>/surveys/<survey_id> or /api/surveys/<id>/
 class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
     """Class for SurveyDetail"""
     queryset = Survey.objects.all()
@@ -83,39 +110,46 @@ class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
 
 # <GET, POST, HEAD, OPTIONS> /api/surveys/<id>/risk_notes/
+# or /api/projects/<project_id>/surveys/<survey_id>/risk_notes/
 # + Supports list of risk_notes as payload
-class RiskNoteCreateView(generics.ListCreateAPIView):
-    """Class for RiskNoteCreateView"""
+class RiskNoteCreate(generics.ListCreateAPIView):
+    """
+    Handles the creation and listing of RiskNote objects. 
+    Supports a list of RiskNote:s as payload.
+    """
     serializer_class = RiskNoteSerializer
 
     def get_queryset(self):
-        survey_id = self.kwargs['survey_id']
+        survey_id = self.kwargs.get('survey_pk') # no need to check if survey_id is None
         return RiskNote.objects.filter(survey_id=survey_id)
 
     def get_serializer_context(self):
         # Pass the survey to the serializer context
         context = super().get_serializer_context()
-        survey_id = self.kwargs['survey_id']
-        context['survey'] = Survey.objects.get(id=survey_id)
+        survey_id = self.kwargs.get('survey_pk')
+        if survey_id:
+            context['survey'] = get_object_or_404(Survey, id=survey_id)
         return context
+
+    def perform_create(self, serializer):
+        survey_id = self.kwargs.get('survey_pk') # no need to check if survey_id is None
+        survey = get_object_or_404(Survey, pk=survey_id)
+        serializer.save(survey=survey)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-# <GET, HEAD, OPTIONS> /api/risk_notes/
-class RiskNoteListView(generics.ListAPIView):
-    """Class for RiskNoteListView"""
+# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
+# /api/projects/<project_id>/surveys/<survey_id>/risk_notes/<id>/
+class RiskNoteDetail(generics.RetrieveUpdateDestroyAPIView):
+    """Class for RiskNoteDetail"""
     queryset = RiskNote.objects.all()
     serializer_class = RiskNoteSerializer
-
-# <PUT/PATCH> /api/risk_notes/<id>/
-class RiskNoteUpdateView(generics.UpdateAPIView):
-    """Class for RiskNoteUpdateView"""
-    queryset = RiskNote.objects.all()
-    serializer_class = RiskNoteSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    lookup_field = 'pk'
 
 # <GET, POST, HEAD, OPTIONS> /api/users/
 class UserList(generics.ListCreateAPIView):
@@ -150,3 +184,147 @@ class SignIn(generics.CreateAPIView):
             status_code = status.HTTP_200_OK
 
         return Response({"message": message}, status=status_code)
+
+class TranscribeAudio(generics.CreateAPIView):
+    """Class for uploading, converting audio, and transcribing using Azure Speech SDK."""
+    serializer_class = AudioUploadSerializer
+
+    def create(self, request, *args, **kwargs):
+        # Get the uploaded file from the request
+        file = request.FILES.get('audio')
+        recognition_language = 'fi-FI'
+        target_language = 'en'
+
+        if not file:
+            return Response({"error": "Audio file is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Define file paths
+        input_path = os.path.join(settings.MEDIA_ROOT, file.name)
+        output_path = os.path.join(settings.MEDIA_ROOT, f"{os.path.splitext(file.name)[0]}.wav")
+
+        # Save the uploaded file
+        with open(input_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        try:
+            # Convert to WAV using pydub
+            audio = AudioSegment.from_file(input_path)
+            audio.export(output_path, format="wav")
+
+            if recognition_language == target_language:
+                # Perform transcription using Azure Speech SDK
+                transcription = self.transcribe_with_azure(output_path, recognition_language)
+                if transcription is None or transcription.startswith('error'):
+                    return Response(
+                        {"error": "Failed to transcribe the audio", "returnvalue": transcription},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
+
+                message = f"Audio file '{file.name}' successfully converted to WAV and transcribed."
+                return Response(
+                    {"message": message, "transcription": transcription},
+                    status=status.HTTP_201_CREATED
+                )
+
+            transcription = self.transcribe_and_translate(
+                output_path,
+                recognition_language,
+                target_language
+            )
+            if transcription is None or transcription.startswith('error'):
+                return Response(
+                    {"error": "Failed to translate the audio", "returnvalue": transcription},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
+            message = (
+                f"Audio file '{file.name}' successfully converted to WAV, "
+                "transcribed and translated."
+            )
+
+            return Response(
+                {"message": message, "transcription": transcription},
+                status=status.HTTP_201_CREATED
+            )
+
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def transcribe_with_azure(self, wav_file_path, recognition_language):
+        """Method for transcribing speech to text written in the same language"""
+        try:
+            # Initialize the Azure Speech SDK
+            speech_key = settings.SPEECH_KEY
+            service_region = settings.SPEECH_SERVICE_REGION
+            speech_config = SpeechConfig(subscription=speech_key, region=service_region)
+            speech_config.speech_recognition_language = recognition_language
+
+            # Create an AudioConfig instance from the WAV file
+            audio_config = AudioConfig(filename=wav_file_path)
+
+            # Initialize the recognizer
+            recognizer = SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+
+            # Perform the transcription
+            result = recognizer.recognize_once()
+
+            # Check the result and return the transcription text
+            if result.reason == ResultReason.RecognizedSpeech:
+                return result.text
+            if result.reason == ResultReason.NoMatch:
+                return "error: No speech could be recognized"
+            if result.reason == ResultReason.Canceled:
+                return f"error: Recognition canceled: {result.cancellation_details.reason}"
+            raise ValueError("Unexpected result reason")
+
+        except ValueError as e:
+            return f"Azure transcription failed: {e}"
+
+    def transcribe_and_translate(
+        self,
+        wav_file_path,
+        recognition_language='en-US',
+        target_language='fi'
+    ):
+        """Translates text using Azure Translator API"""
+        try:
+            speech_key = settings.SPEECH_KEY
+            service_region = settings.SPEECH_SERVICE_REGION
+            speech_translation_config = translation.SpeechTranslationConfig(
+                subscription=speech_key,
+                region=service_region
+            )
+
+            speech_translation_config.speech_recognition_language = recognition_language
+            speech_translation_config.add_target_language(target_language)
+
+            audio_config = AudioConfig(filename=wav_file_path)
+
+            translation_recognizer = translation.TranslationRecognizer(
+                translation_config=speech_translation_config,
+                audio_config=audio_config
+            )
+
+            translation_recognition_result = translation_recognizer.recognize_once_async().get()
+
+            # Handle the result based on the outcome
+            if translation_recognition_result.reason == ResultReason.TranslatedSpeech:
+                translated_text = translation_recognition_result.translations[target_language]
+
+                # Return the recognized and translated text
+                return translated_text
+
+            if translation_recognition_result.reason == ResultReason.NoMatch:
+                return "error: No speech could be recognized"
+
+            if translation_recognition_result.reason == ResultReason.Canceled:
+                cancellation_details = translation_recognition_result.cancellation_details
+                err = f"error: Speech Recognition canceled: {cancellation_details.reason}"
+                if cancellation_details.reason == CancellationReason.Error:
+                    return f"{err}, details: {cancellation_details.error_details}"
+                return err
+            raise ValueError("Unexpected result reason")
+
+        except ValueError as e:
+            return f"Translation failed: {e}"

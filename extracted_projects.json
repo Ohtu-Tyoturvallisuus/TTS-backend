@@ -1,0 +1,3094 @@
+{
+    "Projekti": [
+        {
+            "ProjectId": "901",
+            "ProjectName": "Hallinto",
+            "DimensionDisplayValue": "AL90|901||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-01",
+            "ProjectName": "Hallinto - Keskinäinen Eläkevakuutusyhtiö Ilmarinen",
+            "DimensionDisplayValue": "AL90|901-01||10556",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-01-01",
+            "ProjectName": "Hallinto - Keskinäinen Eläkevakuutusyhtiö Ilmarinen -",
+            "DimensionDisplayValue": "AL90|901-01-01||10556",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-02",
+            "ProjectName": "Hallinto - YIT Rakennus Oy",
+            "DimensionDisplayValue": "AL90|901-02||10198",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-02-01",
+            "ProjectName": "Hallinto - YIT Rakennus Oy -",
+            "DimensionDisplayValue": "AL90|901-02-01||10198",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-03",
+            "ProjectName": "Hallinto - Suomen Palautuspakkaus Oy",
+            "DimensionDisplayValue": "AL90|901-03||10477",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-03-01",
+            "ProjectName": "Hallinto - Suomen Palautuspakkaus Oy -",
+            "DimensionDisplayValue": "AL90|901-03-01||10477",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-04",
+            "ProjectName": "Hallinto - Kattikone M.Viitanen Oy / Kaivuu ja kuljetus A-Go",
+            "DimensionDisplayValue": "AL90|901-04||10570",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-04-01",
+            "ProjectName": "Hallinto - Kattikone M.Viitanen Oy / Kaivuu ja kuljetus A-Go",
+            "DimensionDisplayValue": "AL90|901-04-01||10570",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-05",
+            "ProjectName": "Hallinto - West Expres Oy",
+            "DimensionDisplayValue": "AL90|901-05||10480",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-05-01",
+            "ProjectName": "Hallinto - West Expres Oy -",
+            "DimensionDisplayValue": "AL90|901-05-01||10480",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-06",
+            "ProjectName": "Hallinto - AS Telinekataja",
+            "DimensionDisplayValue": "AL90|901-06|001_006|10250",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-06-01",
+            "ProjectName": "Hallinto - AS Telinekataja -",
+            "DimensionDisplayValue": "AL90|901-06-01|001_006|10250",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-07",
+            "ProjectName": "Hallinto - Kataja Event Oy",
+            "DimensionDisplayValue": "AL90|901-07||10178",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-07-01",
+            "ProjectName": "Hallinto - Kataja Event Oy - Vuokralla oleva kalusto",
+            "DimensionDisplayValue": "AL90|901-07-01|001_005|10178",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-08",
+            "ProjectName": "Hallinto - Tikkurilan Romu Oy",
+            "DimensionDisplayValue": "AL90|901-08||10842",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-08-01",
+            "ProjectName": "Hallinto - Tikkurilan Romu Oy - Romumyynti",
+            "DimensionDisplayValue": "AL90|901-08-01||10842",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-09",
+            "ProjectName": "Hallinto - YIT Kalusto Oy",
+            "DimensionDisplayValue": "AL90|901-09||10205",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-09-01",
+            "ProjectName": "Hallinto - YIT Kalusto Oy - Telinesuunnittelu KOy Keilanieme",
+            "DimensionDisplayValue": "AL90|901-09-01||10205",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-02-02",
+            "ProjectName": "Hallinto - YIT Rakennus Oy - Suunnitelman tarkistelu",
+            "DimensionDisplayValue": "AL90|901-02-02||10198",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "901-12",
+            "ProjectName": "Hallinto - AMJ-Trans",
+            "DimensionDisplayValue": "AL90|901-12||10970",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-12-01",
+            "ProjectName": "Hallinto - AMJ-Trans - Automyynti",
+            "DimensionDisplayValue": "AL90|901-12-01||10970",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-10",
+            "ProjectName": "Hallinto - Arme Oy",
+            "DimensionDisplayValue": "AL90|901-10||10133",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-10-01",
+            "ProjectName": "Hallinto - Arme Oy - Kalustolunastus",
+            "DimensionDisplayValue": "AL90|901-10-01||10133",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-11",
+            "ProjectName": "Hallinto - XL-Kuljetus Oy",
+            "DimensionDisplayValue": "AL90|901-11||10635",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-11-01",
+            "ProjectName": "Hallinto - XL-Kuljetus Oy - Automyynti",
+            "DimensionDisplayValue": "AL90|901-11-01||10635",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-14",
+            "ProjectName": "Hallinto - Eurajoen Romu Oy",
+            "DimensionDisplayValue": "AL90|901-14||11003",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-14-01",
+            "ProjectName": "Hallinto - Eurajoen Romu Oy - Romumyynti",
+            "DimensionDisplayValue": "AL90|901-14-01||11003",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-13",
+            "ProjectName": "Hallinto - Kelokataja",
+            "DimensionDisplayValue": "AL90|901-13||11002",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-13-01",
+            "ProjectName": "Hallinto - Kelokataja - Ruka",
+            "DimensionDisplayValue": "AL90|901-13-01||11002",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-15",
+            "ProjectName": "Hallinto - Teollisuuden Voima Oyj",
+            "DimensionDisplayValue": "AL90|901-15||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "901-15-01",
+            "ProjectName": "Hallinto - Teollisuuden Voima Oyj - Telinekoulutus",
+            "DimensionDisplayValue": "AL90|901-15-01||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "901-17",
+            "ProjectName": "Hallinto - Suvanto Trucks Oy",
+            "DimensionDisplayValue": "AL90|901-17||11024",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-17-01",
+            "ProjectName": "Hallinto - Suvanto Trucks Oy - Automyynti",
+            "DimensionDisplayValue": "AL90|901-17||11024",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-16",
+            "ProjectName": "Hallinto - Insinöörityö Hentinen Oy",
+            "DimensionDisplayValue": "AL90|901-16||10168",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "901-16-01",
+            "ProjectName": "Hallinto - Insinöörityö Hentinen Oy - Telinekoulutus",
+            "DimensionDisplayValue": "AL90|901-16-01||10168",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "901-18",
+            "ProjectName": "Hallinto - Lämpösulku Oy",
+            "DimensionDisplayValue": "AL90|901-18||10351",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-18-01",
+            "ProjectName": "Hallinto - Lämpösulku Oy - Telinekoulutus",
+            "DimensionDisplayValue": "AL90|901-18-01||10351",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-19",
+            "ProjectName": "Hallinto - Anttoni Hakanen",
+            "DimensionDisplayValue": "|901-19||11123",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-19-01",
+            "ProjectName": "Hallinto - Anttoni Hakanen - Kokonaisvuokra",
+            "DimensionDisplayValue": "AL90|901-19||11123",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-21",
+            "ProjectName": "Hallinto - Lisäpalvelu Jyväskylä",
+            "DimensionDisplayValue": "AL90|901-21||10470",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-21-01",
+            "ProjectName": "Hallinto - Lisäpalvelu Jyväskylä -",
+            "DimensionDisplayValue": "AL90|901-21-01||10470",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-23",
+            "ProjectName": "Hallinto - ROMU MÄKI OY",
+            "DimensionDisplayValue": "AL90|901-23||11194",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-23-01",
+            "ProjectName": "Hallinto - ROMU MÄKI OY -",
+            "DimensionDisplayValue": "AL90|901-23-01||11194",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-20",
+            "ProjectName": "Hallinto - Hotelli Levipanorama",
+            "DimensionDisplayValue": "AL90|901-20||11156",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "901-20-01",
+            "ProjectName": "Hallinto - Hotelli Levipanorama",
+            "DimensionDisplayValue": "AL90|901-20-01||11156",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "901-22",
+            "ProjectName": "Hallinto - Osuma Henkilöstöpalvelu Oy",
+            "DimensionDisplayValue": "AL90|901-22||10510",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-22-01",
+            "ProjectName": "Hallinto - Osuma Henkilöstöpalvelu Oy - Hallinnon veloitukse",
+            "DimensionDisplayValue": "AL90|901-22-01||10510",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-24",
+            "ProjectName": "Hallinto - AR-Teline Oy",
+            "DimensionDisplayValue": "AL90|901-24||10706",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-24-01",
+            "ProjectName": "Hallinto - AR-Teline Oy - Savonlinnan Vipusenkatu rikkoutunu",
+            "DimensionDisplayValue": "AL90|901-24-01||10706",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-27",
+            "ProjectName": "Hallinto - Stena Recycling Oy",
+            "DimensionDisplayValue": "AL90|901-27||10626",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-27-01",
+            "ProjectName": "Hallinto - Stena Recycling Oy - Stena romumyynti",
+            "DimensionDisplayValue": "AL90|901-27-01||10626",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-25",
+            "ProjectName": "Hallinto-Puijon Romu Oy",
+            "DimensionDisplayValue": "AL90|901-25||11665",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-25-01",
+            "ProjectName": "Hallinto- Puijon Romu Oy romu myynti",
+            "DimensionDisplayValue": "AL90|901-25-01||11665",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-26",
+            "ProjectName": "Hallinto - Neste Oyj",
+            "DimensionDisplayValue": "AL90|901-26||10062",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-26-01",
+            "ProjectName": "Hallinto - Neste Oyj -",
+            "DimensionDisplayValue": "AL90|901-26-01||10062",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-28",
+            "ProjectName": "Hallinto - OOO Telinekataja",
+            "DimensionDisplayValue": "AL90|901-28||10642",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-28-01",
+            "ProjectName": "Hallinto - OOO Telinekataja -",
+            "DimensionDisplayValue": "AL90|901-28-01||10642",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-29",
+            "ProjectName": "Hallinto - Kuusakoski Oy",
+            "DimensionDisplayValue": "AL90|901-29||10186",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-29-01",
+            "ProjectName": "Hallinto - Kuusakoski Oy - Romumyynti",
+            "DimensionDisplayValue": "AL90|901-29-01||10186",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-07-02",
+            "ProjectName": "Hallinto - Kataja Event Oy - Lounas- ja liikuntasetelit",
+            "DimensionDisplayValue": "AL90|901-07-02||10178",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-30",
+            "ProjectName": "Hallinto - Jyväskylän kaupunki, Liikuntapalvelut",
+            "DimensionDisplayValue": "AL90|901-30||11723",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-30-01",
+            "ProjectName": "Hallinto - Jyväskylän kaupunki, Liikuntapalvelut - Viitaniem",
+            "DimensionDisplayValue": "AL90|901-30-01||11723",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-31",
+            "ProjectName": "Hallinto - PH-Rakennuttajapalvelu Oy",
+            "DimensionDisplayValue": "AL90|901-31||11011",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-31-01",
+            "ProjectName": "Hallinto - PH-Rakennuttajapalvelu Oy - Ki Oy Yliopistonkatu",
+            "DimensionDisplayValue": "AL90|901-31-01||11011",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-34",
+            "ProjectName": "Hallinto - Are Oy",
+            "DimensionDisplayValue": "AL90|901-34||10004",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-34-01",
+            "ProjectName": "Hallinto - Are Oy -",
+            "DimensionDisplayValue": "AL90|901-34-01||10004",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-36",
+            "ProjectName": "Hallinto - Sandvik Mining and Construction Oy",
+            "DimensionDisplayValue": "AL90|901-36||10254",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-36-01",
+            "ProjectName": "Hallinto - Sandvik Mining and Construction Oy - Telinekoulut",
+            "DimensionDisplayValue": "AL90|901-36-01||10254",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-35",
+            "ProjectName": "Hallinto - Uudenmaan Vaihtolavakuljetus Oy",
+            "DimensionDisplayValue": "AL90|901-35||11966",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-35-01",
+            "ProjectName": "Hallinto - Uudenmaan Vaihtolavakuljetus Oy -",
+            "DimensionDisplayValue": "AL90|901-35-01||11966",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-37",
+            "ProjectName": "Hallinto - Ilmatieteen laitos",
+            "DimensionDisplayValue": "AL90|901-37||11997",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-37-01",
+            "ProjectName": "Hallinto - Ilmatieteen laitos -",
+            "DimensionDisplayValue": "AL90|901-37-01||11997",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-38",
+            "ProjectName": "Hallinto - ABAB Sverige AB",
+            "DimensionDisplayValue": "AL90|901-38||12005",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-38-01",
+            "ProjectName": "Hallinto - ABAB Sverige AB - Rental material",
+            "DimensionDisplayValue": "AL90|901-38-01||12005",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-39",
+            "ProjectName": "Hallinto - Veho Oy Ab",
+            "DimensionDisplayValue": "AL90|901-39||12043",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-39-01",
+            "ProjectName": "Hallinto - Veho Oy Ab -",
+            "DimensionDisplayValue": "AL90|901-39-01||12043",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-40",
+            "ProjectName": "Hallinto - Fortum Power and Heat Oy",
+            "DimensionDisplayValue": "AL90|901-40||10022",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-40-01",
+            "ProjectName": "Hallinto - Fortum Power and Heat Oy -",
+            "DimensionDisplayValue": "AL90|901-40-01||10022",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-41",
+            "ProjectName": "Hallinto - Kymen Tarvemetalli Oy",
+            "DimensionDisplayValue": "AL90|901-41||12233",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-41-01",
+            "ProjectName": "Hallinto - Kymen Tarvemetalli Oy -",
+            "DimensionDisplayValue": "AL90|901-41-01||12233",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-42",
+            "ProjectName": "Hallinto - Rekrytointipalvelu Sihti Oy",
+            "DimensionDisplayValue": "AL90|901-42||10383",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-42-01",
+            "ProjectName": "Hallinto - Rekrytointipalvelu Sihti Oy -",
+            "DimensionDisplayValue": "AL90|901-42-01||10383",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-43",
+            "ProjectName": "Hallinto - Finnsiirto Oy",
+            "DimensionDisplayValue": "AL90|901-43||12350",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-43-01",
+            "ProjectName": "Finnsiiro Oy - trukkimyynti",
+            "DimensionDisplayValue": "AL90|901-43||12350",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-44",
+            "ProjectName": "Hallinto - Mezzoforte Oy",
+            "DimensionDisplayValue": "AL90|901-44||12506",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-44-01",
+            "ProjectName": "Hallinto - Mezzoforte Oy - Myynti MB",
+            "DimensionDisplayValue": "AL90|901-44-01||12506",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-45",
+            "ProjectName": "Hallinto - SSAB Europe Oy",
+            "DimensionDisplayValue": "AL90|901-45||11507",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-45-01",
+            "ProjectName": "Hallinto - SSAB Europe Oy -",
+            "DimensionDisplayValue": "AL90|901-45-01||11507",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-46",
+            "ProjectName": "Hallinto - Kiinteistö Oy Juvan teollisuushalli",
+            "DimensionDisplayValue": "AL90|901-46||12653",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-46-01",
+            "ProjectName": "Hallinto - Kiinteistö Oy Juvan teollisuushalli -",
+            "DimensionDisplayValue": "AL90|901-46-01||12653",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-47",
+            "ProjectName": "Hallinto - Eskama Group Oy",
+            "DimensionDisplayValue": "AL90|901-47||12707",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-47-01",
+            "ProjectName": "Hallinto - Eskama Group Oy -",
+            "DimensionDisplayValue": "AL90|901-47-01||12707",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-48",
+            "ProjectName": "Hallinto - Layher LLC",
+            "DimensionDisplayValue": "AL90|901-48||13024",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-48-01",
+            "ProjectName": "Hallinto - Layher LLC - Uuden kaluston myynti",
+            "DimensionDisplayValue": "AL90|901-48-01||13024",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-54",
+            "ProjectName": "Hallinto - Kirby Group Engineering",
+            "DimensionDisplayValue": "AL90|901-54||11903",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "901-54-01",
+            "ProjectName": "Hallinto - Kirby Group Engineering",
+            "DimensionDisplayValue": "AL90|901-54-01||11903",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "901-55",
+            "ProjectName": "Hallinto - Litana Finland Oy",
+            "DimensionDisplayValue": "AL90|901-55||10374",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-55-01",
+            "ProjectName": "Hallinto - Litana Finland Oy",
+            "DimensionDisplayValue": "AL90|901-55-01||10374",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-56",
+            "ProjectName": "Hallinto - Areva NP SAS",
+            "DimensionDisplayValue": "AL90|901-56||10132",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-56-01",
+            "ProjectName": "Hallinto - Areva NP SAS",
+            "DimensionDisplayValue": "AL90|901-56-01||10132",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-57",
+            "ProjectName": "Hallinto - Skupoli Oy",
+            "DimensionDisplayValue": "AL90|901-57||10625",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-57-01",
+            "ProjectName": "Hallinto - Skupoli Oy",
+            "DimensionDisplayValue": "AL90|901-57-01||10625",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-58",
+            "ProjectName": "Hallinto - Vattenfall Oy",
+            "DimensionDisplayValue": "AL90|901-58||10535",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-58-01",
+            "ProjectName": "Hallinto - Vattenfall Oy",
+            "DimensionDisplayValue": "AL90|901-58-01||10535",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-49",
+            "ProjectName": "Hallinto - Skanska Talonrakennus Oy",
+            "DimensionDisplayValue": "AL90|901-49||10106",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "901-49-01",
+            "ProjectName": "Hallinto - Skanska Talonrakennus Oy",
+            "DimensionDisplayValue": "AL90|901-49-01||10106",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "901-50",
+            "ProjectName": "Hallinto - Efora Oy",
+            "DimensionDisplayValue": "AL90|901-50||10017",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-50-01",
+            "ProjectName": "Hallinto - Efora Oy",
+            "DimensionDisplayValue": "AL90|901-50-01||10017",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-51",
+            "ProjectName": "Hallinto - Elektrobudowa SA",
+            "DimensionDisplayValue": "AL90|901-51||10018",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-52",
+            "ProjectName": "Hallinto - Ruukki Construction Oy",
+            "DimensionDisplayValue": "AL90|901-52||10098",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-52-01",
+            "ProjectName": "Hallinto - Ruukki Construction Oy",
+            "DimensionDisplayValue": "AL90|901-52-01||10098",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-53",
+            "ProjectName": "Hallinto - Stora Enso Oulu Oy",
+            "DimensionDisplayValue": "AL90|901-53||10112",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-53-01",
+            "ProjectName": "Hallinto - Stora Enso Oulu Oy",
+            "DimensionDisplayValue": "AL90|901-53-01||10112",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-59",
+            "ProjectName": "Hallinto - Riku Pelkonen",
+            "DimensionDisplayValue": "AL90|901-59||19999",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-59-01",
+            "ProjectName": "Hallinto - Riku Pelkonen",
+            "DimensionDisplayValue": "AL90|901-59-01||19999",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-60",
+            "ProjectName": "Hallinto - Anora Group Oy",
+            "DimensionDisplayValue": "AL90|901-60||19999",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-60-01",
+            "ProjectName": "Hallinto - Anora Group Oy - Telinekoulutus",
+            "DimensionDisplayValue": "AL90|901-60-01||19999",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-38-02",
+            "ProjectName": "Hallinto - ABAB Sverige AB - Northvolt Skellefteå Scaffoldin",
+            "DimensionDisplayValue": "AL90|901-38-02||12005",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-38-03",
+            "ProjectName": "Hallinto - ABAB Sverige AB - H2 Green Steel Boden Scaffoldin",
+            "DimensionDisplayValue": "AL90|901-38-03||12005",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "901-61",
+            "ProjectName": "Hallinto - Yara Suomi Oy",
+            "DimensionDisplayValue": "AL90|901-61||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "901-61-01",
+            "ProjectName": "Hallinto - Yara Suomi Oy - Espoo",
+            "DimensionDisplayValue": "AL90|901-61-01||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "339",
+            "ProjectName": "Etelä-Suomi",
+            "DimensionDisplayValue": "AL31|339||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "419",
+            "ProjectName": "Sisä-Suomi",
+            "DimensionDisplayValue": "AL41|419||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "349",
+            "ProjectName": "Länsi-Suomi",
+            "DimensionDisplayValue": "AL34|349||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "519",
+            "ProjectName": "Keski-Suomi",
+            "DimensionDisplayValue": "AL51|519||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "529",
+            "ProjectName": "Kaakkois-Suomi",
+            "DimensionDisplayValue": "AL52|529||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "539",
+            "ProjectName": "Itä-Suomi",
+            "DimensionDisplayValue": "AL53|539||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "549",
+            "ProjectName": "Pohjois-Suomi",
+            "DimensionDisplayValue": "AL54|549||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310",
+            "ProjectName": "Kataja Event",
+            "DimensionDisplayValue": "3100|310||59999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-01",
+            "ProjectName": "Kataja Event - Telinekataja Oy",
+            "DimensionDisplayValue": "3100|310-01||50151",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-01-01",
+            "ProjectName": "Kataja Event - Telinekataja Oy - Peitepesu",
+            "DimensionDisplayValue": "3100|310-01-01|005_001|50151",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-02",
+            "ProjectName": "Kataja Event - AS Telinekataja",
+            "DimensionDisplayValue": "3100|310-02||50152",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-02-01",
+            "ProjectName": "Kataja Event - AS Telinekataja -",
+            "DimensionDisplayValue": "3100|310-02-01|005_006|50152",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-04",
+            "ProjectName": "Kataja Event - Järvenpään Romu Oy",
+            "DimensionDisplayValue": "3100|310-04||51007",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-04-01",
+            "ProjectName": "Kataja Event - Järvenpään Romu Oy - Romumyynti",
+            "DimensionDisplayValue": "3100|310-04-01||51007",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-05",
+            "ProjectName": "Kataja Event - ABAB Sverige Ab",
+            "DimensionDisplayValue": "3100|310-05||51136",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "310-05-01",
+            "ProjectName": "Kataja Event - ABAB Sverige Ab - Myynti",
+            "DimensionDisplayValue": "3100|310-05-01||51136",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "20000",
+            "ProjectName": "SCAF Common",
+            "DimensionDisplayValue": "SCAF|20000||69999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "20000-01",
+            "ProjectName": "SCAF Common - Metallieksport OÜ",
+            "DimensionDisplayValue": "SCAF|20000-01||60078",
+            "ProjectGroup": "Privatepe"
+        },
+        {
+            "ProjectId": "20000-01-01",
+            "ProjectName": "SCAF Common - Metallieksport OÜ - Metalljäätmete müük.",
+            "DimensionDisplayValue": "SCAF|20000-01-01||60078",
+            "ProjectGroup": "Privatepe"
+        },
+        {
+            "ProjectId": "20000-02",
+            "ProjectName": "SCAF Common - Swedbank Liising AS",
+            "DimensionDisplayValue": "SCAF|20000-02||60398",
+            "ProjectGroup": "Companies"
+        },
+        {
+            "ProjectId": "20000-02-01",
+            "ProjectName": "SCAF Common - Swedbank Liising AS - Car sale",
+            "DimensionDisplayValue": "SCAF|20000-02-01||60398",
+            "ProjectGroup": "Companies"
+        },
+        {
+            "ProjectId": "30000",
+            "ProjectName": "EVENT Common",
+            "DimensionDisplayValue": "EVENT|30000||69999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "30000-01",
+            "ProjectName": "EVENT Common - Ave Mere",
+            "DimensionDisplayValue": "EVENT|30000-01||69999",
+            "ProjectGroup": "Privatepe"
+        },
+        {
+            "ProjectId": "30000-01-01",
+            "ProjectName": "EVENT Common - Ave Mere - Põhivara müük",
+            "DimensionDisplayValue": "EVENT|30000-01-01||69999",
+            "ProjectGroup": "Privatepe"
+        },
+        {
+            "ProjectId": "10001",
+            "ProjectName": "",
+            "DimensionDisplayValue": "AL90|10001||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10001-01",
+            "ProjectName": "Testiprojekti - Telinekataja",
+            "DimensionDisplayValue": "AL90|10001-01||19999",
+            "ProjectGroup": "Internal"
+        },
+        {
+            "ProjectId": "10023",
+            "ProjectName": "Kilpilahti",
+            "DimensionDisplayValue": "AL31|10023||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10048",
+            "ProjectName": "Äänekosken tehdas",
+            "DimensionDisplayValue": "AL51|10048||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10048-01",
+            "ProjectName": "Äänekosken tehdas - Nouryon Chemicals Finland Oy",
+            "DimensionDisplayValue": "AL51|10048-01||10015",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10048-01-02",
+            "ProjectName": "Äänekosken tehdas - Nouryon Chemicals Finland Oy - Äänekoske",
+            "DimensionDisplayValue": "AL51|10048-01-02||10015",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10059",
+            "ProjectName": "Kujalan jäteasema",
+            "DimensionDisplayValue": "AL52|10059||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10059-01",
+            "ProjectName": "Kujalan jäteasema - Päijät-Hämeen Jätehuolto Oy",
+            "DimensionDisplayValue": "AL52|10059-01||10325",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10059-01-01",
+            "ProjectName": "Kujalan jäteasema - Päijät-Hämeen Jätehuolto Oy - Sapelikatu",
+            "DimensionDisplayValue": "AL52|10059-01-01||10325",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10061",
+            "ProjectName": "Basf Haminan tehdas",
+            "DimensionDisplayValue": "AL52|10061||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10061-01",
+            "ProjectName": "Basf Haminan tehdas",
+            "DimensionDisplayValue": "AL52|10061-01||10007",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10061-01-05",
+            "ProjectName": "Basf Haminan tehdas - Basf Oy - Agreement 2023-2025",
+            "DimensionDisplayValue": "AL52|10061-01-05||10007",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10065",
+            "ProjectName": "Trinseo Haminan tehdas",
+            "DimensionDisplayValue": "AL52|10065||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10065-01",
+            "ProjectName": "Trinseo Haminan tehdas - Trinseo Suomi Oy",
+            "DimensionDisplayValue": "AL52|10065-01||10331",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10065-01-02",
+            "ProjectName": "Trinseo Haminan tehdas - Trinseo Suomi Oy - TELINETYÖT 2023",
+            "DimensionDisplayValue": "AL52|10065-01-02||10331",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10066",
+            "ProjectName": "Keltakankaan jäteasema",
+            "DimensionDisplayValue": "AL52|10066||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10066-01",
+            "ProjectName": "Keltakankaan jäteasema - Kymenlaakson Jäte Oy",
+            "DimensionDisplayValue": "AL52|10066-01||10320",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10066-01-01",
+            "ProjectName": "Keltakankaan jäteasema - Kymenlaakson Jäte Oy - Keltakankaan",
+            "DimensionDisplayValue": "AL52|10066-01-01||10320",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10096",
+            "ProjectName": "Sibelco Nilsiän kvartsi",
+            "DimensionDisplayValue": "AL53|10096||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10096-01",
+            "ProjectName": "Sibelco Nilsiän kvartsi - Sibelco Nordic Oy Ab",
+            "DimensionDisplayValue": "AL53|10096-01||10335",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10096-01-01",
+            "ProjectName": "Sibelco Nilsiän kvartsi - Sibelco Nordic Oy Ab - Sibelco tel",
+            "DimensionDisplayValue": "AL53|10096-01-01||10335",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10096-01-02",
+            "ProjectName": "Sibelco Nilsiän kvartsi - Sibelco Nordic Oy Ab - Ajoneuvosuo",
+            "DimensionDisplayValue": "AL53|10096-01-02||10335",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10009",
+            "ProjectName": "Lapinlahden valio",
+            "DimensionDisplayValue": "AL53|10009||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10009-01",
+            "ProjectName": "Lapinlahden valio - Lujatalo Oy",
+            "DimensionDisplayValue": "AL53|10009-01||10055",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10009-02",
+            "ProjectName": "Lapinlahden valio - Valio Oy",
+            "DimensionDisplayValue": "AL53|10009-02||11631",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10009-02-01",
+            "ProjectName": "Lapinlahden valio - Valio Oy - Valio lapinlahti telinetyöt",
+            "DimensionDisplayValue": "AL53|10009-02-01||11631",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10009-03",
+            "ProjectName": "Lapinlahden Valio - Adven Oy",
+            "DimensionDisplayValue": "AL53|10009-03||10129",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10009-03-01",
+            "ProjectName": "Lapinlahden Valio - Adven Oy - Tuntityöt Lapinlahden Valioll",
+            "DimensionDisplayValue": "AL53|10009-03-01||10129",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10185",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020",
+            "DimensionDisplayValue": "AL54|10185||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10185-01",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - Pohjois-Pohjanmaan Sairaanhoi",
+            "DimensionDisplayValue": "AL54|10185-01||10071",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10185-01-01",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - Pohjois-Pohjanmaan Sairaanhoi",
+            "DimensionDisplayValue": "AL54|10185-01-01||10071",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10185-02",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - NCC Suomi Oy",
+            "DimensionDisplayValue": "AL54|10185-02||10195",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10185-02-02",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - NCC Suomi Oy - PPSHP Ydinsair",
+            "DimensionDisplayValue": "AL54|10185-02-02||10195",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10185-06",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - KVL Tekniikka Oy",
+            "DimensionDisplayValue": "AL54|10185-06||10529",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10185-02-06",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - NCC Suomi Oy - Telinepeite hi",
+            "DimensionDisplayValue": "AL54|10185-02-06||10195",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10185-02-07",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - NCC Suomi Oy - Ulospuhallusha",
+            "DimensionDisplayValue": "AL54|10185-02-07||10195",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10185-02-08",
+            "ProjectName": "Telinetyöt OYS:lla 2018-2020 - NCC Suomi Oy - 5.krs vesikato",
+            "DimensionDisplayValue": "AL54|10185-02-08||10195",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10241",
+            "ProjectName": "Laanilan teollisuuspuisto",
+            "DimensionDisplayValue": "AL54|10241||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10241-02",
+            "ProjectName": "Laanilan teollisuuspuisto - Taminco Finland Oy",
+            "DimensionDisplayValue": "AL54|10241-02||10115",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-02-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Taminco Finland Oy - Telinetyöt",
+            "DimensionDisplayValue": "AL54|10241-02-01||10115",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-03",
+            "ProjectName": "Laanilan teollisuuspuisto - Air Liquide Finland Oy",
+            "DimensionDisplayValue": "AL54|10241-03||10130",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-03-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Air Liquide Finland Oy - Telinet",
+            "DimensionDisplayValue": "AL54|10241-03-01||10130",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-04",
+            "ProjectName": "Laanilan teollisuuspuisto - OAT Oy",
+            "DimensionDisplayValue": "AL54|10241-04||10289",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-07",
+            "ProjectName": "Laanilan teollisuuspuisto - Pharmatory Oy",
+            "DimensionDisplayValue": "AL54|10241-07||11771",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-13",
+            "ProjectName": "Laanilan teollisuuspuisto - Caverion Industria Oy",
+            "DimensionDisplayValue": "AL54|10241-13||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-13-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Caverion Industria Oy - Telinety",
+            "DimensionDisplayValue": "AL54|10241-13-01||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-17",
+            "ProjectName": "Laanilan teollisuuspuisto - Skanska Rakennuskone Oy",
+            "DimensionDisplayValue": "AL54|10241-17||10218",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-18",
+            "ProjectName": "Laanilan teollisuuspuisto - Junnikkala Oy",
+            "DimensionDisplayValue": "AL54|10241-18||13064",
+            "ProjectGroup": "Paperindu"
+        },
+        {
+            "ProjectId": "10241-18-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Junnikkala Oy - Laanilan teollis",
+            "DimensionDisplayValue": "AL54|10241-18-01||13064",
+            "ProjectGroup": "Paperindu"
+        },
+        {
+            "ProjectId": "10241-20",
+            "ProjectName": "Laanilan teollisuuspuisto - Anfra Oy entinen A-Perustus Oy",
+            "DimensionDisplayValue": "AL54|10241-20||12748",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10241-21",
+            "ProjectName": "Laanilan teollisuuspuisto - North-Piping Oy",
+            "DimensionDisplayValue": "AL54|10241-21||13321",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10241-22",
+            "ProjectName": "Laanilan teollisuuspuisto - Kalajoen teollisuuseristys Oy",
+            "DimensionDisplayValue": "AL54|10241-22||11688",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10241-23",
+            "ProjectName": "Laanilan teollisuuspuisto - Valutec Oy",
+            "DimensionDisplayValue": "AL54|10241-23||10707",
+            "ProjectGroup": "Paperindu"
+        },
+        {
+            "ProjectId": "10241-24",
+            "ProjectName": "Laanilan teollisuuspuisto - Kemira Chemicals Oy",
+            "DimensionDisplayValue": "AL54|10241-24||10618",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-24-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Kemira Chemicals Oy - Kemira kun",
+            "DimensionDisplayValue": "AL54|10241-24-01||10618",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-25",
+            "ProjectName": "Laanilan teollisuuspuisto - Elcoline Plant Service Oy",
+            "DimensionDisplayValue": "AL54|10241-25||10541",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-25-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Elcoline Plant Service Oy - Teli",
+            "DimensionDisplayValue": "AL54|10241-25-01||10541",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-26",
+            "ProjectName": "Laanilan teollisuuspuisto - Putcon Oy",
+            "DimensionDisplayValue": "AL54|10241-26||10428",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-27",
+            "ProjectName": "Laanilan teollisuuspuisto - IP-Heikkilä Oy",
+            "DimensionDisplayValue": "AL54|10241-27||10031",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-27-01",
+            "ProjectName": "Laanilan teollisuuspuisto - IP-Heikkilä Oy - Telinetyöt Laan",
+            "DimensionDisplayValue": "AL54|10241-27-01||10031",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-28",
+            "ProjectName": "Laanilan teollisuuspuisto - Aumaint Oy",
+            "DimensionDisplayValue": "AL54|10241-28||13668",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-28-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Aumaint Oy - Typpitie 1, Oulu. T",
+            "DimensionDisplayValue": "AL54|10241-28-01||13668",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-29",
+            "ProjectName": "Laanilan teollisuuspuisto - Maanrakennus E. Majava Oy",
+            "DimensionDisplayValue": "AL54|10241-29||10794",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-29-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Maanrakennus E. Majava Oy - Teli",
+            "DimensionDisplayValue": "AL54|10241-29-01||10794",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-30",
+            "ProjectName": "Laanilan teollisuuspuisto - Premekon Oy",
+            "DimensionDisplayValue": "AL54|10241-30||12082",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10241-30-01",
+            "ProjectName": "Laanilan teollisuuspuisto - Premekon Oy - Telinetyöt Laanila",
+            "DimensionDisplayValue": "AL54|10241-30-01||12082",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272",
+            "ProjectName": "Yara Siilinjärvi",
+            "DimensionDisplayValue": "AL53|10272||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10272-01",
+            "ProjectName": "Yara Siilinjärvi - Yara Suomi Oy",
+            "DimensionDisplayValue": "AL53|10272-01||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-01-01",
+            "ProjectName": "Yara Siilinjärvi - Yara Suomi Oy - Yara Siilinjärvi telinety",
+            "DimensionDisplayValue": "AL53|10272-01-01||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-03",
+            "ProjectName": "Yara Siilinjärvi - Rautaseiska Oy",
+            "DimensionDisplayValue": "AL53|10272-03||10248",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-03-01",
+            "ProjectName": "Yara Siilinjärvi - Rautaseiska Oy -",
+            "DimensionDisplayValue": "AL53|10272-03-01||10248",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-04",
+            "ProjectName": "Yara Siilinjärvi - Caverion Suomi Oy",
+            "DimensionDisplayValue": "AL53|10272-04||10012",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-04-01",
+            "ProjectName": "Yara Siilinjärvi - Caverion Suomi Oy - Siilinjärvi Yara",
+            "DimensionDisplayValue": "AL53|10272-04-01||10012",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-05",
+            "ProjectName": "Yara Siilinjärvi - Kaefer Oy",
+            "DimensionDisplayValue": "AL53|10272-05||10036",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-05-01",
+            "ProjectName": "Yara Siilinjärvi - Kaefer Oy - Yara Siilinjärvi Kaefer",
+            "DimensionDisplayValue": "AL53|10272-05-01||10036",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-06",
+            "ProjectName": "Yara Siilinjärvi - LKAB Minerals Oy",
+            "DimensionDisplayValue": "AL53|10272-06||10393",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-06-01",
+            "ProjectName": "Yara Siilinjärvi - LKAB Minerals Oy - Yara Siilinjärvi LKAB",
+            "DimensionDisplayValue": "AL53|10272-06-01||10393",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-07",
+            "ProjectName": "Yara Siilinjärvi - Hantekra Oy",
+            "DimensionDisplayValue": "AL53|10272-07||10439",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-07-01",
+            "ProjectName": "Yara Siilinjärvi - Hantekra Oy - Yara Siilinjärvi Hantekra",
+            "DimensionDisplayValue": "AL53|10272-07-01||10439",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-08",
+            "ProjectName": "Yara Siilinjärvi - Kolmen Sähkö Oy",
+            "DimensionDisplayValue": "AL53|10272-08||10449",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-08-01",
+            "ProjectName": "Yara Siilinjärvi - Kolmen Sähkö Oy - Yara Siilinjärvi Kolmen",
+            "DimensionDisplayValue": "AL53|10272-08-01||10449",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-09",
+            "ProjectName": "Yara Siilinjärvi - Outotec Finland Oy",
+            "DimensionDisplayValue": "AL53|10272-09||10509",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-10",
+            "ProjectName": "Yara Siilinjärvi - Ramago Oy",
+            "DimensionDisplayValue": "AL53|10272-10||10475",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-10-01",
+            "ProjectName": "Yara Siilinjärvi - Ramago Oy - Yara Siilinjärvi telinetyöt",
+            "DimensionDisplayValue": "AL53|10272-10-01||10475",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-11",
+            "ProjectName": "Yara Siilinjärvi - Simetek Works Oy",
+            "DimensionDisplayValue": "AL53|10272-11||10603",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-11-01",
+            "ProjectName": "Yara Siilinjärvi - Simetek Works Oy - Yara Siilinjärvi telin",
+            "DimensionDisplayValue": "AL53|10272-11-01||10603",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-13",
+            "ProjectName": "Yara Siilinjärvi - Konecranes Finland Oy",
+            "DimensionDisplayValue": "AL53|10272-13||10183",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-13-01",
+            "ProjectName": "Yara Siilinjärvi - Konecranes Finland Oy - Yara Siilinjärvi",
+            "DimensionDisplayValue": "AL53|10272-13-01||10183",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-14",
+            "ProjectName": "Yara Siilinjärvi - VEO Oy",
+            "DimensionDisplayValue": "AL53|10272-14||10738",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-14-01",
+            "ProjectName": "Yara Siilinjärvi - VEO Oy -",
+            "DimensionDisplayValue": "AL53|10272-14-01||10738",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-18",
+            "ProjectName": "Yara Siilinjärvi - Rakennustyö Salminen Oy",
+            "DimensionDisplayValue": "AL53|10272-18||10096",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-18-01",
+            "ProjectName": "Yara Siilinjärvi - Rakennustyö Salminen Oy - Yara Siilinjärv",
+            "DimensionDisplayValue": "AL53|10272-18-01||10096",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-17",
+            "ProjectName": "Yara Siilinjärvi - Sarlin Oy Ab",
+            "DimensionDisplayValue": "AL53|10272-17||11035",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10272-17-01",
+            "ProjectName": "Yara Siilinjärvi - Sarlin Oy Ab -",
+            "DimensionDisplayValue": "AL53|10272-17-01||11035",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10272-19",
+            "ProjectName": "Yara Siilinjärvi - Voimatel Oy",
+            "DimensionDisplayValue": "AL53|10272-19||11039",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-19-01",
+            "ProjectName": "Yara Siilinjärvi - Voimatel Oy -",
+            "DimensionDisplayValue": "AL53|10272-19-01||11039",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-21",
+            "ProjectName": "Yara Siilinjärvi - E. Hartikainen Oy",
+            "DimensionDisplayValue": "AL53|10272-21||11116",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-21-01",
+            "ProjectName": "Yara Siilinjärvi - E. Hartikainen Oy - Yara Siilinjärvi",
+            "DimensionDisplayValue": "AL53|10272-21-01||11116",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-22",
+            "ProjectName": "Yara Siilinjärvi - Delete Finland Oy",
+            "DimensionDisplayValue": "AL53|10272-22||10465",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-22-01",
+            "ProjectName": "Yara Siilinjärvi - Delete Finland Oy - Yara Siilijärvi telin",
+            "DimensionDisplayValue": "AL53|10272-22-01||10465",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-23",
+            "ProjectName": "Yara Siilinjärvi - Hugo-Petersen GmbH",
+            "DimensionDisplayValue": "AL53|10272-23||11193",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-23-01",
+            "ProjectName": "Yara Siilinjärvi - Hugo-Petersen GmbH - Yara Siilinjärvi IAT",
+            "DimensionDisplayValue": "AL53|10272-23-01||11193",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-24",
+            "ProjectName": "Yara Siilinjärvi - Savon Korro Oy",
+            "DimensionDisplayValue": "AL53|10272-24||10813",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-24-01",
+            "ProjectName": "Yara Siilinjärvi - Savon Korro Oy - Yara Siilinjärvi",
+            "DimensionDisplayValue": "AL53|10272-24-01||10813",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-25",
+            "ProjectName": "Yara Siilinjärvi - Kymen Trukkipalvelu Oy",
+            "DimensionDisplayValue": "AL53|10272-25||11521",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-25-01",
+            "ProjectName": "Yara Siilinjärvi - Kymen Trukkipalvelu Oy - Yara Siilinjärvi",
+            "DimensionDisplayValue": "AL53|10272-25-01||11521",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-09-02",
+            "ProjectName": "Yara Siilinjärvi - Outotec Finland Oy - Yara Siilinjärvi Pas",
+            "DimensionDisplayValue": "AL53|10272-09-02||10509",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-34",
+            "ProjectName": "Yara Siilinjärvi - Elcoline Oy",
+            "DimensionDisplayValue": "AL53|10272-34||10701",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-34-01",
+            "ProjectName": "Yara Siilinjärvi - Elcoline Oy - Yara Telinetyöt Elcoline",
+            "DimensionDisplayValue": "AL53|10272-34-01||10701",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-23-03",
+            "ProjectName": "Yara Siilinjärvi - Hugo Petersen GmbH - Yara Siilinjärvi Con",
+            "DimensionDisplayValue": "AL53|10272-23-03||11193",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-12-02",
+            "ProjectName": "Yara Siilinjärvi - Sulmu Oy - Sulmu telinetyöt",
+            "DimensionDisplayValue": "AL53|10272-12-02||10387",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-35",
+            "ProjectName": "Yara Siilinjärvi - Icopal Katto Oy",
+            "DimensionDisplayValue": "AL53|10272-35||10029",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-35-01",
+            "ProjectName": "Yara Siilinjärvi - Icopal Katto Oy -",
+            "DimensionDisplayValue": "AL53|10272-35-01||10029",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-37",
+            "ProjectName": "Yara Siilinjärvi - Spatialworld Oy",
+            "DimensionDisplayValue": "AL53|10272-37||12246",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-37-01",
+            "ProjectName": "Yara Siilinjärvi - Spatialworld Oy - T02 muuntajahuolto",
+            "DimensionDisplayValue": "AL53|10272-37-01||12246",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-36",
+            "ProjectName": "Yara Siilinjärvi - ABB Oy",
+            "DimensionDisplayValue": "AL53|10272-36||10317",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-36-01",
+            "ProjectName": "Yara Siilinjärvi - ABB Oy - Voimala haalaustaso",
+            "DimensionDisplayValue": "AL53|10272-36-01||10317",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-25-02",
+            "ProjectName": "Yara Siilinjärvi - Kymen Trukkipalvelu Oy - Korjaamo 1 telin",
+            "DimensionDisplayValue": "AL53|10272-25-02||11521",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-38",
+            "ProjectName": "Yara Siilinjärvi - Suomen Maastorakentajat Oy",
+            "DimensionDisplayValue": "AL53|10272-38||10231",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-38-01",
+            "ProjectName": "Yara Siilinjärvi - Suomen Maastorakentajat Oy - Suomen Maast",
+            "DimensionDisplayValue": "AL53|10272-38-01||10231",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-40",
+            "ProjectName": "Yara Siilinjärvi - Muovityö Hiltunen Oy",
+            "DimensionDisplayValue": "AL53|10272-40||12689",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-40-01",
+            "ProjectName": "Yara Siilinjärvi - Muovityö Hiltunen Oy - Yara SVI RA403/404",
+            "DimensionDisplayValue": "AL53|10272-40-01||12689",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-41",
+            "ProjectName": "Yara Siilinjärvi - Forssa Engineering Oy Ab",
+            "DimensionDisplayValue": "AL53|10272-41||10575",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-41-01",
+            "ProjectName": "Yara Siilinjärvi - Forssa Engineering Oy Ab - Yara SVI telin",
+            "DimensionDisplayValue": "AL53|10272-41-01||10575",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-42",
+            "ProjectName": "Yara Siilinjärvi - Masteco Group OÜ",
+            "DimensionDisplayValue": "AL53|10272-42||12698",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-42-01",
+            "ProjectName": "Yara Siilinjärvi - Masteco Group OÜ -",
+            "DimensionDisplayValue": "AL53|10272-42-01||12698",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-43",
+            "ProjectName": "Yara Siilinjärvi - Fortum Power and Heat Oy",
+            "DimensionDisplayValue": "AL53|10272-43||10022",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-43-01",
+            "ProjectName": "Yara Siilinjärvi - Fortum Power and Heat Oy - Yara SVI telin",
+            "DimensionDisplayValue": "AL53|10272-43-01||10022",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-44",
+            "ProjectName": "Yara Siilinjärvi - Worker Pohjois-Suomi Oy",
+            "DimensionDisplayValue": "AL53|10272-44||12524",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-44-01",
+            "ProjectName": "Yara Siilinjärvi - Worker Pohjois-Suomi Oy - Workers varuste",
+            "DimensionDisplayValue": "AL53|10272-44-01||12524",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-45",
+            "ProjectName": "Yara Siilinjärvi - Markcom Oy",
+            "DimensionDisplayValue": "AL53|10272-45||12779",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-45-01",
+            "ProjectName": "Yara Siilinjärvi - Markcom Oy - Markcom Telinetyöt",
+            "DimensionDisplayValue": "AL53|10272-45-01||12779",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-46",
+            "ProjectName": "Yara Siilinjärvi - Wennstrom Fuel Systems Oy",
+            "DimensionDisplayValue": "AL53|10272-46||10785",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-46-01",
+            "ProjectName": "Yara Siilinjärvi - Wennstrom Fuel Systems Oy - Yara Kaivos t",
+            "DimensionDisplayValue": "AL53|10272-46-01||10785",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-47",
+            "ProjectName": "Yara Siilinjärvi - LämpöYkkönen Oy",
+            "DimensionDisplayValue": "AL53|10272-47||12870",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-47-01",
+            "ProjectName": "Yara Siilinjärvi - LämpöYkkönen Oy - Sibelco Nordic tuntityö",
+            "DimensionDisplayValue": "AL53|10272-47-01||12870",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-48",
+            "ProjectName": "Yara Siilinjärvi - Tapojärvi Oy",
+            "DimensionDisplayValue": "AL53|10272-48||11107",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-48-01",
+            "ProjectName": "Yara Siilinjärvi - Tapojärvi Oy - Yara SVI Kaivos Tapojärvi",
+            "DimensionDisplayValue": "AL53|10272-48-01||11107",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-15-04",
+            "ProjectName": "Yara Siilinjärvi - Kuopion Rakenneasennus Oy - Kuopion Raken",
+            "DimensionDisplayValue": "AL53|10272-15-04||10185",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-50",
+            "ProjectName": "Yara Siilinjärvi - Prowee Oy",
+            "DimensionDisplayValue": "AL53|10272-50||13107",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-50-01",
+            "ProjectName": "Yara Siilinjärvi - Prowee Oy - Prowee Yara SVI",
+            "DimensionDisplayValue": "AL53|10272-50-01||13107",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-51",
+            "ProjectName": "Yara Siilinjärvi - Sandvik Mining and Construction Oy",
+            "DimensionDisplayValue": "AL53|10272-51||10254",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-51-01",
+            "ProjectName": "Yara Siilinjärvi - Sandvik Mining and Construction Oy - Yara",
+            "DimensionDisplayValue": "AL53|10272-51-01||10254",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-52",
+            "ProjectName": "Yara Siilinjärvi - Sandvik Mining and Construction Finland O",
+            "DimensionDisplayValue": "AL53|10272-52||13175",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-52-01",
+            "ProjectName": "Yara Siilinjärvi - Sandvik Mining and Construction Finland O",
+            "DimensionDisplayValue": "AL53|10272-52-01||13175",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-53",
+            "ProjectName": "Yara Siilinjärvi - Veistämö Kortesniemi Oy",
+            "DimensionDisplayValue": "AL53|10272-53||13174",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10272-53-01",
+            "ProjectName": "Yara Siilinjärvi - Veistämö Kortesniemi Oy - Yara SVI Tapojä",
+            "DimensionDisplayValue": "AL53|10272-53-01||13174",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10272-23-04",
+            "ProjectName": "Yara Siilinjärvi - Hugo Petersen GmbH - SA23-25 Scaffolding",
+            "DimensionDisplayValue": "AL53|10272-23-04||11193",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-54",
+            "ProjectName": "Yara Siilinjärvi - Destia Oy",
+            "DimensionDisplayValue": "AL53|10272-54||10016",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-54-01",
+            "ProjectName": "Yara Siilinjärvi - Destia Oy - Yara SVI ratasilta sääsuoja D",
+            "DimensionDisplayValue": "AL53|10272-54-01||10016",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-55",
+            "ProjectName": "Yara Siilinjärvi - Fintelin OÜ",
+            "DimensionDisplayValue": "AL53|10272-55||12850",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-55-01",
+            "ProjectName": "Yara Siilinjärvi - Fintelin OÜ - Fintelin Ou",
+            "DimensionDisplayValue": "AL53|10272-55-01||12850",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-56",
+            "ProjectName": "Yara Siilinjärvi - Suomen Vuokramestarit Oy",
+            "DimensionDisplayValue": "AL53|10272-56||11547",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-56-01",
+            "ProjectName": "Yara Siilinjärvi - Suomen Vuokramestarit Oy -",
+            "DimensionDisplayValue": "AL53|10272-56-01||11547",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-38-02",
+            "ProjectName": "Yara Siilinjärvi - NYAB Finland Oy - Yara SVI SA projekti NY",
+            "DimensionDisplayValue": "AL53|10272-38-02||10231",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-10-02",
+            "ProjectName": "Yara Siilinjärvi - Ramago Oy - Telinetyöt Yara SVI Ramago",
+            "DimensionDisplayValue": "AL53|10272-10-02||10475",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-57",
+            "ProjectName": "Yara Siilinjärvi - Sumitomo SHI FW Energia Oy",
+            "DimensionDisplayValue": "AL53|10272-57||10001",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-57-01",
+            "ProjectName": "Yara Siilinjärvi - Sumitomo SHI FW Energia Oy - Sumitomo Tel",
+            "DimensionDisplayValue": "AL53|10272-57-01||10001",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-58",
+            "ProjectName": "Yara Siilinjärvi - Lämpökarelia Oy",
+            "DimensionDisplayValue": "AL53|10272-58||13487",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-58-01",
+            "ProjectName": "Yara Siilinjärvi - Lämpökarelia Oy - Kaivos telinetyöt SVI",
+            "DimensionDisplayValue": "AL53|10272-58-01||13487",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-59",
+            "ProjectName": "Yara Siilinjärvi - Viafin Installation Oy",
+            "DimensionDisplayValue": "AL53|10272-59||12325",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-59-01",
+            "ProjectName": "Yara Siilinjärvi - Viafin Installation Oy - Yara SVI telinet",
+            "DimensionDisplayValue": "AL53|10272-59-01||12325",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-60",
+            "ProjectName": "Yara Siilinjärvi - AFRY Finland Oy",
+            "DimensionDisplayValue": "AL53|10272-60||10210",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-60-01",
+            "ProjectName": "Yara Siilinjärvi - AFRY Finland Oy - Afry Yara SVI telinetyö",
+            "DimensionDisplayValue": "AL53|10272-60-01||10210",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-61",
+            "ProjectName": "Yara Siilinjärvi - Logistiikka ValtaVirta Oy",
+            "DimensionDisplayValue": "AL53|10272-61||13624",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-61-01",
+            "ProjectName": "Yara Siilinjärvi - Logistiikka ValtaVirta Oy - Valtavirta te",
+            "DimensionDisplayValue": "AL53|10272-61-01||13624",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-01-09",
+            "ProjectName": "Yara Siilinjärvi - Yara Suomi Oy - AMV pallon sis. puoliset",
+            "DimensionDisplayValue": "AL53|10272-01-09||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-54-02",
+            "ProjectName": "Yara Siilinjärvi - Destia Oy - SA Sularikkisäiliön perustust",
+            "DimensionDisplayValue": "AL53|10272-54-02||10016",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-23-06",
+            "ProjectName": "Yara Siilinjärvi - Hugo Petersen GmbH - Suplhur Melting Syst",
+            "DimensionDisplayValue": "AL53|10272-23-06||11193",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-62",
+            "ProjectName": "Yara Siilinjärvi - Majuri Group Oy",
+            "DimensionDisplayValue": "AL53|10272-62||13732",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-62-01",
+            "ProjectName": "Yara Siilinjärvi - Majuri Group Oy - Yara Siilinjärvi teline",
+            "DimensionDisplayValue": "AL53|10272-62-01||13732",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-41-03",
+            "ProjectName": "Yara Siilinjärvi - Forssa Engineering Oy Ab - Sularikkisäili",
+            "DimensionDisplayValue": "AL53|10272-41-03||10575",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-64",
+            "ProjectName": "Yara Siilinjärvi - Recion Oy",
+            "DimensionDisplayValue": "AL53|10272-64||11158",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-64-01",
+            "ProjectName": "Yara Siilinjärvi - Recion Oy - Yara SVI SA projekti putkisto",
+            "DimensionDisplayValue": "AL53|10272-64-01||11158",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-65",
+            "ProjectName": "Yara Siilinjärvi - Telinekataja Oy",
+            "DimensionDisplayValue": "AL53|10272-65||19999",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-65-01",
+            "ProjectName": "Yara SVI - FHT Telinevahingon korjaustyö",
+            "DimensionDisplayValue": "AL53|10272-65-01||19999",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-01-10",
+            "ProjectName": "Yara Siilinjärvi - Yara Suomi Oy - Yara Siilinjärvi FHT julk",
+            "DimensionDisplayValue": "AL53|10272-01-10||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-66",
+            "ProjectName": "Yara Siilinjärvi - Andritz Oy",
+            "DimensionDisplayValue": "AL53|10272-66||10400",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-66-01",
+            "ProjectName": "Yara Siilinjärvi - Andritz Oy - Yara SVi PAS3 suotimen telin",
+            "DimensionDisplayValue": "AL53|10272-66-01||10400",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-67",
+            "ProjectName": "Yara Siilinjärvi - Suomen Kaasutekniikka Oy",
+            "DimensionDisplayValue": "AL53|10272-67||12997",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-67-01",
+            "ProjectName": "Yara Siilinjärvi - Suomen Kaasutekniikka Oy - Yara SVI - Suo",
+            "DimensionDisplayValue": "AL53|10272-67-01||12997",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-68",
+            "ProjectName": "Yara Siilinjärvi - Laitex Oy",
+            "DimensionDisplayValue": "AL53|10272-68||13710",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-68-01",
+            "ProjectName": "Yara Siilinjärvi - Laitex Oy - Yara SVI - Laitex / SA-Projek",
+            "DimensionDisplayValue": "AL53|10272-68-01||13710",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-23-07",
+            "ProjectName": "Yara Siilinjärvi - Hugo Petersen GmbH - Elcoline prefabricat",
+            "DimensionDisplayValue": "AL53|10272-23-07||11193",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10272-23-08",
+            "ProjectName": "Yara Siilinjärvi - Hugo Petersen GmbH - RD 200 Säiliön sääsu",
+            "DimensionDisplayValue": "AL53|10272-23-08||11193",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10272-69",
+            "ProjectName": "Yara Siilinjärvi - Varpaisjärven Maansiirto ja Vesitekniikka",
+            "DimensionDisplayValue": "AL53|10272-69||13840",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-69-01",
+            "ProjectName": "Yara Siilinjärvi - Varpaisjärven Maansiirto ja Vesitekniikka",
+            "DimensionDisplayValue": "AL53|10272-69-01||13840",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10272-26-02",
+            "ProjectName": "Yara Siilinjärvi - SKM Stainless Oy - Yara SVI - SKM Stainle",
+            "DimensionDisplayValue": "AL53|10272-26-02||11602",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10170",
+            "ProjectName": "OL1 ja OL2",
+            "DimensionDisplayValue": "AL34|10170||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10170-01",
+            "ProjectName": "OL1 ja OL2  - Teollisuuden Voima Oyj",
+            "DimensionDisplayValue": "AL34|10170-01||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-02",
+            "ProjectName": "OL1 ja OL2 - Vesi-Vasa Oy",
+            "DimensionDisplayValue": "AL34|10170-02||11131",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-02-01",
+            "ProjectName": "OL1 ja OL2 - Vesi-Vasa Oy - Telinetyöt OL1, OL2, OL3 ja Posi",
+            "DimensionDisplayValue": "AL34|10170-02-01||11131",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-01-17",
+            "ProjectName": "OL1 ja OL2 - Teollisuuden Voima Oyj - Peitemyynti",
+            "DimensionDisplayValue": "AL34|10170-01-17||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-01-20",
+            "ProjectName": "OL1 ja OL2 - Teollisuuden Voima Oyj - 345-Lattiaviemärilinja",
+            "DimensionDisplayValue": "AL34|10170-01-20||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-01-21",
+            "ProjectName": "OL1 ja OL2 - Teollisuuden Voima Oyj - Monarflex peitteitä",
+            "DimensionDisplayValue": "AL34|10170-01-21||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-01-23",
+            "ProjectName": "OL1 ja OL2 - Teollisuuden Voima Oyj - Telinemateriaalit KU7:",
+            "DimensionDisplayValue": "AL34|10170-01-23||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-01-25",
+            "ProjectName": "OL1 ja OL2 - Teollisuuden Voima Oyj - Tuntityöt 2024",
+            "DimensionDisplayValue": "AL34|10170-01-25||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10170-01-28",
+            "ProjectName": "OL1 ja OL2 - Teollisuuden Voima Oyj - LAKO-projekti",
+            "DimensionDisplayValue": "AL34|10170-01-28||10117",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10221-01",
+            "ProjectName": "Kainuun uusi sairaala - Skanska Talonrakennus Oy",
+            "DimensionDisplayValue": "AL53|10221-01||10106",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10242",
+            "ProjectName": "OL3 Site",
+            "DimensionDisplayValue": "AL34|10242||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10242-06",
+            "ProjectName": "OL3 Site - Bilfinger VAM Anlagentechnik GmbH",
+            "DimensionDisplayValue": "AL34|10242-06||10010",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10242-06-01",
+            "ProjectName": "OL3 Site - Bilfinger VAM Anlagentechnik GmbH - Scaffolding w",
+            "DimensionDisplayValue": "AL34|10242-06-01||10010",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10242-12",
+            "ProjectName": "OL3 Site - Bilfinger Engineering & Technologies GmbH",
+            "DimensionDisplayValue": "AL34|10242-12||10406",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10242-12-02",
+            "ProjectName": "OL3 Site - Bilfinger Engineering & Technologies GmbH - Scaff",
+            "DimensionDisplayValue": "AL34|10242-12-02||10406",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10245",
+            "ProjectName": "Tornion tehtaat",
+            "DimensionDisplayValue": "AL54|10245||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10245-01",
+            "ProjectName": "Tornion tehtaat - Outokumpu Stainless Oy",
+            "DimensionDisplayValue": "AL54|10245-01||10201",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-01-01",
+            "ProjectName": "Tornion tehtaat - Outokumpu Stainless Oy - Telinetyöt Tornio",
+            "DimensionDisplayValue": "AL54|10245-01-01||10201",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-02",
+            "ProjectName": "Tornion tehtaat - Outokumpu Chrome Oy",
+            "DimensionDisplayValue": "AL54|10245-02||10390",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-02-01",
+            "ProjectName": "Tornion tehtaat - Outokumpu Chrome Oy - Telinetyöt Tornion t",
+            "DimensionDisplayValue": "AL54|10245-02-01||10390",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-03",
+            "ProjectName": "Tornion tehtaat - Caverion Industria Oy",
+            "DimensionDisplayValue": "AL54|10245-03||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-03-01",
+            "ProjectName": "Tornion tehtaat - Caverion Industria Oy - Telinetyöt Tornion",
+            "DimensionDisplayValue": "AL54|10245-03-01||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-04",
+            "ProjectName": "Tornion tehtaat - Caverion Suomi Oy",
+            "DimensionDisplayValue": "AL54|10245-04||10012",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-04-01",
+            "ProjectName": "Tornion tehtaat - Caverion Suomi Oy - Telinetyöt Tornion teh",
+            "DimensionDisplayValue": "AL54|10245-04-01||10012",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-11",
+            "ProjectName": "Tornion tehtaat - Lapin Teollisuusrakennus Oy",
+            "DimensionDisplayValue": "AL54|10245-11||10049",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-11-01",
+            "ProjectName": "Tornion tehtaat - Lapin Teollisuusrakennus Oy - Teline Fecr",
+            "DimensionDisplayValue": "AL54|10245-11-01||10049",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-14",
+            "ProjectName": "Tornion tehtaat - TSV-Rakennus Oy",
+            "DimensionDisplayValue": "AL54|10245-14||10781",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-14-01",
+            "ProjectName": "Tornion tehtaat - TSV-Rakennus Oy - Telinetyöt tornion tehta",
+            "DimensionDisplayValue": "AL54|10245-14-01||10781",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-18",
+            "ProjectName": "Tornion tehtaat - Sarlin Oy Ab",
+            "DimensionDisplayValue": "AL54|10245-18||11035",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-18-01",
+            "ProjectName": "Tornion tehtaat - Sarlin Oy Ab - Telineet Outokummun Paineil",
+            "DimensionDisplayValue": "AL54|10245-18-01||11035",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-23",
+            "ProjectName": "Tornion tehtaat - Tormets Oy",
+            "DimensionDisplayValue": "AL54|10245-23||12142",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-40",
+            "ProjectName": "Tornion tehtaat - Kone Hissit Oy",
+            "DimensionDisplayValue": "AL54|10245-40||10453",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-41",
+            "ProjectName": "Tornion tehtaat - Tsv-Steel Oy",
+            "DimensionDisplayValue": "AL54|10245-41||13173",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-41-01",
+            "ProjectName": "Tornion tehtaat - Tsv-Steel Oy - Telinetyöt Tornion tehtaill",
+            "DimensionDisplayValue": "AL54|10245-41-01||13173",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-04-03",
+            "ProjectName": "Tornion tehtaat - Caverion Suomi Oy - Varastoteltta Outokump",
+            "DimensionDisplayValue": "AL54|10245-04-03||10012",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-43",
+            "ProjectName": "Tornion tehtaat - Digita Oy",
+            "DimensionDisplayValue": "AL54|10245-43||13249",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-43-01",
+            "ProjectName": "Tornion tehtaat - Digita Oy - Telinetyöt Tornion tehtailla j",
+            "DimensionDisplayValue": "AL54|10245-43-01||13249",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-44",
+            "ProjectName": "Tornion tehtaat - HSu-Group Oy",
+            "DimensionDisplayValue": "AL54|10245-44||13494",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-44-01",
+            "ProjectName": "Tornion tehtaat - HSu-Group Oy - Telinetyöt Tornion tehtaill",
+            "DimensionDisplayValue": "AL54|10245-44-01||13494",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-40-02",
+            "ProjectName": "Tornion tehtaat - Kone Hissit Oy - Telinetyöt Tornion tehtai",
+            "DimensionDisplayValue": "AL54|10245-40-02||10453",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-06-03",
+            "ProjectName": "Tornion tehtaat - Ases Installaatiot Oy - Telinetyöt Tornion",
+            "DimensionDisplayValue": "AL54|10245-06-03||10969",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-01-06",
+            "ProjectName": "Tornion tehtaat - Outokumpu Stainless Oy - Telineiden käyttä",
+            "DimensionDisplayValue": "AL54|10245-01-06||10201",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-45",
+            "ProjectName": "Tornion tehtaat - Langh Ship Oy Ab",
+            "DimensionDisplayValue": "AL54|10245-45||13604",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-45-01",
+            "ProjectName": "Tornion tehtaat - Langh Ship Oy Ab - Telinetyöt Röyttän sata",
+            "DimensionDisplayValue": "AL54|10245-45-01||13604",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-46",
+            "ProjectName": "Tornion tehtaat - Norex Service Finland Oy",
+            "DimensionDisplayValue": "AL54|10245-46||13723",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-46-01",
+            "ProjectName": "Tornion tehtaat - Norex Service Finland Oy - Telinetyöt Torn",
+            "DimensionDisplayValue": "AL54|10245-46-01||13723",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-21-02",
+            "ProjectName": "Tornion tehtaat - Manga Terminal Oy - Manga Terminal telinet",
+            "DimensionDisplayValue": "AL54|10245-21-02||11847",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-11-04",
+            "ProjectName": "Tornion tehtaat - LTR-Rakennus Oy - Telinetyöt Tornion tehta",
+            "DimensionDisplayValue": "AL54|10245-11-04||10049",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-09-02",
+            "ProjectName": "Tornion tehtaat - Tornion Voima Oy - Telinetyöt Tornion teht",
+            "DimensionDisplayValue": "AL54|10245-09-02||10424",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-47",
+            "ProjectName": "Tornion tehtaat - Laitex Oy",
+            "DimensionDisplayValue": "AL54|10245-47||13710",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-47-01",
+            "ProjectName": "Tornion tehtaat - Laitex Oy - Telinetyöt Outokummun alueella",
+            "DimensionDisplayValue": "AL54|10245-47-01||13710",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-15-02",
+            "ProjectName": "Tornion tehtaat - Kantojärven Metalli Oy - Telinetyöt Tornio",
+            "DimensionDisplayValue": "AL54|10245-15-02||10285",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-23-02",
+            "ProjectName": "Tornion tehtaat - Tormets Oy - Telinetyöt Tornion tehtailla",
+            "DimensionDisplayValue": "AL54|10245-23-02||12142",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-48",
+            "ProjectName": "Tornion tehtaat - Roxia Automation Oy",
+            "DimensionDisplayValue": "AL54|10245-48||12646",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-48-01",
+            "ProjectName": "Tornion tehtaat - Roxia Automation Oy - Telinetyöt Tornion t",
+            "DimensionDisplayValue": "AL54|10245-48-01||12646",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-04-04",
+            "ProjectName": "Tornion tehtaat - Caverion Suomi Oy - Telineet keskuskorjaam",
+            "DimensionDisplayValue": "AL54|10245-04-04||10012",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-49",
+            "ProjectName": "Tornion tehtaat - Outokumpu Europe Oy",
+            "DimensionDisplayValue": "AL54|10245-49||13839",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10245-49-01",
+            "ProjectName": "Tornion tehtaat - Outokumpu Europe Oy - Telinetyöt Tornion t",
+            "DimensionDisplayValue": "AL54|10245-49-01||13839",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10246",
+            "ProjectName": "Posiva Oy",
+            "DimensionDisplayValue": "AL34|10246||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10246-01",
+            "ProjectName": "Posiva Oy - Rakennustyöt Ville Kauppi Oy",
+            "DimensionDisplayValue": "AL34|10246-01||10265",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-01-01",
+            "ProjectName": "Posiva Oy - Rakennustyöt Ville Kauppi Oy - Posiva alueen tel",
+            "DimensionDisplayValue": "AL34|10246-01-01||10265",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-02",
+            "ProjectName": "Posiva Oy - Ilmastointi Salminen Oy",
+            "DimensionDisplayValue": "AL34|10246-02||10158",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-03",
+            "ProjectName": "Posiva Oy - Posiva Oy",
+            "DimensionDisplayValue": "AL34|10246-03||10206",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-06",
+            "ProjectName": "Posiva Oy - Sähkö-Rauma Oy",
+            "DimensionDisplayValue": "AL34|10246-06||11099",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-08",
+            "ProjectName": "Posiva Oy - Vesi-Vasa Oy",
+            "DimensionDisplayValue": "AL34|10246-08||11131",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10246-08-02",
+            "ProjectName": "Posiva Oy - Vesi-Vasa Oy - Kapselointilaitos",
+            "DimensionDisplayValue": "AL34|10246-08-02||11131",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-08-03",
+            "ProjectName": "Posiva Oy - Vesi-Vasa Oy - Posiva Hartela TYL työmaa",
+            "DimensionDisplayValue": "AL34|10246-08-03||11131",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-06-02",
+            "ProjectName": "Posiva Oy - Sähkö-Rauma Oy - Posiva Hartela TYL työmaa",
+            "DimensionDisplayValue": "AL34|10246-06-02||11099",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10246-02-05",
+            "ProjectName": "Posiva Oy - Ilmastointi Salminen Oy - Kapselointilaitoksen t",
+            "DimensionDisplayValue": "AL34|10246-02-05||10158",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10246-24",
+            "ProjectName": "Posiva Oy - Are Oy",
+            "DimensionDisplayValue": "AL34|10246-24||10004",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-24-01",
+            "ProjectName": "Posiva Oy - Are Oy - Kapselointilaitoksen telinetyöt",
+            "DimensionDisplayValue": "AL34|10246-24-01||10004",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-03-07",
+            "ProjectName": "Posiva Oy - Posiva Oy - Posivan telinetyöt 22-23",
+            "DimensionDisplayValue": "AL34|10246-03-07||10206",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10246-03-08",
+            "ProjectName": "Posiva Oy - Posiva Oy - Koskinen telinetyöt",
+            "DimensionDisplayValue": "AL34|10246-03-08||10206",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10246-08-04",
+            "ProjectName": "Posiva Oy - Vesi-Vasa Oy - Tuloilmakuiluprojekti",
+            "DimensionDisplayValue": "AL34|10246-08-04||11131",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10248",
+            "ProjectName": "Tahkoluodon voimalaitos",
+            "DimensionDisplayValue": "AL34|10248||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10248-01",
+            "ProjectName": "Tahkoluodon voimalaitos - Maintpartner Oy",
+            "DimensionDisplayValue": "AL34|10248-01||10284",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10248-01-01",
+            "ProjectName": "Tahkoluodon voimalaitos - Maintpartner Oy - Fortum Meri-",
+            "DimensionDisplayValue": "AL34|10248-01-01||10284",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10248-03",
+            "ProjectName": "Tahkoluodon voimalaitos - Fortum Power and Heat Oy",
+            "DimensionDisplayValue": "AL34|10248-03||10022",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10248-04",
+            "ProjectName": "Tahkoluodon voimalaitos - TGS Finland Oy",
+            "DimensionDisplayValue": "AL34|10248-04||13025",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10262",
+            "ProjectName": "Yara Uudenkaupungin tehtaat",
+            "DimensionDisplayValue": "AL34|10262||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10262-01",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Yara Suomi Oy",
+            "DimensionDisplayValue": "AL34|10262-01||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-01-01",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Yara Suomi Oy - Uudenkaupungin",
+            "DimensionDisplayValue": "AL34|10262-01-01||10123",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-02",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Caverion Suomi Oy",
+            "DimensionDisplayValue": "AL34|10262-02||10012",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-04",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Rakennustoimisto R. Laiho Oy",
+            "DimensionDisplayValue": "AL34|10262-04||10245",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-07",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - ETH Group Oy",
+            "DimensionDisplayValue": "AL34|10262-07||10413",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-09",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Raumaster",
+            "DimensionDisplayValue": "AL34|10262-09||11524",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-10",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Ukitig Oy",
+            "DimensionDisplayValue": "AL34|10262-10||11676",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-11",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Rakennus Lehtonen Oy",
+            "DimensionDisplayValue": "AL34|10262-11||11119",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-12",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Eltel Networks Oy",
+            "DimensionDisplayValue": "AL34|10262-12||10620",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-13",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Maanrakennus Tommi Salminen Oy",
+            "DimensionDisplayValue": "AL34|10262-13||12192",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10262-14",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Länsi-Suomen Maanrakennus Oy",
+            "DimensionDisplayValue": "AL34|10262-14||12096",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-15",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Varsinaisbitumi Oy",
+            "DimensionDisplayValue": "AL34|10262-15||10119",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-16",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Nurkora Oy",
+            "DimensionDisplayValue": "AL34|10262-16||12895",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10262-17",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - SteelKing Oy",
+            "DimensionDisplayValue": "AL34|10262-17||11979",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10262-18",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Lujatalo Oy",
+            "DimensionDisplayValue": "AL34|10262-18||10055",
+            "ProjectGroup": "Newconstr"
+        },
+        {
+            "ProjectId": "10262-19",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Modul Plastic Oy",
+            "DimensionDisplayValue": "AL34|10262-19||10585",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-20",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - On Kuljetus Olavi Nenonen Oy",
+            "DimensionDisplayValue": "AL34|10262-20||13284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-21",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Anfra Oy",
+            "DimensionDisplayValue": "AL34|10262-21||12748",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-22",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - SKM Stainless Oy",
+            "DimensionDisplayValue": "AL34|10262-22||11602",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-23",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Skanska Infra Oy",
+            "DimensionDisplayValue": "AL34|10262-23||10105",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-23-01",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Skanska Infra Oy - A-Varaston",
+            "DimensionDisplayValue": "AL34|10262-23-01||10105",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10262-24",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - Voimatel Oy",
+            "DimensionDisplayValue": "AL34|10262-24||11039",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10262-22-02",
+            "ProjectName": "Yara Uudenkaupungin tehtaat - SKM Stainless Oy - FoHa putkis",
+            "DimensionDisplayValue": "AL34|10262-22-02||11602",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10264",
+            "ProjectName": "Tapsitie 5, Oulu",
+            "DimensionDisplayValue": "AL54|10264||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10264-02",
+            "ProjectName": "Tapsitie 5, Oulu - IP-Heikkilä Oy",
+            "DimensionDisplayValue": "AL54|10264-02||10031",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10264-02-01",
+            "ProjectName": "Tapsitie 5, Oulu - IP-Heikkilä Oy - Tapsitie 5, Oulu",
+            "DimensionDisplayValue": "AL54|10264-02-01||10031",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10177",
+            "ProjectName": "Aittaluodon teollisuusalue",
+            "DimensionDisplayValue": "AL34|10177||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10177-01",
+            "ProjectName": "Aittaluodon teollisuusalue - Pori Energia Oy",
+            "DimensionDisplayValue": "AL34|10177-01||10072",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10177-01-01",
+            "ProjectName": "Aittaluodon teollisuusa - Pori Energia Oy - Kunnossapidon te",
+            "DimensionDisplayValue": "AL34|10177-01-01||10072",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10177-09-03",
+            "ProjectName": "Aittaluodon teollisuusalue - Corex Finlad Oy - Telinetyöt",
+            "DimensionDisplayValue": "AL34|10177-09-03||13087",
+            "ProjectGroup": "Paperindu"
+        },
+        {
+            "ProjectId": "10177-01-08",
+            "ProjectName": "Aittaluodon teollisuusalue - Pori Energia Oy - Revisio A-kat",
+            "DimensionDisplayValue": "AL34|10177-01-08||10072",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10177-12",
+            "ProjectName": "Aittaluodon teollisuusalue - Caverion Industria Oy",
+            "DimensionDisplayValue": "AL34|10177-12||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10177-12-01",
+            "ProjectName": "Aittaluodon teollisuusalue - Caverion Industria Oy - Putken",
+            "DimensionDisplayValue": "AL34|10177-12-01||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas",
+            "DimensionDisplayValue": "AL31|10195||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10195-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-01",
+            "ProjectName": "Prysmian, Sääsuojat",
+            "DimensionDisplayValue": "AL31|10195-01-01||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-02",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-02||10209",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10195-01-03",
+            "ProjectName": "Prysmian, Talvi 2019",
+            "DimensionDisplayValue": "AL31|10195-01-03||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-02",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - TECHNOLOGY SERVICES OÜ",
+            "DimensionDisplayValue": "AL31|10195-02||11187",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-02-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - TECHNOLOGY SERVICES OÜ -",
+            "DimensionDisplayValue": "AL31|10195-02-01||11187",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-03",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Inkoo Shipping Oy Ab",
+            "DimensionDisplayValue": "AL31|10195-03||10482",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-03-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Inkoo Shipping Oy Ab - Bå",
+            "DimensionDisplayValue": "AL31|10195-03-01||10482",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-04",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-04||10209",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10195-04",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Telatek Service Oy",
+            "DimensionDisplayValue": "AL31|10195-04||12715",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-04-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Telatek Service Oy - Prys",
+            "DimensionDisplayValue": "AL31|10195-04-01||12715",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-05",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-05||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-06",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-06||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-05",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - ISS Palvelut Oy",
+            "DimensionDisplayValue": "AL31|10195-05||10171",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10195-05-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - ISS Palvelut Oy - Kaapeli",
+            "DimensionDisplayValue": "AL31|10195-05-01||10171",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10195-01-07",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-07||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-06",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Caverion Industria Oy",
+            "DimensionDisplayValue": "AL31|10195-06||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-06-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Caverion Industria Oy",
+            "DimensionDisplayValue": "AL31|10195-06-01||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-08",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-08||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-09",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-09||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-07",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Jousteel Oy",
+            "DimensionDisplayValue": "AL31|10195-07||13286",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-07-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Jousteel Oy - Båtvikintie",
+            "DimensionDisplayValue": "AL31|10195-07-01||13286",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-01-10",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Prysmian Group Finland Oy",
+            "DimensionDisplayValue": "AL31|10195-01-10||10209",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-06-02",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Caverion Industria Oy - K",
+            "DimensionDisplayValue": "AL31|10195-06-02||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10195-08",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Avitor Sähkö Oy",
+            "DimensionDisplayValue": "AL31|10195-08||13480",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10195-08-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Avitor Sähkö Oy - Kaapeli",
+            "DimensionDisplayValue": "AL31|10195-08-01||13480",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10195-05-02",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - ISS Palvelut Oy - Kaapeli",
+            "DimensionDisplayValue": "AL31|10195-05-02||10171",
+            "ProjectGroup": "Infracons"
+        },
+        {
+            "ProjectId": "10195-06-03",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Caverion Industria Oy - K",
+            "DimensionDisplayValue": "AL31|10195-06-03||10284",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "10195-09",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Kunnossapito Bellu Oy",
+            "DimensionDisplayValue": "AL31|10195-09||13820",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10195-09-01",
+            "ProjectName": "Prysmian, Pikkalan kaapelitehdas - Kunnossapito Bellu Oy - K",
+            "DimensionDisplayValue": "AL31|10195-09-01||13820",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10197",
+            "ProjectName": "Suomen sokeri, Kantvik",
+            "DimensionDisplayValue": "AL31|10197||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10197-01",
+            "ProjectName": "Suomen sokeri, Kantvik - Suomen Sokeri Oy",
+            "DimensionDisplayValue": "AL31|10197-01||10372",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10197-01-01",
+            "ProjectName": "Suomen sokeri, Kantvik - Suomen Sokeri Oy - Sääsuoja",
+            "DimensionDisplayValue": "AL31|10197-01-01||10372",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10199",
+            "ProjectName": "Roal Oy, Rajamäen tehdas",
+            "DimensionDisplayValue": "AL31|10199||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10199-01",
+            "ProjectName": "Roal Oy, Rajamäen tehdas - Roal Oy",
+            "DimensionDisplayValue": "AL31|10199-01||10376",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10199-01-01",
+            "ProjectName": "Roal Oy, Rajamäen tehdas - Päättynyt",
+            "DimensionDisplayValue": "AL31|10199-01-01||10376",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10199-01-02",
+            "ProjectName": "Roal Oy, Rajamäen tehdas - Uusi sopimus",
+            "DimensionDisplayValue": "AL31|10199-01-02||10376",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10199-06",
+            "ProjectName": "Roal Oy, Rajamäen tehdas - Caverion Industria Oy",
+            "DimensionDisplayValue": "AL31|10199-06||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10199-06-01",
+            "ProjectName": "Roal Oy, Rajamäen tehdas - Caverion Industria Oy - Telinetyö",
+            "DimensionDisplayValue": "AL31|10199-06-01||10284",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10199-08",
+            "ProjectName": "Roal Oy, Rajamäen tehdas - Enzymes Leasing Finland Oy",
+            "DimensionDisplayValue": "AL31|10199-08||13613",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10199-08-01",
+            "ProjectName": "Roal Oy, Rajamäen tehdas - Enzymes Leasing Finland Oy - Roal",
+            "DimensionDisplayValue": "AL31|10199-08-01||13613",
+            "ProjectGroup": "Otherindu"
+        },
+        {
+            "ProjectId": "10267",
+            "ProjectName": "Kaapelitie 4, Oulun Nokia",
+            "DimensionDisplayValue": "AL54|10267||19999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "10267-02",
+            "ProjectName": "Kaapelitie 4, Oulun Nokia - Are Oy",
+            "DimensionDisplayValue": "AL54|10267-02||10004",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10267-02-07",
+            "ProjectName": "Kaapelitie 4, Oulun Nokia - Are Oy - Kaapelitie 4 Nokia",
+            "DimensionDisplayValue": "AL54|10267-02-07||10004",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "10267-01-07",
+            "ProjectName": "Kaapelitie 4, Oulun Nokia - IP-Heikkilä Oy - Kaapelitie 4 Ou",
+            "DimensionDisplayValue": "AL54|10267-01-07||10031",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "60002",
+            "ProjectName": "Iru Elektrijaam/Enefit",
+            "DimensionDisplayValue": "SCAF|60002||69999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "60002-01",
+            "ProjectName": "Iru Elektrijaam/Enefit - Enefit Green AS",
+            "DimensionDisplayValue": "SCAF|60002-01||60046",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60002-01-01",
+            "ProjectName": "Iru Elektrijaam/Enefit - Enefit Green AS - Layher Allround t",
+            "DimensionDisplayValue": "SCAF|60002-01-01||60046",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60002-01-02",
+            "ProjectName": "Iru Elektrijaam/Enefit - Enefit Green AS - Inventaartellingu",
+            "DimensionDisplayValue": "SCAF|60002-01-02||60046",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60002-01-03",
+            "ProjectName": "Iru Elektrijaam/Enefit GreenAS",
+            "DimensionDisplayValue": "SCAF|60002-01-03||60046",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60009",
+            "ProjectName": "Auvere uus Elektrijaam/Ge power",
+            "DimensionDisplayValue": "SCAF|60009||69999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "60009-01",
+            "ProjectName": "Auvere uus Elektrijaam/Ge power - GE Power Estonia AS",
+            "DimensionDisplayValue": "SCAF|60009-01||60022",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60009-01-01",
+            "ProjectName": "Auvere uus Elektrijaam/Ge power - GE Power Estonia AS - Layh",
+            "DimensionDisplayValue": "SCAF|60009-01-01||60022",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60009-01-02",
+            "ProjectName": "Auvere uus Elektrijaam/Ge power - GE Power Estonia AS - 2019",
+            "DimensionDisplayValue": "SCAF|60009-01-02||60022",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60009-01-03",
+            "ProjectName": "Auvere uus Elektrijaam/Ge power - GE Power Estonia AS - Layh",
+            "DimensionDisplayValue": "SCAF|60009-01-03||60022",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60009-01-04",
+            "ProjectName": "Auvere uus Elektrijaam/Ge power - GE Power Estonia AS - Layh",
+            "DimensionDisplayValue": "SCAF|60009-01-04||60022",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60009-01-05",
+            "ProjectName": "Auvere uus Elektrijaam/Ge power - GE Power Estonia AS - Layh",
+            "DimensionDisplayValue": "SCAF|60009-01-05||60022",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60012",
+            "ProjectName": "Paljaassaare sadam/Netaman",
+            "DimensionDisplayValue": "SCAF|60012||69999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "60012-01",
+            "ProjectName": "Paljaassaare sadam/Netaman - Netaman Repair Group OÜ",
+            "DimensionDisplayValue": "SCAF|60012-01||60055",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60012-01-01",
+            "ProjectName": "Paljaassaare sadam/Netaman - Netaman Repair Group OÜ - Layhe",
+            "DimensionDisplayValue": "SCAF|60012-01-01||60055",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60012-01-02",
+            "ProjectName": "Paljaassaare sadam/Netaman - Netaman Repair Group OÜ - Layhe",
+            "DimensionDisplayValue": "SCAF|60012-01-02||60055",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "60012-01-03",
+            "ProjectName": "Paljaassaare sadam/Netaman - Netaman Repair Group OÜ - Layhe",
+            "DimensionDisplayValue": "SCAF|60012-01-03||60055",
+            "ProjectGroup": "Energyind"
+        },
+        {
+            "ProjectId": "60016",
+            "ProjectName": "Kiisa tee 14/Adelante",
+            "DimensionDisplayValue": "SCAF|60016||69999",
+            "ProjectGroup": "Header"
+        },
+        {
+            "ProjectId": "60016-01",
+            "ProjectName": "Kiisa tee 14/Adelante - Adelante Tellingud OÜ",
+            "DimensionDisplayValue": "SCAF|60016-01||60151",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "60016-01-01",
+            "ProjectName": "Kiisa tee 14/Adelante - Adelante Tellingud OÜ - Layher telli",
+            "DimensionDisplayValue": "SCAF|60016-01-01||60151",
+            "ProjectGroup": "Reconstru"
+        },
+        {
+            "ProjectId": "60016-01-02",
+            "ProjectName": "Kiisa tee 14/Adelante - Adelante Tellingud OÜ - Layher telli",
+            "DimensionDisplayValue": "SCAF|60016-01-02||60151",
+            "ProjectGroup": "Reconstru"
+        }
+    ]
+}

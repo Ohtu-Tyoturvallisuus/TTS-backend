@@ -16,8 +16,6 @@ import os
 from pathlib import Path
 import environ
 
-from .middleware import COMMON_MIDDLEWARE
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,6 +28,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', '')
+
+# Get speech key and service region from .env
+SPEECH_KEY = os.getenv('SPEECH_KEY')
+SPEECH_SERVICE_REGION = os.getenv('SPEECH_SERVICE_REGION')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -97,6 +99,18 @@ DATABASES = {
         'PORT': env('DB_PORT', default='5432'),
     }
 }
+
+if os.environ.get('GITHUB_WORKFLOW'):
+    DATABASES = {
+        'default': {
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'github_actions',
+           'USER': 'postgres',
+           'PASSWORD': 'postgres',
+           'HOST': '127.0.0.1',
+           'PORT': '5432',
+        }
+    }
 
 
 # Password validation
