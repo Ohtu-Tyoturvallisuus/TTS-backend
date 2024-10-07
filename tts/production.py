@@ -4,7 +4,7 @@ import os
 from .settings import * # pylint: disable=wildcard-import, unused-wildcard-import
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
