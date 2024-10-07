@@ -5,9 +5,6 @@
 name: CI-HazardHunt
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -39,8 +36,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install Poetry
-        run: |
-          pip install poetry
+        run: pip install poetry
 
       - name: Install dependencies
         run: poetry install
