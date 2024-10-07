@@ -39,44 +39,52 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
       - name: Install Poetry
         run: |
           pip install poetry
+
       - name: Install dependencies
         run: poetry install
+
       - name: Create .env file
         run: echo "SECRET_KEY=$DJANGO_SECRET_KEY" > .env
         env:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
       - name: Wait for PostgreSQL to be ready
         run: |
           until pg_isready -h localhost -p 5432 -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
+
       - name: Run migrations
         run: poetry run invoke migrate
+
 # ffmpeg may be needed on some machines for converting audio files to .wav.
 # Try uncommenting the following, if audio transcription does not work in the cloud.
 #      - name: Install ffmpeg
 #        run: sudo apt-get install ffmpeg
       - name: Run Pylint
         run: poetry run pylint .
+
       - name: Run unit tests
         run: poetry run pytest --cov=api --cov-report=xml
+
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Remove .env file
         run: rm .env
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: release.zip
