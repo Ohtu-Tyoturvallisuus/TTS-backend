@@ -24,6 +24,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
+          repository: Ohtu-Tyoturvallisuus/TTS-backend
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
