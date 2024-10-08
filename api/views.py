@@ -2,6 +2,7 @@
 # pylint: disable=redefined-builtin
 
 import os
+import json
 from rest_framework import (
     generics,
     status,
@@ -192,8 +193,10 @@ class TranscribeAudio(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         # Get the uploaded file from the request
         file = request.FILES.get('audio')
-        recognition_language = 'fi-FI'
-        target_language = 'en'
+        recognition_language = request.POST.get('recordingLanguage')
+        translation_languages = request.POST.get('translationLanguages')
+        if translation_languages:
+            target_languages = json.loads(translation_languages)
 
         if not file:
             return Response({"error": "Audio file is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -212,37 +215,38 @@ class TranscribeAudio(generics.CreateAPIView):
             audio = AudioSegment.from_file(input_path)
             audio.export(output_path, format="wav")
 
-            if recognition_language == target_language:
-                # Perform transcription using Azure Speech SDK
-                transcription = self.transcribe_with_azure(output_path, recognition_language)
-                if transcription is None or transcription.startswith('error'):
-                    return Response(
-                        {"error": "Failed to transcribe the audio", "returnvalue": transcription},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                    )
-
-                message = f"Audio file '{file.name}' successfully converted to WAV and transcribed."
-                return Response(
-                    {"message": message, "transcription": transcription},
-                    status=status.HTTP_201_CREATED
-                )
-
-            transcription = self.transcribe_and_translate(
-                output_path,
-                recognition_language,
-                target_language
-            )
+            # Perform transcription using Azure Speech SDK
+            transcription = self.transcribe_with_azure(output_path, recognition_language)
             if transcription is None or transcription.startswith('error'):
                 return Response(
-                    {"error": "Failed to translate the audio", "returnvalue": transcription},
+                    {"error": "Failed to transcribe the audio", "returnvalue": transcription},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
-            message = (
-                f"Audio file '{file.name}' successfully converted to WAV, "
-                "transcribed and translated."
-            )
+            message = f"Audio file '{file.name}' successfully converted to WAV and transcribed."
 
+            if translation_languages:
+                translations = self.transcribe_and_translate(
+                    output_path,
+                    recognition_language,
+                    target_languages
+                )
+                if isinstance(translations, str):
+                    return Response(
+                        {"error": "Failed to translate the audio", "returnvalue": translations},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
+
+                message = (
+                    f"Audio file '{file.name}' successfully converted to WAV, "
+                    "transcribed and translated."
+                )
+
+                return Response(
+                    {"message": message, "transcription": transcription, "translations": translations},
+                    status=status.HTTP_201_CREATED
+                )
+            
             return Response(
                 {"message": message, "transcription": transcription},
                 status=status.HTTP_201_CREATED
@@ -284,8 +288,8 @@ class TranscribeAudio(generics.CreateAPIView):
     def transcribe_and_translate(
         self,
         wav_file_path,
-        recognition_language='en-US',
-        target_language='fi'
+        recognition_language,
+        target_languages
     ):
         """Translates text using Azure Translator API"""
         try:
@@ -297,7 +301,8 @@ class TranscribeAudio(generics.CreateAPIView):
             )
 
             speech_translation_config.speech_recognition_language = recognition_language
-            speech_translation_config.add_target_language(target_language)
+            for language in target_languages:
+                speech_translation_config.add_target_language(language)
 
             audio_config = AudioConfig(filename=wav_file_path)
 
@@ -310,10 +315,12 @@ class TranscribeAudio(generics.CreateAPIView):
 
             # Handle the result based on the outcome
             if translation_recognition_result.reason == ResultReason.TranslatedSpeech:
-                translated_text = translation_recognition_result.translations[target_language]
+                translations = {}
+                for language in target_languages:
+                    translations[language] = str(translation_recognition_result.translations[language])
 
                 # Return the recognized and translated text
-                return translated_text
+                return translations
 
             if translation_recognition_result.reason == ResultReason.NoMatch:
                 return "error: No speech could be recognized"
