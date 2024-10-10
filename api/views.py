@@ -194,9 +194,10 @@ class TranscribeAudio(generics.CreateAPIView):
         # Get the uploaded file from the request
         file = request.FILES.get('audio')
         recognition_language = request.POST.get('recordingLanguage')
-        translation_languages = request.POST.get('translationLanguages')
-        if translation_languages:
-            target_languages = json.loads(translation_languages)
+        target_languages = json.loads(request.POST.get('translationLanguages'))
+
+        if not isinstance(target_languages, list):
+            target_languages = []
 
         if not file:
             return Response({"error": "Audio file is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -212,8 +213,7 @@ class TranscribeAudio(generics.CreateAPIView):
 
         try:
             # Convert to WAV using pydub
-            audio = AudioSegment.from_file(input_path)
-            audio.export(output_path, format="wav")
+            AudioSegment.from_file(input_path).export(output_path, format="wav")
 
             # Perform transcription using Azure Speech SDK
             transcription = self.transcribe_with_azure(output_path, recognition_language)
@@ -233,12 +233,12 @@ class TranscribeAudio(generics.CreateAPIView):
                     {"error": "Failed to translate the audio", "returnvalue": translations},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
-            
+
             message = (
                 f"Audio file '{file.name}' successfully converted to WAV, "
                 "transcribed and translated."
             )
-            
+
             return Response(
                 {"message": message, "transcription": transcription, "translations": translations},
                 status=status.HTTP_201_CREATED
@@ -311,7 +311,9 @@ class TranscribeAudio(generics.CreateAPIView):
             if translation_recognition_result.reason == ResultReason.TranslatedSpeech:
                 translations = {}
                 for language in target_languages:
-                    translations[language] = str(translation_recognition_result.translations[language])
+                    translations[language] = str(
+                        translation_recognition_result.translations[language]
+                    )
 
                 # Return the recognized and translated text
                 return translations
