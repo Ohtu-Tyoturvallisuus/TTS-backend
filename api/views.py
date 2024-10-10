@@ -223,32 +223,24 @@ class TranscribeAudio(generics.CreateAPIView):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
-            message = f"Audio file '{file.name}' successfully converted to WAV and transcribed."
-
-            if translation_languages:
-                translations = self.transcribe_and_translate(
-                    output_path,
-                    recognition_language,
-                    target_languages
-                )
-                if isinstance(translations, str):
-                    return Response(
-                        {"error": "Failed to translate the audio", "returnvalue": translations},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                    )
-
-                message = (
-                    f"Audio file '{file.name}' successfully converted to WAV, "
-                    "transcribed and translated."
-                )
-
+            translations = self.transcribe_and_translate(
+                output_path,
+                recognition_language,
+                target_languages
+            )
+            if isinstance(translations, str):
                 return Response(
-                    {"message": message, "transcription": transcription, "translations": translations},
-                    status=status.HTTP_201_CREATED
+                    {"error": "Failed to translate the audio", "returnvalue": translations},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
             
+            message = (
+                f"Audio file '{file.name}' successfully converted to WAV, "
+                "transcribed and translated."
+            )
+            
             return Response(
-                {"message": message, "transcription": transcription},
+                {"message": message, "transcription": transcription, "translations": translations},
                 status=status.HTTP_201_CREATED
             )
 
@@ -293,6 +285,8 @@ class TranscribeAudio(generics.CreateAPIView):
     ):
         """Translates text using Azure Translator API"""
         try:
+            if target_languages == []:
+                return {}
             speech_key = settings.SPEECH_KEY
             service_region = settings.SPEECH_SERVICE_REGION
             speech_translation_config = translation.SpeechTranslationConfig(
