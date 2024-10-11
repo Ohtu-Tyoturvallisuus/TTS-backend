@@ -53,8 +53,9 @@ jobs:
             sleep 2
           done
 
-      - name: Make migrations
-        run: poetry run invoke makemigrations
+      # Commented out for debugging reasons
+      # - name: Make migrations
+      #   run: poetry run invoke makemigrations
 
       - name: Run migrations
         run: poetry run invoke migrate
