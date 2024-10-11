@@ -18,12 +18,36 @@ class TestTranscribeAudioView:
         """Setup method"""
         self.url = reverse('transcribe_audio')
         self.mock_file = mock_file
+        self.recognition_language = 'en-US'
 
     def test_no_file_uploaded(self, client):
         """Test when no audio file is uploaded."""
         response = client.post(self.url, {})
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.json() == {"error": "Audio file is required"}
+
+    @patch('pydub.AudioSegment.from_file')
+    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    def test_transcription_is_none(self, mock_transcribe_with_azure, mock_audio_segment, client):
+        """Test when transcription is None."""
+        mock_transcribe_with_azure.return_value = None
+
+        response = client.post(
+            self.url,
+            {
+                'audio': self.mock_file,
+                'recordingLanguage': self.recognition_language
+            },
+            format='multipart'
+        )
+
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+        assert response.json() == {
+            'error': 'Failed to transcribe the audio',
+            'returnvalue': None
+        }
+        mock_audio_segment.assert_called_once()
+        mock_transcribe_with_azure.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
     @patch('api.views.TranscribeAudio.transcribe_with_azure')
@@ -46,7 +70,7 @@ class TestTranscribeAudioView:
             self.url,
             {
                 'audio': self.mock_file,
-                'recordingLanguage': 'en-US',
+                'recordingLanguage': self.recognition_language,
                 'translationLanguages': json.dumps(['en'])
             },
             format='multipart'
@@ -70,7 +94,7 @@ class TestTranscribeAudioView:
     @patch('pydub.AudioSegment.from_file')
     @patch('api.views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
-    def test_transcription_canceled(
+    def test_translation_canceled(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
         """Test for transcription and translation failure"""
@@ -93,7 +117,7 @@ class TestTranscribeAudioView:
             self.url,
             {
                 'audio': self.mock_file,
-                'recordingLanguage': 'en-US',
+                'recordingLanguage': self.recognition_language,
                 'translationLanguages': json.dumps(['en'])
             },
             format='multipart'
@@ -109,15 +133,63 @@ class TestTranscribeAudioView:
         }
 
         mock_recognizer.assert_called_once()
+        mock_transcribe_with_azure.assert_called_once()
         mock_audio_segment.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
     @patch('api.views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
-    def test_transcription_no_match(
+    def test_translation_canceled_but_not_error(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
-        """Test for 'No speech could be recognized' case"""
+        """Test for transcription and translation failure with cancellation not due to error."""
+
+        mock_transcribe_with_azure.return_value = "This is a transcription."
+
+        mock_translation = mock_recognizer.return_value
+        mock_result = MagicMock()
+        mock_result.reason = ResultReason.Canceled
+
+        mock_cancellation_details = MagicMock()
+        mock_cancellation_details.reason = CancellationReason.EndOfStream  # Different reason
+        mock_cancellation_details.error_details = None  # No error details in this case
+
+        mock_result.cancellation_details = mock_cancellation_details
+
+        mock_translation.recognize_once_async.return_value.get.return_value = mock_result
+
+        response = client.post(
+            self.url,
+            {
+                'audio': self.mock_file,
+                'recordingLanguage': self.recognition_language,
+                'translationLanguages': json.dumps(['en'])
+            },
+            format='multipart'
+        )
+
+        expected_error_message =(
+            "error: Speech Recognition canceled: CancellationReason.EndOfStream"
+        )
+
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+        assert response.json() == {
+            "error": "Failed to translate the audio",
+            "returnvalue": expected_error_message
+        }
+
+        mock_recognizer.assert_called_once()
+        mock_transcribe_with_azure.assert_called_once()
+        mock_audio_segment.assert_called_once()
+
+
+    @patch('pydub.AudioSegment.from_file')
+    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
+    def test_translation_no_match(
+        self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
+    ):
+        """Test for translation failing with 'No speech could be recognized'"""
 
         mock_transcribe_with_azure.return_value = "This is a transcription."
 
@@ -130,7 +202,7 @@ class TestTranscribeAudioView:
             self.url,
             {
                 'audio': self.mock_file,
-                'recordingLanguage': 'en-US',
+                'recordingLanguage': self.recognition_language,
                 'translationLanguages': json.dumps(['en'])
             },
             format='multipart'
@@ -143,6 +215,7 @@ class TestTranscribeAudioView:
             "returnvalue": expected_message
         }
         mock_audio_segment.assert_called_once()
+        mock_transcribe_with_azure.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
     @patch('api.views.TranscribeAudio.transcribe_with_azure')
@@ -160,7 +233,7 @@ class TestTranscribeAudioView:
             self.url,
             {
                 'audio': self.mock_file,
-                'recordingLanguage': 'en-US',
+                'recordingLanguage': self.recognition_language,
                 'translationLanguages': json.dumps(['en'])
             },
             format='multipart'
@@ -172,14 +245,15 @@ class TestTranscribeAudioView:
             "returnvalue": "Translation failed: Some translation error"
         }
         mock_audio_segment.assert_called_once()
+        mock_transcribe_with_azure.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
     @patch('api.views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
-    def test_transcription_with_no_valid_translation_languages(
+    def test_translation_with_no_valid_translation_languages(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ): # pylint: disable=unused-argument
-        """Test for transcription with no valid translation languages"""
+        """Test for translation with no valid translation languages"""
 
         mock_transcribe_with_azure.return_value = "This is a transcription."
 
@@ -187,7 +261,7 @@ class TestTranscribeAudioView:
             self.url,
             {
                 'audio': self.mock_file,
-                'recordingLanguage': 'en-US',
+                'recordingLanguage': self.recognition_language,
                 'translationLanguages': json.dumps('en')
             },
             format='multipart'
@@ -204,3 +278,39 @@ class TestTranscribeAudioView:
             "translations": {}
         }
         mock_audio_segment.assert_called_once()
+        mock_transcribe_with_azure.assert_called_once()
+
+    @patch('pydub.AudioSegment.from_file')
+    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
+    def test_translation_unexpected_result_reason(
+        self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
+    ):
+        """Test translation raising ValueError due to unexpected result reason."""
+
+        mock_transcribe_with_azure.return_value = "This is a transcription."
+
+        mock_translation = mock_recognizer.return_value
+        mock_result = MagicMock()
+        mock_result.reason = "UnexpectedReason"  # Simulate an unexpected reason
+        mock_translation.recognize_once_async.return_value.get.return_value = mock_result
+
+        response = client.post(
+            self.url,
+            {
+                'audio': self.mock_file,
+                'recordingLanguage': self.recognition_language,
+                'translationLanguages': json.dumps(['en'])
+            },
+            format='multipart'
+        )
+
+        expected_error_message = "Translation failed: Unexpected result reason"
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+        assert response.json() == {
+            "error": "Failed to translate the audio",
+            "returnvalue": expected_error_message
+        }
+        mock_audio_segment.assert_called_once()
+        mock_transcribe_with_azure.assert_called_once()
+        mock_recognizer.assert_called_once()
