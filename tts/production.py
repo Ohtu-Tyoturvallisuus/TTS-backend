@@ -20,8 +20,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-SPEECH_KEY = os.environ('SPEECH_KEY')
-SPEECH_SERVICE_REGION = os.environ('SPEECH_SERVICE_REGION')
+SPEECH_KEY = os.environ['SPEECH_KEY']
+SPEECH_SERVICE_REGION = os.environ['SPEECH_SERVICE_REGION']
 
 conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
 conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
