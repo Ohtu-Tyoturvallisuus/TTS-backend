@@ -73,7 +73,3 @@ jobs:
 
       - name: Remove .env file
         run: rm .env
-<<<<<<< HEAD
-
-=======
->>>>>>> development
