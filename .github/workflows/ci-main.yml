@@ -60,6 +60,9 @@ jobs:
       - name: Run Pylint
         run: poetry run pylint .
 
+      - name: Create media folder for unit tests
+        run: mkdir -p /home/runner/work/TTS-backend/TTS-backend/media
+
       - name: Run unit tests
         run: poetry run pytest --cov=api --cov-report=xml
 
