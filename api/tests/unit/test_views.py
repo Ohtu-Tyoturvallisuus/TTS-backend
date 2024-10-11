@@ -254,23 +254,30 @@ class TestRiskNoteCreateView:
         assert risknotes[2].description == 'Test Description 2'
         assert risknotes[2].status == 'Resolved'
 
-def test_signin(client):
-    """Test SignIn view with POST request"""
-    data = {'username': 'testuser'}
-    response = client.post(reverse('signin'), data)
-    assert response.status_code == status.HTTP_201_CREATED
-    assert response.data['message'] == "User 'testuser' created and signed in successfully"
+class TestSignInView:
+    """Tests SignIn view"""
 
-def test_signin_existing_user(client, create_user):
-    """Test SignIn view with POST request for existing user"""
-    user = create_user
-    data = {'username': user.username}
-    response = client.post(reverse('signin'), data)
-    assert response.status_code == status.HTTP_200_OK
-    assert response.data['message'] == f"User '{user.username}' signed in successfully"
+    def setup_method(self):
+        """Setup method"""
+        self.url = reverse('signin')
 
-def test_signin_missing_username(client):
-    """Test SignIn view with POST request for missing username"""
-    response = client.post(reverse('signin'))
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.data['error'] == "Username is required"
+    def test_signin(self, client):
+        """Test SignIn view with POST request"""
+        data = {'username': 'testuser'}
+        response = client.post(self.url, data)
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data['message'] == "User 'testuser' created and signed in successfully"
+
+    def test_signin_existing_user(self, client, create_user):
+        """Test SignIn view with POST request for existing user"""
+        user = create_user
+        data = {'username': user.username}
+        response = client.post(self.url, data)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['message'] == f"User '{user.username}' signed in successfully"
+
+    def test_signin_missing_username(self, client):
+        """Test SignIn view with POST request for missing username"""
+        response = client.post(self.url)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.data['error'] == "Username is required"

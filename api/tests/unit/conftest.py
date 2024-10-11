@@ -1,5 +1,6 @@
 """ api/tests/unit/conftest.py """
-from unittest import mock
+
+from io import BytesIO
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
@@ -68,7 +69,7 @@ def create_risk_note_fixture(create_survey):
 @pytest.fixture(name='mock_file')
 def mock_file_fixture():
     """Fixture to mock a file object"""
-    file = mock.MagicMock(spec=['name', 'chunks'])
-    file.name = 'test_file.mp3'
-    file.chunks.return_value = [b'testchunk']
+    file = BytesIO(b"fake audio content")
+    file.name = 'test_audio.mp3'
+    file.content_type = 'audio/mpeg'
     return file
