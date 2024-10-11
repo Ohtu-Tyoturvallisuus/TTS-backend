@@ -72,41 +72,7 @@ Assuming PostgreSQL is installed successfully.
      ```sql
      CREATE DATABASE tts_testing;
      ```
-
-3. **Connect to the Database**:
-   - Connect to the `tts_testing` database:
-     ```sql
-     \c tts_testing
-     ```
-
-##### Applying the Schema
-
-1. **Run the Schema File**:
-   - Execute the SQL commands in `schema.sql` to set up the database schema:
-     ```bash
-     \i path/to/schema.sql
-     ```
-2. **(Optional: Populate with populate_data.sql=**:
-   ```bash
-     \i path/to/populate_data.sql
-     ```
-
-##### Verification
-
-1. **Verify Tables**:
-   - List tables in the `my_app` schema:
-     ```bash
-     \dt
-     ```
-
-2. **Check Table Structure**:
-   - Describe a table structure:
-     ```bash
-     \d <table_name>
-     ```
-
 ---
-
 
 ##### Setting Up Django with PostgreSQL
 
@@ -142,6 +108,23 @@ Assuming PostgreSQL is installed successfully.
    - Apply the database migrations:
      ```bash
      poetry run invoke migrate
+     ```
+
+5. **Verify Tables and Check Table Structure**:
+   - Open psql client and connect to `tts_testing` database:
+     ```bash
+     psql -U postgres
+     ```
+     ```bash
+     \c tts_testing
+     ```
+   - List tables in the database:
+     ```bash
+     \dt
+     ```
+   - Describe a table structure:
+     ```bash
+     \d <table_name>
      ```
 
 5. **Start the Server**:
