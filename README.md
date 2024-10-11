@@ -1,11 +1,11 @@
 # Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
 <p align="center">
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/build_main.yml" alt="Continuous Integration">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/build_main.yml/badge.svg"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-main.yml" alt="Continuous Integration">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-main.yml/badge.svg"/>
   </a>
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/deploy_main.yml" alt="Continuous Deployment">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/deploy_main.yml/badge.svg"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml" alt="Continuous Deployment">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/main_tts-app.yml/badge.svg"/>
   </a>
   <a href="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-backend" > 
     <img src="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-backend/graph/badge.svg?token=AA5KQ8B86A"/> 
