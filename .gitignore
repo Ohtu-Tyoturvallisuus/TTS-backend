@@ -31,8 +31,8 @@ env/
 
 # Ignore migrations (if you decide to)
 # Uncomment the following line if you want to ignore migrations
-#*/migrations/*.py
-#!*/migrations/__init__.py
+*/migrations/*.py
+!*/migrations/__init__.py
 
 # Ignore possibly created audio files
 audio*
