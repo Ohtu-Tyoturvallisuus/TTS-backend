@@ -194,7 +194,11 @@ class TranscribeAudio(generics.CreateAPIView):
         # Get the uploaded file from the request
         file = request.FILES.get('audio')
         recognition_language = request.POST.get('recordingLanguage')
-        target_languages = json.loads(request.POST.get('translationLanguages'))
+        target_languages = request.POST.get('translationLanguages')
+        if target_languages:
+            target_languages = json.loads(target_languages)
+        else:
+            target_languages = []
 
         if not isinstance(target_languages, list):
             target_languages = []
@@ -211,41 +215,33 @@ class TranscribeAudio(generics.CreateAPIView):
             for chunk in file.chunks():
                 destination.write(chunk)
 
-        try:
-            # Convert to WAV using pydub
-            AudioSegment.from_file(input_path).export(output_path, format="wav")
-
-            # Perform transcription using Azure Speech SDK
-            transcription = self.transcribe_with_azure(output_path, recognition_language)
-            if transcription is None or transcription.startswith('error'):
-                return Response(
-                    {"error": "Failed to transcribe the audio", "returnvalue": transcription},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                )
-
-            translations = self.transcribe_and_translate(
-                output_path,
-                recognition_language,
-                target_languages
-            )
-            if isinstance(translations, str):
-                return Response(
-                    {"error": "Failed to translate the audio", "returnvalue": translations},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                )
-
-            message = (
-                f"Audio file '{file.name}' successfully converted to WAV, "
-                "transcribed and translated."
-            )
-
+        # Convert to WAV using pydub
+        AudioSegment.from_file(input_path).export(output_path, format="wav")
+        # Perform transcription using Azure Speech SDK
+        transcription = self.transcribe_with_azure(output_path, recognition_language)
+        if transcription is None or transcription.startswith('error'):
             return Response(
-                {"message": message, "transcription": transcription, "translations": translations},
-                status=status.HTTP_201_CREATED
+                {"error": "Failed to transcribe the audio", "returnvalue": transcription},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-        except ValueError as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        translations = self.transcribe_and_translate(
+            output_path,
+            recognition_language,
+            target_languages
+        )
+        if isinstance(translations, str):
+            return Response(
+                {"error": "Failed to translate the audio", "returnvalue": translations},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        message = (
+            f"Audio file '{file.name}' successfully converted to WAV, "
+            "transcribed and translated."
+        )
+        return Response(
+            {"message": message, "transcription": transcription, "translations": translations},
+            status=status.HTTP_201_CREATED
+        )
 
     def transcribe_with_azure(self, wav_file_path, recognition_language):
         """Method for transcribing speech to text written in the same language"""
