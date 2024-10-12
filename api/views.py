@@ -208,8 +208,8 @@ class TranscribeAudio(generics.CreateAPIView):
             return Response({"error": "Audio file is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Define file paths
-        input_path = os.path.join(settings.MEDIA_ROOT, file.name)
-        output_path = os.path.join(settings.MEDIA_ROOT, f"{os.path.splitext(file.name)[0]}.wav")
+        input_path = os.path.join(settings.BASE_DIR, file.name)
+        output_path = os.path.join(settings.BASE_DIR, f"{os.path.splitext(file.name)[0]}.wav")
 
         # Save the uploaded file
         with open(input_path, 'wb+') as destination:
