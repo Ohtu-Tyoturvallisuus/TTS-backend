@@ -217,8 +217,6 @@ class TranscribeAudio(generics.CreateAPIView):
                 destination.write(chunk)
 
         # Convert to WAV using pydub
-        ffmpeg_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'ffmpeg', 'ffmpeg')
-        AudioSegment.converter = ffmpeg_path
         AudioSegment.from_file(input_path).export(output_path, format="wav")
         return Response(
             {"message": "convertion to .wav successful!", "transcription": "", "translations": {}},
