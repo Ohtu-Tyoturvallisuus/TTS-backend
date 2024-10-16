@@ -1,7 +1,8 @@
 """ api/views.py """
 # pylint: disable=redefined-builtin
 
-import os, uuid
+import os
+import uuid
 import json
 from rest_framework import (
     generics,
@@ -27,6 +28,7 @@ from azure.cognitiveservices.speech import (
     translation
 )
 from azure.storage.blob import BlobServiceClient
+from azure.core.exceptions import AzureError, HttpResponseError
 
 from .models import Project, RiskNote, Survey
 from .serializers import (
@@ -336,12 +338,18 @@ class UploadImage(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         if 'image' not in request.FILES:
-            return Response({'status': 'error', 'message': 'No image file provided.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'status': 'error', 'message': 'No image file provided.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         image = request.FILES['image']
 
         if not self.validate_image(image):
-            return Response({'status': 'error', 'message': 'Invalid file type. Only images are allowed.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'status': 'error', 'message': 'Invalid file type. Only images are allowed.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         # Create BlobServiceClient
         try:
@@ -349,25 +357,37 @@ class UploadImage(generics.CreateAPIView):
                 account_url=f"https://{settings.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net",
                 credential=settings.AZURE_STORAGE_ACCOUNT_KEY
             )
-            container_client = blob_service_client.get_container_client(settings.AZURE_CONTAINER_NAME)
-        except Exception as e:
-            return Response({'status': 'error', 'message': 'Error connecting to Azure Blob Storage: ' + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            container_client = blob_service_client.get_container_client(
+                settings.AZURE_CONTAINER_NAME
+            )
 
-        # Generate a unique blob name
-        blob_name = f"images/{uuid.uuid4()}_{image.name}"
+            # Generate a unique blob name
+            blob_name = f"images/{uuid.uuid4()}_{image.name}"
 
-        try:
+
             # Upload the image to the blob
             blob_client = container_client.get_blob_client(blob_name)
             blob_client.upload_blob(image, overwrite=True)
 
             # Construct the blob URL
-            blob_url = f"https://{settings.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/{settings.AZURE_CONTAINER_NAME}/{blob_name}"
+            blob_url = (
+                f"https://{settings.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/"
+                f"{settings.AZURE_CONTAINER_NAME}/{blob_name}"
+            )
 
             return Response({'status': 'success', 'url': blob_url}, status=status.HTTP_201_CREATED)
 
-        except Exception as e:
-            return Response({'status': 'error', 'message': 'Failed to upload image: ' + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except (HttpResponseError, AzureError) as e:
+            # Consolidate all errors here
+            if isinstance(e, HttpResponseError):
+                error_message = 'HTTP error during Azure Blob Storage operation: '
+            else:
+                error_message = 'Azure Blob Storage error: '
+
+            return Response(
+                {'status': 'error', 'message': error_message + str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     def validate_image(self, image):
         """Validate image file type"""
