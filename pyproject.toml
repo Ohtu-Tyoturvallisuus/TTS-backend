@@ -26,6 +26,7 @@ pytest-django = "^4.9.0"
 whitenoise = "^6.7.0"
 pydub = "^0.25.1"
 azure-cognitiveservices-speech = "^1.40.0"
+azure-storage-blob = "^12.23.1"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3.1"

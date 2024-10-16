@@ -159,3 +159,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Audio files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Azure Storage settings
+AZURE_STORAGE_ACCOUNT_NAME = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
+AZURE_STORAGE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_ACCOUNT_KEY')
+AZURE_CONTAINER_NAME = os.getenv('AZURE_CONTAINER_NAME')
