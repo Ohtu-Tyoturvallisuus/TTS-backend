@@ -23,6 +23,10 @@ STATIC_URL = '/static/'
 SPEECH_KEY = os.environ['SPEECH_KEY']
 SPEECH_SERVICE_REGION = os.environ['SPEECH_SERVICE_REGION']
 
+AZURE_STORAGE_ACCOUNT_NAME = os.environ['AZURE_STORAGE_ACCOUNT_NAME']
+AZURE_STORAGE_ACCOUNT_KEY = os.environ['AZURE_STORAGE_ACCOUNT_KEY']
+AZURE_CONTAINER_NAME = os.environ['AZURE_CONTAINER_NAME']
+
 conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
 conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
 DATABASES = {

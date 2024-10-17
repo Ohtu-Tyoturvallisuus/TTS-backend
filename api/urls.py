@@ -76,6 +76,11 @@ urlpatterns = [
         views.TranscribeAudio.as_view(),
         name='transcribe_audio'
     ),
+    path(
+        'upload-image/',
+        views.UploadImage.as_view(),
+        name='upload_image'
+    )
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

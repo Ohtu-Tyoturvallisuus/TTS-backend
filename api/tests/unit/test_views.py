@@ -1,9 +1,13 @@
 """ api/tests/unit/test_views.py """
 # pylint: disable=attribute-defined-outside-init
 
+from unittest.mock import patch, MagicMock
+import io
 import pytest
 from django.urls import reverse
+from django.test import TestCase
 from rest_framework import status
+from azure.core.exceptions import AzureError, HttpResponseError
 from api.models import RiskNote
 
 pytestmark = pytest.mark.django_db
@@ -281,3 +285,78 @@ class TestSignInView:
         response = client.post(self.url)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['error'] == "Username is required"
+
+class UploadImageTestCase(TestCase):
+    """Tests UploadImage view"""
+
+    def setup_method(self, client):
+        """Setup method"""
+        self.client = client
+        self.url = '/api/upload-image/'
+
+    def test_missing_image_file(self):
+        """Test case where no image file is provided."""
+        response = self.client.post(self.url, {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['message'], 'No image file provided.')
+
+    def test_invalid_image_type(self):
+        """Test case where an invalid file type is provided."""
+        file = io.BytesIO(b"fake image data")
+        file.name = 'test.txt'
+        response = self.client.post(self.url, {'image': file}, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['message'], 'Invalid file type. Only images are allowed.')
+
+    @patch('api.views.BlobServiceClient')
+    def test_successful_image_upload(self, mock_blob_service_client):
+        """Test successful image upload."""
+        mock_blob_service = MagicMock()
+        mock_container_client = MagicMock()
+        mock_blob_client = MagicMock()
+
+        mock_blob_service_client.return_value = mock_blob_service
+        mock_blob_service.get_container_client.return_value = mock_container_client
+        mock_container_client.get_blob_client.return_value = mock_blob_client
+
+        file = io.BytesIO(b"fake image data")
+        file.name = 'test.jpg'
+
+        response = self.client.post(self.url, {'image': file}, format='multipart')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn('url', response.data)
+        mock_blob_client.upload_blob.assert_called_once()
+
+    @patch('api.views.BlobServiceClient')
+    def test_http_error_during_upload(self, mock_blob_service_client):
+        """Test HTTP error during image upload to Azure Blob Storage."""
+        mock_blob_service = MagicMock()
+        mock_blob_service.get_container_client.side_effect = HttpResponseError("HTTP error")
+        mock_blob_service_client.return_value = mock_blob_service
+
+        file = io.BytesIO(b"fake image data")
+        file.name = 'test.jpg'
+
+        response = self.client.post(self.url, {'image': file}, format='multipart')
+
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertEqual(
+            response.data['message'],
+            'HTTP error during Azure Blob Storage operation: HTTP error'
+        )
+
+    @patch('api.views.BlobServiceClient')
+    def test_azure_error_during_upload(self, mock_blob_service_client):
+        """Test Azure SDK error during image upload."""
+        mock_blob_service = MagicMock()
+        mock_blob_service.get_container_client.side_effect = AzureError("Azure error")
+        mock_blob_service_client.return_value = mock_blob_service
+
+        file = io.BytesIO(b"fake image data")
+        file.name = 'test.jpg'
+
+        response = self.client.post(self.url, {'image': file}, format='multipart')
+
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertEqual(response.data['message'], 'Azure Blob Storage error: Azure error')

@@ -19,7 +19,7 @@ This project is part of the autumn 2024 Software Engineering project course [TKT
 
 The project aims to develop a mobile application to increase worksite safety by identifying and analyzing possible hazards. This onsite last-minute assessment is meant to be done right before work is commenced and from the perspective of one's work and the work environment.
 
-The [project team](https://github.com/orgs/Ohtu-Tyoturvallisuus/people?query=role%3Aowner) consists of five students.
+The project team consists of five students.
 
 This is the repository for the backend of this project.
 #
