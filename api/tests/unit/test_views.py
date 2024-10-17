@@ -7,7 +7,6 @@ import pytest
 from django.urls import reverse
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIClient
 from azure.core.exceptions import AzureError, HttpResponseError
 from api.models import RiskNote
 
@@ -290,8 +289,9 @@ class TestSignInView:
 class UploadImageTestCase(TestCase):
     """Tests UploadImage view"""
 
-    def setUp(self):
-        self.client = APIClient()
+    def setup_method(self, client):
+        """Setup method"""
+        self.client = client
         self.url = '/api/upload-image/'
 
     def test_missing_image_file(self):
