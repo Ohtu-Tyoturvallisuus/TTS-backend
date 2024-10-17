@@ -1,15 +1,15 @@
 """ api/tests/unit/test_views.py """
 # pylint: disable=attribute-defined-outside-init
 
-import pytest
-from django.urls import reverse
-from rest_framework import status
-from api.models import RiskNote
-from django.test import TestCase
-from rest_framework.test import APIClient
 from unittest.mock import patch, MagicMock
 import io
+import pytest
+from django.urls import reverse
+from django.test import TestCase
+from rest_framework import status
+from rest_framework.test import APIClient
 from azure.core.exceptions import AzureError, HttpResponseError
+from api.models import RiskNote
 
 pytestmark = pytest.mark.django_db
 
@@ -288,6 +288,8 @@ class TestSignInView:
         assert response.data['error'] == "Username is required"
 
 class UploadImageTestCase(TestCase):
+    """Tests UploadImage view"""
+
     def setUp(self):
         self.client = APIClient()
         self.url = '/api/upload-image/'
@@ -339,7 +341,10 @@ class UploadImageTestCase(TestCase):
         response = self.client.post(self.url, {'image': file}, format='multipart')
 
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        self.assertEqual(response.data['message'], 'HTTP error during Azure Blob Storage operation: HTTP error')
+        self.assertEqual(
+            response.data['message'],
+            'HTTP error during Azure Blob Storage operation: HTTP error'
+        )
 
     @patch('api.views.BlobServiceClient')
     def test_azure_error_during_upload(self, mock_blob_service_client):
