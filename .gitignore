@@ -36,3 +36,4 @@ env/
 
 # Ignore possibly created audio files
 audio*
+test_audio*
