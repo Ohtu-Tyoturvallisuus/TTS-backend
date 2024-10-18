@@ -17,6 +17,7 @@ from rest_framework import serializers
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.http import HttpResponse
 
 from pydub import AudioSegment
 from azure.cognitiveservices.speech import (
@@ -27,7 +28,7 @@ from azure.cognitiveservices.speech import (
     CancellationReason,
     translation
 )
-from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import BlobServiceClient, BlobClient, generate_blob_sas, BlobSasPermissions
 from azure.core.exceptions import AzureError, HttpResponseError
 
 from .models import Project, RiskNote, Survey
@@ -40,6 +41,7 @@ from .serializers import (
     SignInSerializer,
     AudioUploadSerializer
 )
+from datetime import datetime, timedelta
 
 User = get_user_model()
 
@@ -396,3 +398,50 @@ class UploadImage(generics.CreateAPIView):
         if ext not in valid_extensions:
             return False
         return True
+
+class RetrieveImage(generics.RetrieveAPIView):
+    """Class for retrieving images from Azure Blob Storage"""
+    
+    def get(self, request, *args, **kwargs):
+        blob_name = request.query_params.get('blob_name')
+
+        if not blob_name:
+            return Response({'status': 'error', 'message': 'No blob name provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create BlobServiceClient
+        try:
+            blob_service_client = BlobServiceClient(
+                account_url=f"https://{settings.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net",
+                credential=settings.AZURE_STORAGE_ACCOUNT_KEY
+            )
+            container_client = blob_service_client.get_container_client(settings.AZURE_CONTAINER_NAME)
+        except Exception as e:
+            return Response({'status': 'error', 'message': 'Error connecting to Azure Blob Storage: ' + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            # Get the Blob Client for the image
+            blob_client = container_client.get_blob_client(blob_name)
+            
+            # Download the image content
+            blob_data = blob_client.download_blob()
+            image_data = blob_data.readall()  # Read the content of the blob as binary
+
+            # Determine the file's content type
+            content_type = self.get_content_type(blob_name)
+
+            # Return the image as an HttpResponse with the appropriate content type
+            return HttpResponse(image_data, content_type=content_type)
+
+        except Exception as e:
+            return Response({'status': 'error', 'message': 'Image not found or failed to retrieve: ' + str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+    def get_content_type(self, blob_name):
+        """Helper function to determine content type based on file extension"""
+        if blob_name.lower().endswith('.jpg') or blob_name.lower().endswith('.jpeg'):
+            return 'image/jpeg'
+        elif blob_name.lower().endswith('.png'):
+            return 'image/png'
+        elif blob_name.lower().endswith('.gif'):
+            return 'image/gif'
+        else:
+            return 'application/octet-stream'  # Default binary data type if unknown

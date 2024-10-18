@@ -80,7 +80,12 @@ urlpatterns = [
         'upload-image/',
         views.UploadImage.as_view(),
         name='upload_image'
-    )
+    ),
+    path(
+        'retrieve-image/',
+        views.RetrieveImage.as_view(),
+        name='retrieve_image'
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
