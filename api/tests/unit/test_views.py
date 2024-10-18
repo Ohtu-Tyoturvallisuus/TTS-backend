@@ -7,7 +7,8 @@ import pytest
 from django.urls import reverse
 from django.test import TestCase
 from rest_framework import status
-from azure.core.exceptions import AzureError, HttpResponseError
+from rest_framework.test import APITestCase
+from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
 from api.models import RiskNote
 
 pytestmark = pytest.mark.django_db
@@ -360,3 +361,92 @@ class UploadImageTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(response.data['message'], 'Azure Blob Storage error: Azure error')
+
+class TestRetrieveImageView(APITestCase):
+    """Tests RetrieveImage view"""
+
+    def setUp(self):
+        """Setup method"""
+        self.url = reverse('retrieve_image')
+        self.blob_name = 'test_image.jpg'
+
+        self.blob_service_patcher = patch('api.views.BlobServiceClient')
+        self.mock_blob_service = self.blob_service_patcher.start()
+
+        self.mock_container_client = MagicMock()
+        self.mock_blob_service.return_value.get_container_client.return_value = (
+            self.mock_container_client
+        )
+
+        self.addCleanup(self.blob_service_patcher.stop)
+
+    def test_missing_blob_name(self):
+        """Test case where no blob name is provided"""
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {
+            'status': 'error',
+            'message': 'No blob name provided.'
+        })
+
+    def test_container_not_found(self):
+        """Test container not found"""
+        self.mock_blob_service.side_effect = ResourceNotFoundError("Container not found")
+
+        response = self.client.get(self.url, {'blob_name': self.blob_name})
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {
+            'status': 'error',
+            'message': 'Container not found.'
+        })
+
+    @patch('api.views.BlobServiceClient.get_container_client')
+    def test_blob_not_found(self, mock_get_container_client):
+        """Test blob not found"""
+        workaround = mock_get_container_client
+        lint = workaround
+        mock_get_container_client = lint
+        mock_blob_client = MagicMock()
+        mock_blob_client.download_blob.side_effect = ResourceNotFoundError("Blob not found")
+        self.mock_container_client.get_blob_client.return_value = mock_blob_client
+
+        response = self.client.get(self.url, {'blob_name': self.blob_name})
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {
+            'status': 'error',
+            'message': 'Image not found.'
+        })
+
+    @patch('api.views.BlobServiceClient')
+    def test_successful_blob_retrieval(self, mock_blob_service_class):
+        """Test case where blob retrieval succeeds"""
+        mock_container_client = MagicMock()
+        mock_blob_client = MagicMock()
+
+        mock_blob_client.download_blob.return_value.readall.return_value = b'binary_image_data'
+        mock_container_client.get_blob_client.return_value = mock_blob_client
+        mock_blob_service_class.return_value.get_container_client.return_value = (
+            mock_container_client
+        )
+
+        response = self.client.get(self.url, {'blob_name': self.blob_name})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b'binary_image_data')
+        self.assertEqual(response['Content-Type'], 'image/jpeg')
+
+    @patch('api.views.BlobServiceClient')
+    def test_azure_service_error(self, mock_blob_service_class):
+        """Test case with Azure service error"""
+        mock_blob_service_class.side_effect = AzureError("Generic Azure Error")
+
+        response = self.client.get(self.url, {'blob_name': self.blob_name})
+
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json(), {
+            'status': 'error',
+            'message': 'Azure service error: Generic Azure Error'
+        })
