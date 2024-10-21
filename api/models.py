@@ -29,6 +29,7 @@ class RiskNote(models.Model):
     note = models.TextField()
     description = models.TextField(blank=True)
     status = models.TextField(blank=True)
+    risk_type = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

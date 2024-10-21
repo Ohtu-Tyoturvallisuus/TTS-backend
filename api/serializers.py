@@ -33,7 +33,7 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         """Meta class for RiskNoteSerializer"""
         model = RiskNote
-        fields = ['id', 'survey_id', 'note', 'description', 'status', 'created_at']
+        fields = ['id', 'survey_id', 'note', 'description', 'status', 'risk_type', 'created_at']
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
