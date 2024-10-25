@@ -86,6 +86,11 @@ urlpatterns = [
         views.RetrieveImage.as_view(),
         name='retrieve_image'
     ),
+    path(
+        'retrieve-params/',
+        views.RetrieveParams.as_view(),
+        name='retrieve_params'
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

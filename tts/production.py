@@ -27,6 +27,9 @@ AZURE_STORAGE_ACCOUNT_NAME = os.environ['AZURE_STORAGE_ACCOUNT_NAME']
 AZURE_STORAGE_ACCOUNT_KEY = os.environ['AZURE_STORAGE_ACCOUNT_KEY']
 AZURE_CONTAINER_NAME = os.environ['AZURE_CONTAINER_NAME']
 
+CLIENT_ID = os.environ['CLIENT_ID']
+TENANT_ID = os.environ['TENANT_ID']
+
 conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
 conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
 DATABASES = {
