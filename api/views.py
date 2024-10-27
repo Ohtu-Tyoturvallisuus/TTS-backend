@@ -334,25 +334,20 @@ class TranscribeAudio(generics.CreateAPIView):
             return f"Translation failed: {e}"
 
 # <POST> /api/upload-image/
-class UploadImage(generics.CreateAPIView):
+class UploadImages(generics.CreateAPIView):
     """Class for uploading images to Azure Blob Storage"""
 
     def post(self, request, *args, **kwargs):
-        if 'image' not in request.FILES:
+        # Collect all files from request.FILES
+        images = [file for key, file in request.FILES.items()]
+        if not images:
             return Response(
-                {'status': 'error', 'message': 'No image file provided.'},
+                {'status': 'error', 'message': 'No image files provided.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        image = request.FILES['image']
+        uploaded_urls = []
 
-        if not self.validate_image(image):
-            return Response(
-                {'status': 'error', 'message': 'Invalid file type. Only images are allowed.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # Create BlobServiceClient
         try:
             blob_service_client = BlobServiceClient(
                 account_url=f"https://{settings.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net",
@@ -362,24 +357,30 @@ class UploadImage(generics.CreateAPIView):
                 settings.AZURE_CONTAINER_NAME
             )
 
-            # Generate a unique blob name
-            blob_name = f"images/{uuid.uuid4()}_{image.name}"
+            for image in images:
+                if not self.validate_image(image):
+                    return Response(
+                        {'status': 'error', 'message': f'Invalid file type for {image.name}. Only images are allowed.'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
 
+                # Generate a unique blob name
+                blob_name = f"images/{uuid.uuid4()}_{image.name}"
 
-            # Upload the image to the blob
-            blob_client = container_client.get_blob_client(blob_name)
-            blob_client.upload_blob(image, overwrite=True)
+                # Upload the image to the blob
+                blob_client = container_client.get_blob_client(blob_name)
+                blob_client.upload_blob(image, overwrite=True)
 
-            # Construct the blob URL
-            blob_url = (
-                f"https://{settings.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/"
-                f"{settings.AZURE_CONTAINER_NAME}/{blob_name}"
-            )
+                # Construct the blob URL
+                blob_url = (
+                    f"https://{settings.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/"
+                    f"{settings.AZURE_CONTAINER_NAME}/{blob_name}"
+                )
+                uploaded_urls.append(blob_url)
 
-            return Response({'status': 'success', 'url': blob_url}, status=status.HTTP_201_CREATED)
+            return Response({'status': 'success', 'urls': uploaded_urls}, status=status.HTTP_201_CREATED)
 
         except (HttpResponseError, AzureError) as e:
-            # Consolidate all errors here
             if isinstance(e, HttpResponseError):
                 error_message = 'HTTP error during Azure Blob Storage operation: '
             else:
@@ -394,9 +395,7 @@ class UploadImage(generics.CreateAPIView):
         """Validate image file type"""
         valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
         ext = os.path.splitext(image.name)[1].lower()
-        if ext not in valid_extensions:
-            return False
-        return True
+        return ext in valid_extensions
 
 # <GET> /api/retrieve-image/?blob_name=<blob_name>/
 class RetrieveImage(generics.RetrieveAPIView):

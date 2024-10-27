@@ -300,7 +300,7 @@ class UploadImageTestCase(TestCase):
         """Test case where no image file is provided."""
         response = self.client.post(self.url, {})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['message'], 'No image file provided.')
+        self.assertEqual(response.data['message'], 'No image files provided.')
 
     def test_invalid_image_type(self):
         """Test case where an invalid file type is provided."""

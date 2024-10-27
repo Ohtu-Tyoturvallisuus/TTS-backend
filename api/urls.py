@@ -77,8 +77,8 @@ urlpatterns = [
         name='transcribe_audio'
     ),
     path(
-        'upload-image/',
-        views.UploadImage.as_view(),
+        'upload-images/',
+        views.UploadImages.as_view(),
         name='upload_image'
     ),
     path(
