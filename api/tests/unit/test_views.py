@@ -6,6 +6,7 @@ import io
 import pytest
 from django.urls import reverse
 from django.test import TestCase
+from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITestCase
 from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
@@ -487,3 +488,20 @@ class TestRetrieveImageView(APITestCase):
         self.assertEqual(view.get_content_type('image.png'), 'image/png')
         self.assertEqual(view.get_content_type('image.gif'), 'image/gif')
         self.assertEqual(view.get_content_type('image.txt'), 'application/octet-stream')
+
+class TestRetrieveParamsView:
+    """Tests RetrieveParams view"""
+
+    @pytest.fixture(autouse=True)
+    def setup_method(self, client):
+        """Setup method to initialize the API client"""
+        self.url = reverse('retrieve_params')
+        self.client = client
+
+    def test_retrieve_params(self):
+        """Test RetrieveParams view"""
+        response = self.client.get(self.url)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['client_id'] == settings.CLIENT_ID
+        assert response.data['tenant_id'] == settings.TENANT_ID
+        assert response.data['status'] == status.HTTP_200_OK
