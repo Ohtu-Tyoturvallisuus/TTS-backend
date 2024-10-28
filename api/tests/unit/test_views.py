@@ -404,8 +404,20 @@ class TestRetrieveImageView(APITestCase):
             'message': 'Container not found.'
         })
 
+    def test_http_response_error_during_blob_service_client_creation(self):
+        """Test case for handling HTTP response error during BlobServiceClient creation"""
+        self.mock_blob_service.side_effect = HttpResponseError("HTTP error")
+
+        response = self.client.get(self.url, {'blob_name': self.blob_name})
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {
+            'status': 'error',
+            'message': 'HTTP error: HTTP error'
+        })
+
     def test_http_response_error(self):
-        """Test case for handling HTTP response error"""
+        """Test case for handling HTTP response error during blob retrieval"""
         self.mock_container_client.get_blob_client.side_effect = HttpResponseError("HTTP error")
 
         response = self.client.get(self.url, {'blob_name': self.blob_name})

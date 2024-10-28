@@ -35,7 +35,6 @@ class TestTranscribeAudioView:
         self, mock_speech_config, mock_speech_recognizer, mock_audio_config
     ):
         """Test for successful transcription"""
-
         mock_speech_config.return_value = MagicMock()
         mock_audio_config.return_value = MagicMock()
         mock_recognizer = mock_speech_recognizer.return_value
@@ -43,13 +42,10 @@ class TestTranscribeAudioView:
         mock_result.reason = ResultReason.RecognizedSpeech
         mock_result.text = "This is a transcription."
         mock_recognizer.recognize_once.return_value = mock_result
-
         transcription = self.transcribe_audio_view.transcribe_with_azure(
             'mock_path.wav', self.recognition_language
         )
-
         assert transcription == "This is a transcription."
-
         mock_speech_config.assert_called_once()
         mock_audio_config.assert_called_once()
         mock_speech_recognizer.assert_called_once()
@@ -58,7 +54,7 @@ class TestTranscribeAudioView:
     @patch('api.views.AudioConfig')
     @patch('api.views.SpeechRecognizer')
     @patch('api.views.SpeechConfig')
-    def test_no_speech_recognized(
+    def test_transcription_no_speech_recognized(
         self, mock_speech_config, mock_speech_recognizer, mock_audio_config
     ):
         """Test when no speech is recognized"""
@@ -68,12 +64,10 @@ class TestTranscribeAudioView:
         mock_recognizer.recognize_once.return_value = MagicMock(
             reason=ResultReason.NoMatch
         )
-
         transcription = self.transcribe_audio_view.transcribe_with_azure(
             'mock_path.wav', self.recognition_language
         )
         assert transcription == "error: No speech could be recognized"
-
         mock_speech_config.assert_called_once()
         mock_audio_config.assert_called_once()
         mock_recognizer.recognize_once.assert_called_once()
@@ -81,7 +75,7 @@ class TestTranscribeAudioView:
     @patch('api.views.AudioConfig')
     @patch('api.views.SpeechRecognizer')
     @patch('api.views.SpeechConfig')
-    def test_recognition_canceled(
+    def test_transcription_recognition_canceled(
         self, mock_speech_config, mock_speech_recognizer, mock_audio_config
     ):
         """Test when recognition is canceled"""
@@ -92,12 +86,32 @@ class TestTranscribeAudioView:
             reason=ResultReason.Canceled,
             cancellation_details=MagicMock(reason='UserCanceled')
         )
-
         transcription = self.transcribe_audio_view.transcribe_with_azure(
             'mock_path.wav', self.recognition_language
         )
         assert transcription.startswith("error: Recognition canceled:")
+        mock_speech_config.assert_called_once()
+        mock_audio_config.assert_called_once()
+        mock_recognizer.recognize_once.assert_called_once()
 
+    @patch('api.views.AudioConfig')
+    @patch('api.views.SpeechRecognizer')
+    @patch('api.views.SpeechConfig')
+    def test_transcribe_unexpected_result_reason(
+        self, mock_speech_config, mock_speech_recognizer, mock_audio_config
+    ):
+        """Test for unexpected result reason"""
+        mock_speech_config.return_value = MagicMock()
+        mock_audio_config.return_value = MagicMock()
+        mock_recognizer = mock_speech_recognizer.return_value
+        mock_recognizer.recognize_once.return_value = MagicMock(
+            reason="UnexpectedReason"
+        )
+        expected_error_message = "Azure transcription failed: Unexpected result reason"
+        transcription = self.transcribe_audio_view.transcribe_with_azure(
+            'mock_path.wav', self.recognition_language
+        )
+        assert transcription == expected_error_message
         mock_speech_config.assert_called_once()
         mock_audio_config.assert_called_once()
         mock_recognizer.recognize_once.assert_called_once()
@@ -107,7 +121,6 @@ class TestTranscribeAudioView:
     def test_transcription_is_none(self, mock_transcribe_with_azure, mock_audio_segment, client):
         """Test when transcription is None."""
         mock_transcribe_with_azure.return_value = None
-
         response = client.post(
             self.url,
             {
@@ -116,7 +129,6 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         assert response.json() == {
             'error': 'Failed to transcribe the audio',
@@ -132,16 +144,12 @@ class TestTranscribeAudioView:
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
         """Test for successful transcription and translation."""
-
         mock_transcribe_with_azure.return_value = "This is a transcription."
-
         mock_translation = mock_recognizer.return_value
         mock_result = MagicMock()
         mock_result.reason = ResultReason.TranslatedSpeech
         mock_result.translations = {'en': 'This is a translation.'}
-
         mock_translation.recognize_once_async.return_value.get.return_value = mock_result
-
         response = client.post(
             self.url,
             {
@@ -151,7 +159,6 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         expected_message = (
             "Audio file 'test_audio.mp3' successfully "
             "converted to WAV, transcribed and translated."
@@ -162,7 +169,6 @@ class TestTranscribeAudioView:
             "transcription": "This is a transcription.",
             "translations": {'en': 'This is a translation.'}
         }
-
         mock_audio_segment.assert_called_once()
         mock_transcribe_with_azure.assert_called_once()
         mock_recognizer.assert_called_once()
@@ -174,21 +180,15 @@ class TestTranscribeAudioView:
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
         """Test for transcription and translation failure"""
-
         mock_transcribe_with_azure.return_value = "This is a transcription."
-
         mock_translation = mock_recognizer.return_value
         mock_result = MagicMock()
         mock_result.reason = ResultReason.Canceled
-
         mock_cancellation_details = MagicMock()
         mock_cancellation_details.reason = CancellationReason.Error
         mock_cancellation_details.error_details = "Error details"
-
         mock_result.cancellation_details = mock_cancellation_details
-
         mock_translation.recognize_once_async.return_value.get.return_value = mock_result
-
         response = client.post(
             self.url,
             {
@@ -198,7 +198,6 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         expected_error_message = (
         "error: Speech Recognition canceled: CancellationReason.Error, details: Error details"
         )
@@ -207,7 +206,6 @@ class TestTranscribeAudioView:
             "error": "Failed to translate the audio",
             "returnvalue": expected_error_message
         }
-
         mock_recognizer.assert_called_once()
         mock_transcribe_with_azure.assert_called_once()
         mock_audio_segment.assert_called_once()
@@ -219,21 +217,15 @@ class TestTranscribeAudioView:
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
         """Test for transcription and translation failure with cancellation not due to error."""
-
         mock_transcribe_with_azure.return_value = "This is a transcription."
-
         mock_translation = mock_recognizer.return_value
         mock_result = MagicMock()
         mock_result.reason = ResultReason.Canceled
-
         mock_cancellation_details = MagicMock()
-        mock_cancellation_details.reason = CancellationReason.EndOfStream  # Different reason
-        mock_cancellation_details.error_details = None  # No error details in this case
-
+        mock_cancellation_details.reason = CancellationReason.EndOfStream
+        mock_cancellation_details.error_details = None
         mock_result.cancellation_details = mock_cancellation_details
-
         mock_translation.recognize_once_async.return_value.get.return_value = mock_result
-
         response = client.post(
             self.url,
             {
@@ -243,17 +235,14 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         expected_error_message =(
             "error: Speech Recognition canceled: CancellationReason.EndOfStream"
         )
-
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         assert response.json() == {
             "error": "Failed to translate the audio",
             "returnvalue": expected_error_message
         }
-
         mock_recognizer.assert_called_once()
         mock_transcribe_with_azure.assert_called_once()
         mock_audio_segment.assert_called_once()
@@ -266,14 +255,11 @@ class TestTranscribeAudioView:
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
         """Test for translation failing with 'No speech could be recognized'"""
-
         mock_transcribe_with_azure.return_value = "This is a transcription."
-
         mock_translation = mock_recognizer.return_value
         mock_result = MagicMock()
         mock_result.reason = ResultReason.NoMatch
         mock_translation.recognize_once_async.return_value.get.return_value = mock_result
-
         response = client.post(
             self.url,
             {
@@ -283,7 +269,6 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         expected_message = "error: No speech could be recognized"
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         assert response.json() == {
@@ -300,11 +285,8 @@ class TestTranscribeAudioView:
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
         """Test for exception during translation"""
-
         mock_transcribe_with_azure.return_value = "This is a transcription."
-
         mock_recognizer.side_effect = ValueError("Some translation error")
-
         response = client.post(
             self.url,
             {
@@ -314,7 +296,6 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         assert response.json() == {
             "error": "Failed to translate the audio",
@@ -330,9 +311,7 @@ class TestTranscribeAudioView:
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ): # pylint: disable=unused-argument
         """Test for translation with no valid translation languages"""
-
         mock_transcribe_with_azure.return_value = "This is a transcription."
-
         response = client.post(
             self.url,
             {
@@ -342,7 +321,6 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         expected_message = (
             "Audio file 'test_audio.mp3' successfully "
             "converted to WAV, transcribed and translated."
@@ -363,14 +341,11 @@ class TestTranscribeAudioView:
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
     ):
         """Test translation raising ValueError due to unexpected result reason."""
-
         mock_transcribe_with_azure.return_value = "This is a transcription."
-
         mock_translation = mock_recognizer.return_value
         mock_result = MagicMock()
         mock_result.reason = "UnexpectedReason"  # Simulate an unexpected reason
         mock_translation.recognize_once_async.return_value.get.return_value = mock_result
-
         response = client.post(
             self.url,
             {
@@ -380,7 +355,6 @@ class TestTranscribeAudioView:
             },
             format='multipart'
         )
-
         expected_error_message = "Translation failed: Unexpected result reason"
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         assert response.json() == {
