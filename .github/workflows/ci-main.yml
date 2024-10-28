@@ -54,6 +54,9 @@ jobs:
             sleep 2
           done
 
+      - name: Install ffmpeg
+        run: sudo apt-get install ffmpeg
+
       - name: Run migrations
         run: poetry run invoke migrate
 
