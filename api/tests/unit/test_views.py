@@ -6,6 +6,7 @@ import io
 import pytest
 from django.urls import reverse
 from django.test import TestCase
+from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITestCase
 from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
@@ -403,8 +404,20 @@ class TestRetrieveImageView(APITestCase):
             'message': 'Container not found.'
         })
 
+    def test_http_response_error_during_blob_service_client_creation(self):
+        """Test case for handling HTTP response error during BlobServiceClient creation"""
+        self.mock_blob_service.side_effect = HttpResponseError("HTTP error")
+
+        response = self.client.get(self.url, {'blob_name': self.blob_name})
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {
+            'status': 'error',
+            'message': 'HTTP error: HTTP error'
+        })
+
     def test_http_response_error(self):
-        """Test case for handling HTTP response error"""
+        """Test case for handling HTTP response error during blob retrieval"""
         self.mock_container_client.get_blob_client.side_effect = HttpResponseError("HTTP error")
 
         response = self.client.get(self.url, {'blob_name': self.blob_name})
@@ -487,3 +500,20 @@ class TestRetrieveImageView(APITestCase):
         self.assertEqual(view.get_content_type('image.png'), 'image/png')
         self.assertEqual(view.get_content_type('image.gif'), 'image/gif')
         self.assertEqual(view.get_content_type('image.txt'), 'application/octet-stream')
+
+class TestRetrieveParamsView:
+    """Tests RetrieveParams view"""
+
+    @pytest.fixture(autouse=True)
+    def setup_method(self, client):
+        """Setup method to initialize the API client"""
+        self.url = reverse('retrieve_params')
+        self.client = client
+
+    def test_retrieve_params(self):
+        """Test RetrieveParams view"""
+        response = self.client.get(self.url)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['client_id'] == settings.CLIENT_ID
+        assert response.data['tenant_id'] == settings.TENANT_ID
+        assert response.data['status'] == status.HTTP_200_OK

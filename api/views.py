@@ -473,3 +473,14 @@ class RetrieveImage(generics.RetrieveAPIView):
         if blob_name.lower().endswith('.gif'):
             return 'image/gif'
         return 'application/octet-stream'  # Default binary data type if unknown
+
+# <GET> /api/retrieve_params/
+class RetrieveParams(generics.RetrieveAPIView):
+    """Class for retrieving client and tenant id params"""
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'client_id': settings.CLIENT_ID,
+            'tenant_id': settings.TENANT_ID,
+            'status': status.HTTP_200_OK
+        })
