@@ -13,17 +13,17 @@ class AccessTokenMiddleware:
         """This method activates each time the middleware is called"""
 
         # Check that POST, PUT, PATCH and DELETE requests come from authorized users
-        if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
-            token = self.get_token_from_header(request)
-            if not token:
-                return JsonResponse(
-                    {'error': 'Authentication credentials were not provided'},
-                    status=401
-                )
-
-            # Validate the token by calling the Microsoft Graph API
-            if not self.validate_token(token):
-                return JsonResponse({'error': 'Invalid or expired token'}, status=401)
+#        if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+#            token = self.get_token_from_header(request)
+#            if not token:
+#                return JsonResponse(
+#                    {'error': 'Authentication credentials were not provided'},
+#                    status=401
+#                )
+#
+#            # Validate the token by calling the Microsoft Graph API
+#            if not self.validate_token(token):
+#                return JsonResponse({'error': 'Invalid or expired token'}, status=401)
 
         # Proceed with the request if token is valid
         return self.get_response(request)
