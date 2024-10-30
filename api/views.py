@@ -4,6 +4,7 @@
 import os
 import uuid
 import json
+import jwt
 from rest_framework import (
     generics,
     status,
@@ -176,10 +177,18 @@ class SignIn(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         username = request.data.get('username')
+        id = request.data.get('id')
         if not username:
             return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         _, created = User.objects.get_or_create(username=username)
+
+        payload = {
+            'username': username,
+            'user_id': id,
+        }
+
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
 
         if created:
             message = f"User '{username}' created and signed in successfully"
@@ -188,7 +197,7 @@ class SignIn(generics.CreateAPIView):
             message = f"User '{username}' signed in successfully"
             status_code = status.HTTP_200_OK
 
-        return Response({"message": message}, status=status_code)
+        return Response({"message": message, 'access_token': token}, status=status_code)
 
 # <POST> /api/transcribe/
 class TranscribeAudio(generics.CreateAPIView):

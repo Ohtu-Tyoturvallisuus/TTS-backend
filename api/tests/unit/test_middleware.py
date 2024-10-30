@@ -4,8 +4,10 @@
 import json
 from unittest.mock import patch
 import pytest
+import jwt
 from django.http import JsonResponse
 from django.test import RequestFactory
+from django.conf import settings
 from api.middleware.access_token_middleware import AccessTokenMiddleware
 
 @pytest.mark.django_db
@@ -25,27 +27,43 @@ class TestAccessTokenMiddleware:
         request = self.factory.post('/some-url/')
         response = self.middleware(request)
         assert response.status_code == 401
-
         assert json.loads(response.content) == {
             'error': 'Authentication credentials were not provided'
         }
 
-    @patch('api.middleware.access_token_middleware.requests.get')
-    def test_invalid_token(self, mock_get):
+    def test_invalid_token(self):
         """Test when an invalid token is provided"""
         request = self.factory.post('/some-url/', HTTP_AUTHORIZATION='Bearer invalid-token')
-        mock_get.return_value.status_code = 401
-        response = self.middleware(request)
-        assert response.status_code == 401
 
+        with patch('jwt.decode', side_effect=jwt.InvalidTokenError):
+            response = self.middleware(request)
+
+        assert response.status_code == 401
         assert json.loads(response.content) == {'error': 'Invalid or expired token'}
 
-    @patch('api.middleware.access_token_middleware.requests.get')
-    def test_valid_token(self, mock_get):
+    def test_expired_token(self):
+        """Test when an expired token is provided"""
+        request = self.factory.post('/some-url/', HTTP_AUTHORIZATION='Bearer expired-token')
+
+        with patch('jwt.decode', side_effect=jwt.ExpiredSignatureError):
+            response = self.middleware(request)
+
+        assert response.status_code == 401
+        assert json.loads(response.content) == {'error': 'Invalid or expired token'}
+
+    def test_valid_token(self):
         """Test when a valid token is provided"""
-        request = self.factory.post('/some-url/', HTTP_AUTHORIZATION='Bearer valid-token')
-        mock_get.return_value.status_code = 200
+        valid_token = jwt.encode({'some': 'payload'}, settings.SECRET_KEY, algorithm='HS256')
+        request = self.factory.post('/some-url/', HTTP_AUTHORIZATION=f'Bearer {valid_token}')
+
         response = self.middleware(request)
         assert response.status_code == 200
+        assert json.loads(response.content) == {'success': True}
 
+    def test_signin_path(self):
+        """Test that the middleware allows requests to the sign-in path without token validation"""
+        request = self.factory.post('/api/signin/')
+        response = self.middleware(request)
+
+        assert response.status_code == 200
         assert json.loads(response.content) == {'success': True}
