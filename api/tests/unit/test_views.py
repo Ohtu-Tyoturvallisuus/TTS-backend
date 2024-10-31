@@ -294,7 +294,7 @@ class UploadImageTestCase(TestCase):
     def setup_method(self, client):
         """Setup method"""
         self.client = client
-        self.url = '/api/upload-image/'
+        self.url = '/api/upload-images/'
 
     def test_missing_image_file(self):
         """Test case where no image file is provided."""
@@ -308,7 +308,7 @@ class UploadImageTestCase(TestCase):
         file.name = 'test.txt'
         response = self.client.post(self.url, {'image': file}, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['message'], 'Invalid file type. Only images are allowed.')
+        self.assertEqual(response.data['message'], f'Invalid file type for {file.name}. Only images are allowed.')
 
     @patch('api.views.BlobServiceClient')
     def test_successful_image_upload(self, mock_blob_service_client):
@@ -327,8 +327,32 @@ class UploadImageTestCase(TestCase):
         response = self.client.post(self.url, {'image': file}, format='multipart')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn('url', response.data)
+        self.assertIn('urls', response.data)
         mock_blob_client.upload_blob.assert_called_once()
+
+    @patch('api.views.BlobServiceClient')
+    def test_successful_multiple_image_upload(self, mock_blob_service_client):
+        """Test successful multiple image upload."""
+        mock_blob_service = MagicMock()
+        mock_container_client = MagicMock()
+        mock_blob_client = MagicMock()
+
+        mock_blob_service_client.return_value = mock_blob_service
+        mock_blob_service.get_container_client.return_value = mock_container_client
+        mock_container_client.get_blob_client.return_value = mock_blob_client
+
+        file1 = io.BytesIO(b"fake image data 1")
+        file1.name = 'test1.jpg'
+        file2 = io.BytesIO(b"fake image data 2")
+        file2.name = 'test2.jpg'
+
+        response = self.client.post(self.url, {'image1': file1, 'image2': file2}, format='multipart')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn('urls', response.data)
+        print(response.data['urls'])
+        self.assertEqual(len(response.data['urls']), 2)
+        self.assertEqual(mock_blob_client.upload_blob.call_count, 2)
 
     @patch('api.views.BlobServiceClient')
     def test_http_error_during_upload(self, mock_blob_service_client):
