@@ -3,12 +3,13 @@
 
 from unittest.mock import patch, MagicMock
 import io
+import jwt
 import pytest
 from django.urls import reverse
 from django.test import TestCase
 from django.conf import settings
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APIClient, APITestCase
 from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
 from api.models import RiskNote
 from api.views import RetrieveImage
@@ -267,6 +268,7 @@ class TestSignInView:
     def setup_method(self):
         """Setup method"""
         self.url = reverse('signin')
+        self.client = APIClient()
 
     def test_signin(self, client):
         """Test SignIn view with POST request"""
@@ -288,6 +290,19 @@ class TestSignInView:
         response = client.post(self.url)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['error'] == "Username is required"
+
+    def test_signin_guest_user(self):
+        """Test SignIn view with POST request as guest user"""
+        data = {'guest': True, 'username': 'guestuser'}
+        response = self.client.post(self.url, data)
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data['message'] == "User 'guestuser' created and signed in successfully"
+        assert 'access_token' in response.data
+
+        decoded_token = jwt.decode(response.data['access_token'], settings.SECRET_KEY, algorithms=['HS256'])
+        assert decoded_token['username'] == 'guestuser'
+        assert 'user_id' in decoded_token
+        assert len(decoded_token['user_id']) == 64
 
 class UploadImageTestCase(TestCase):
     """Tests UploadImage view"""
