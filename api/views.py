@@ -5,6 +5,8 @@ import os
 import uuid
 import json
 import jwt
+import random
+import string
 from rest_framework import (
     generics,
     status,
@@ -178,10 +180,15 @@ class SignIn(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         username = request.data.get('username')
         id = request.data.get('id')
+        guest = request.data.get('guest')
         if not username:
             return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         _, created = User.objects.get_or_create(username=username)
+
+        if guest:
+            characters = string.ascii_letters + string.digits
+            id = ''.join(random.choice(characters) for _ in range(64))
 
         payload = {
             'username': username,
