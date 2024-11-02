@@ -3,7 +3,6 @@
 
 from unittest.mock import patch, MagicMock
 import io
-import string
 import pytest
 import jwt
 from django.urls import reverse
@@ -300,7 +299,11 @@ class TestSignInView:
         assert response.data['message'] == "User 'guestuser' created and signed in successfully"
         assert 'access_token' in response.data
 
-        decoded_token = jwt.decode(response.data['access_token'], settings.SECRET_KEY, algorithms=['HS256'])
+        decoded_token = jwt.decode(
+            response.data['access_token'],
+            settings.SECRET_KEY,
+            algorithms=['HS256']
+        )
         assert decoded_token['username'] == 'guestuser'
         assert 'user_id' in decoded_token
         assert len(decoded_token['user_id']) == 64
