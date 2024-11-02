@@ -3,8 +3,9 @@
 
 from unittest.mock import patch, MagicMock
 import io
-import jwt
+import string
 import pytest
+import jwt
 from django.urls import reverse
 from django.test import TestCase
 from django.conf import settings

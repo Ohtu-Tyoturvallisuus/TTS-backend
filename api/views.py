@@ -4,9 +4,9 @@
 import os
 import uuid
 import json
-import jwt
 import random
 import string
+import jwt
 from rest_framework import (
     generics,
     status,
