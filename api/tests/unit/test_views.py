@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.test import TestCase
 from django.conf import settings
 from rest_framework import status
-from rest_framework.test import APIClient, APITestCase
+from rest_framework.test import APITestCase
 from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
 from api.models import RiskNote
 from api.views import RetrieveImage
@@ -268,7 +268,6 @@ class TestSignInView:
     def setup_method(self):
         """Setup method"""
         self.url = reverse('signin')
-        self.client = APIClient()
 
     def test_signin(self, client):
         """Test SignIn view with POST request"""
@@ -291,10 +290,10 @@ class TestSignInView:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['error'] == "Username is required"
 
-    def test_signin_guest_user(self):
+    def test_signin_guest_user(self, client):
         """Test SignIn view with POST request as guest user"""
         data = {'guest': True, 'username': 'guestuser'}
-        response = self.client.post(self.url, data)
+        response = client.post(self.url, data)
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data['message'] == "User 'guestuser' created and signed in successfully"
         assert 'access_token' in response.data
@@ -308,7 +307,7 @@ class TestSignInView:
         assert 'user_id' in decoded_token
         assert len(decoded_token['user_id']) == 64
 
-class UploadImageTestCase(TestCase):
+class TestUploadImagesView(TestCase):
     """Tests UploadImage view"""
 
     def setup_method(self, client):
@@ -322,10 +321,17 @@ class UploadImageTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], 'No image files provided.')
 
-    def test_invalid_image_type(self):
+    @patch('api.views.BlobServiceClient')
+    def test_invalid_image_type(self, mock_blob_service_client):
         """Test case where an invalid file type is provided."""
+        mock_blob_service = MagicMock()
+        mock_container_client = MagicMock()
+        mock_blob_service_client.return_value = mock_blob_service
+        mock_blob_service.get_container_client.return_value = mock_container_client
+
         file = io.BytesIO(b"fake image data")
         file.name = 'test.txt'
+
         response = self.client.post(self.url, {'image': file}, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
@@ -412,6 +418,7 @@ class UploadImageTestCase(TestCase):
         response = self.client.post(self.url, {'image': file}, format='multipart')
 
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertEqual(response.data['message'], 'Azure Blob Storage error: Azure error')
         self.assertEqual(response.data['message'], 'Azure Blob Storage error: Azure error')
 
 class TestRetrieveImageView(APITestCase):
