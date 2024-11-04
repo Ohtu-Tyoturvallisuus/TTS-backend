@@ -419,7 +419,6 @@ class TestUploadImagesView(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(response.data['message'], 'Azure Blob Storage error: Azure error')
-        self.assertEqual(response.data['message'], 'Azure Blob Storage error: Azure error')
 
 class TestRetrieveImageView(APITestCase):
     """Tests RetrieveImage view"""
