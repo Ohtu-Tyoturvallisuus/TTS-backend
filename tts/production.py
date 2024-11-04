@@ -16,6 +16,8 @@ ALLOWED_HOSTS = [
   '20.105.232.53'
   ]
 
+SECRET_KEY = os.environ['SECRET_KEY']
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'

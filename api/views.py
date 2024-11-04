@@ -4,6 +4,9 @@
 import os
 import uuid
 import json
+import random
+import string
+import jwt
 from rest_framework import (
     generics,
     status,
@@ -176,10 +179,23 @@ class SignIn(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         username = request.data.get('username')
+        id = request.data.get('id')
+        guest = request.data.get('guest')
         if not username:
             return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         _, created = User.objects.get_or_create(username=username)
+
+        if guest:
+            characters = string.ascii_letters + string.digits
+            id = ''.join(random.choice(characters) for _ in range(64))
+
+        payload = {
+            'username': username,
+            'user_id': id,
+        }
+
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
 
         if created:
             message = f"User '{username}' created and signed in successfully"
@@ -188,7 +204,7 @@ class SignIn(generics.CreateAPIView):
             message = f"User '{username}' signed in successfully"
             status_code = status.HTTP_200_OK
 
-        return Response({"message": message}, status=status_code)
+        return Response({"message": message, 'access_token': token}, status=status_code)
 
 # <POST> /api/transcribe/
 class TranscribeAudio(generics.CreateAPIView):
@@ -360,7 +376,13 @@ class UploadImages(generics.CreateAPIView):
             for image in images:
                 if not self.validate_image(image):
                     return Response(
-                        {'status': 'error', 'message': f'Invalid file type for {image.name}. Only images are allowed.'},
+                        {
+                            'status': 'error',
+                            'message': (
+                                f'Invalid file type for {image.name}. '
+                                'Only images are allowed.'
+                            )
+                        },
                         status=status.HTTP_400_BAD_REQUEST
                     )
 
@@ -378,7 +400,10 @@ class UploadImages(generics.CreateAPIView):
                 )
                 uploaded_urls.append(blob_url)
 
-            return Response({'status': 'success', 'urls': uploaded_urls}, status=status.HTTP_201_CREATED)
+            return Response(
+                {'status': 'success', 'urls': uploaded_urls},
+                status=status.HTTP_201_CREATED
+            )
 
         except (HttpResponseError, AzureError) as e:
             if isinstance(e, HttpResponseError):
