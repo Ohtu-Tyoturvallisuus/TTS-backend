@@ -30,6 +30,7 @@ class RiskNote(models.Model):
     description = models.TextField(blank=True)
     status = models.TextField(blank=True)
     risk_type = models.TextField(blank=True)
+    images = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

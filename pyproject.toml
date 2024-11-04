@@ -28,6 +28,7 @@ pydub = "^0.25.1"
 azure-cognitiveservices-speech = "^1.40.0"
 azure-storage-blob = "^12.23.1"
 requests = "^2.32.3"
+uuid = "^1.30"
 pyjwt = "^2.9.0"
 
 [tool.poetry.group.dev.dependencies]

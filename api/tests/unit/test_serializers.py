@@ -173,6 +173,7 @@ def test_risk_note_serializer(create_risk_note):
         'description': '',
         'status': '',
         'risk_type': '',
+        'images': [],
         'created_at': created_at_local,
     }
 
@@ -185,6 +186,7 @@ def test_risk_note_deserializer(create_risk_note):
         'description': 'Updated Description',
         'status': 'Updated Status',
         'risk_type': 'Updated Risk Type',
+        'images': ['image1', 'image2'],
     }
     serializer = RiskNoteSerializer(risk_note, data=data)
     assert serializer.is_valid()
@@ -192,7 +194,8 @@ def test_risk_note_deserializer(create_risk_note):
         'note': 'New Risk Note',
         'description': 'Updated Description',
         'status': 'Updated Status',
-        'risk_type': 'Updated Risk Type'
+        'risk_type': 'Updated Risk Type',
+        'images': ['image1', 'image2'],
     }
 
 def test_signin_serializer():
