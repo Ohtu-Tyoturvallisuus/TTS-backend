@@ -7,6 +7,7 @@ import json
 import random
 import string
 import jwt
+import requests
 from rest_framework import (
     generics,
     status,
@@ -508,3 +509,42 @@ class RetrieveParams(generics.RetrieveAPIView):
             'tenant_id': settings.TENANT_ID,
             'status': status.HTTP_200_OK
         })
+
+class TranslateText(generics.CreateAPIView):
+    def create(self, request, *args, **kwargs):
+        key = settings.TRANSLATOR_KEY
+        endpoint = settings.TRANSLATOR_ENDPOINT
+        location = settings.TRANSLATOR_SERVICE_REGION
+
+        path = '/translate'
+        constructed_url = endpoint + path
+
+        source_language = request.data.get('from', 'en')
+        target_languages = request.data.get('to', [])
+        
+        if not isinstance(target_languages, list) or not target_languages:
+            return Response({'error': 'Invalid or missing "to" parameter'}, status=status.HTTP_400_BAD_REQUEST)
+
+        params = {
+            'api-version': '3.0',
+            'from': source_language,
+            'to': target_languages
+        }
+
+        headers = {
+            'Ocp-Apim-Subscription-Key': key,
+            'Ocp-Apim-Subscription-Region': location,
+            'Content-type': 'application/json',
+            'X-ClientTraceId': str(uuid.uuid4())
+        }
+
+        body = [{
+            'text': request.data.get('text', '')
+        }]
+
+        try:
+            response = requests.post(constructed_url, params=params, headers=headers, json=body)
+            response_data = response.json()
+            return Response(response_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

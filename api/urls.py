@@ -91,6 +91,11 @@ urlpatterns = [
         views.RetrieveParams.as_view(),
         name='retrieve_params'
     ),
+    path(
+        'translate/',
+        views.TranslateText.as_view(),
+        name='translate_text'
+    )
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
