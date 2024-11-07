@@ -94,7 +94,7 @@ urlpatterns = [
     path(
         'translate/',
         views.TranslateText.as_view(),
-        name='translate_text'
+        name='translate-text'
     )
 ]
 

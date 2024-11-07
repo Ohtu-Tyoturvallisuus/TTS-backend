@@ -5,6 +5,7 @@ from unittest.mock import patch, MagicMock
 import io
 import pytest
 import jwt
+from requests.exceptions import RequestException
 from django.urls import reverse
 from django.test import TestCase
 from django.conf import settings
@@ -573,3 +574,86 @@ class TestRetrieveParamsView:
         assert response.data['client_id'] == settings.CLIENT_ID
         assert response.data['tenant_id'] == settings.TENANT_ID
         assert response.data['status'] == status.HTTP_200_OK
+
+@pytest.mark.django_db
+class TestTranslateTextView:
+    """Tests TranslateText view"""
+
+    @pytest.fixture(autouse=True)
+    def setup_method(self, client):
+        """Setup method to initialize the API client"""
+        self.client = client
+        self.url = reverse('translate-text')
+        self.valid_payload = {
+            'text': 'Hello, world!',
+            'from': 'en',
+            'to': ['fr', 'es']
+        }
+        self.invalid_payload_missing_to = {
+            'text': 'Hello, world!',
+            'from': 'en'
+        }
+        self.invalid_payload_invalid_to = {
+            'text': 'Hello, world!',
+            'from': 'en',
+            'to': 'fr'
+        }
+        self.invalid_payload_missing_text = {
+            'from': 'en',
+            'to': ['fr', 'es']
+        }
+
+    @patch('requests.post')
+    def test_translate_text_success(self, mock_post):
+        """Test TranslateText view with valid payload"""
+        mock_response = {
+            'translations': [
+                {'to': 'fr', 'text': 'Bonjour, le monde!'},
+                {'to': 'es', 'text': '¡Hola, mundo!'}
+            ]
+        }
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.json.return_value = [mock_response]
+
+        response = self.client.post(self.url, self.valid_payload, format='json')
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            'fr': 'Bonjour, le monde!',
+            'es': '¡Hola, mundo!'
+        }
+
+    def test_translate_text_missing_to(self):
+        """Test TranslateText view with missing 'to' parameter"""
+        response = self.client.post(self.url, self.invalid_payload_missing_to, format='json')
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json() == {'error': 'Invalid or missing "to" parameter'}
+
+    def test_translate_text_invalid_to(self):
+        """Test TranslateText view with invalid 'to' parameter"""
+        response = self.client.post(self.url, self.invalid_payload_invalid_to, format='json')
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json() == {'error': 'Invalid or missing "to" parameter'}
+
+    def test_translate_text_missing_text(self):
+        """Test TranslateText view with missing 'text' parameter"""
+        response = self.client.post(self.url, self.invalid_payload_missing_text, format='json')
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json() == {'error': 'Invalid or missing "text" parameter'}
+
+    @patch('requests.post')
+    def test_translate_text_request_exception(self, mock_post):
+        """Test TranslateText view handling request exception"""
+        mock_post.side_effect = RequestException("Request error")
+
+        response = self.client.post(self.url, self.valid_payload, format='json')
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+        assert response.json() == {'error': 'Request error occurred: Request error'}
+
+    @patch('api.views.TranslateText.translate_text')
+    def test_translate_text_internal_error(self, mock_translate_text):
+        """Test TranslateText view handling internal error"""
+        mock_translate_text.side_effect = RequestException("Internal error")
+
+        response = self.client.post(self.url, self.valid_payload, format='json')
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+        assert response.json() == {'error': 'Internal error'}
