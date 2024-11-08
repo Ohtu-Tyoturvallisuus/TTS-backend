@@ -7,6 +7,7 @@ import json
 import random
 import string
 import jwt
+import requests
 from rest_framework import (
     generics,
     status,
@@ -33,6 +34,7 @@ from azure.cognitiveservices.speech import (
 )
 from azure.storage.blob import BlobServiceClient
 from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
+from requests.exceptions import HTTPError, Timeout, RequestException
 
 from .models import Project, RiskNote, Survey
 from .serializers import (
@@ -508,3 +510,77 @@ class RetrieveParams(generics.RetrieveAPIView):
             'tenant_id': settings.TENANT_ID,
             'status': status.HTTP_200_OK
         })
+
+# Helper function to get Azure translation parameters
+def get_azure_translation_params():
+    """Helper function to get Azure translation parameters"""
+    return {
+        'key': settings.TRANSLATOR_KEY,
+        'endpoint': settings.TRANSLATOR_ENDPOINT,
+        'location': settings.TRANSLATOR_SERVICE_REGION
+    }
+
+# <POST> /api/translate/
+class TranslateText(generics.CreateAPIView):
+    """Class for translating text using Azure Translator API"""
+    def create(self, request, *args, **kwargs):
+        azure_params = get_azure_translation_params()
+
+        source_language = request.data.get('from', 'fi')
+        target_languages = request.data.get('to', [])
+        text = request.data.get('text', None)
+
+        if not isinstance(target_languages, list) or not target_languages:
+            return Response(
+                {'error': 'Invalid or missing "to" parameter'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not text:
+            return Response(
+                {'error': 'Invalid or missing "text" parameter'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            response = self.translate_text(azure_params, source_language, target_languages, text)
+            return Response(response, status=status.HTTP_200_OK)
+        except (HTTPError, Timeout, RequestException) as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    # Helper function to translate text using Azure Translator API
+    def translate_text(self, azure_params, source_language, target_languages, text):
+        """Translate text using Azure Translator API"""
+        params = {
+            'api-version': '3.0',
+            'from': source_language,
+            'to': target_languages
+        }
+
+        headers = {
+            'Ocp-Apim-Subscription-Key': azure_params['key'],
+            'Ocp-Apim-Subscription-Region': azure_params['location'],
+            'Content-type': 'application/json',
+            'X-ClientTraceId': str(uuid.uuid4())
+        }
+
+        body = [{'text': text}]
+
+        try:
+            response = requests.post(
+                f"{azure_params['endpoint']}/translate",
+                params=params,
+                headers=headers,
+                json=body,
+                timeout=10
+            )
+            response.raise_for_status()
+            response_data = response.json()
+
+            return {
+                translation['to']: translation['text']
+                for translation in response_data[0]['translations']
+            }
+        except RequestException as e:
+            error_message = f'Request error occurred: {str(e)}'
+            raise RequestException(error_message) from e
