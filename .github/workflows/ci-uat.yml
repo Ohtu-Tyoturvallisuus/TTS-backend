@@ -1,0 +1,86 @@
+name: CI-HazardHunt-UAT
+
+on:
+  pull_request:
+    branches:
+      - uat
+  merge_group:
+    types: [checks_requested]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: github_actions
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python version 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Create .env file
+        run: |
+          echo "SECRET_KEY=$DJANGO_SECRET_KEY" > .env
+          echo "SPEECH_KEY=$AZURE_SPEECH_KEY" >> .env
+          echo "SPEECH_SERVICE_REGION=$AZURE_SPEECH_SERVICE_REGION" >> .env
+          echo "STORAGE_ACCOUNT_KEY=$AZURE_STORAGE_ACCOUNT_KEY" >> .env
+          echo "STORAGE_ACCOUNT_NAME=$AZURE_STORAGE_ACCOUNT_NAME" >> .env
+          echo "CONTAINER_NAME=$AZURE_CONTAINER_NAME" >> .env
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_SERVICE_REGION: ${{ secrets.AZURE_SPEECH_SERVICE_REGION }}
+          AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
+          AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
+          AZURE_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+
+      - name: Install ffmpeg
+        run: sudo apt-get install ffmpeg
+
+      - name: Run migrations
+        run: poetry run invoke migrate
+
+      - name: Run Pylint
+        run: poetry run pylint .
+
+      - name: Create media folder for unit tests
+        run: mkdir -p /home/runner/work/TTS-backend/TTS-backend/media
+
+      - name: Run unit tests
+        run: poetry run pytest --cov=api --cov-report=xml
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Remove .env file
+        run: rm .env
