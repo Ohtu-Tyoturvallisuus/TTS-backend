@@ -5,9 +5,9 @@
 name: CD-HazardHunt-UAT
 
 on:
-  #push:
-  #  branches:
-  #    - uat
+  push:
+    branches:
+      - uat
   workflow_dispatch:
 
 jobs:
