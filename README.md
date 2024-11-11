@@ -1,6 +1,7 @@
 # Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
-<p align="center">
+<p>
+  <!-- Main branch badges -->
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-main.yml" alt="Continuous Integration">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-main.yml/badge.svg"/>
   </a>
@@ -12,7 +13,16 @@
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/blob/main/LICENSE" alt="License">
     <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-backend"/>
-  </a>  
+  </a>
+
+  <!-- UAT branch badges -->
+  <br />
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-uat.yml" alt="Continuous Integration">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-uat.yml/badge.svg"/>
+  </a>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/uat_tts-app-uat.yml" alt="Continuous Deployment">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/uat_tts-app-uat.yml/badge.svg"/>
+  </a>
 </p>
 
 This project is part of the autumn 2024 Software Engineering project course [TKT20007](https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/) at the University of Helsinki.
