@@ -1,6 +1,6 @@
 # Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
-<p align="center">
+<p>
   <!-- Main branch badges -->
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-main.yml" alt="Continuous Integration">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/ci-main.yml/badge.svg"/>
