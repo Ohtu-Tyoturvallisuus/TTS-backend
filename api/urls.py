@@ -95,6 +95,11 @@ urlpatterns = [
         'translate/',
         views.TranslateText.as_view(),
         name='translate-text'
+    ),
+    path(
+        'filled-surveys/',
+        views.FilledSurveys.as_view(),
+        name='filled-surveys'
     )
 ]
 

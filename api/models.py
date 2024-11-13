@@ -1,5 +1,6 @@
 """ api/models.py """
 
+import uuid
 from django.db import models
 
 class Project(models.Model):
@@ -35,3 +36,18 @@ class RiskNote(models.Model):
 
     def __str__(self):
         return f"{self.note} ({self.created_at})"
+
+class Account(models.Model):
+    """Class for Account model"""
+    username = models.CharField(max_length=150)
+    user_id = models.CharField(max_length=64, unique=True, default=uuid.uuid4().hex)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.username} ({self.user_id})"
+    
+class AccountSurvey(models.Model):
+    """Intermediate model to represent a user's filled survey"""
+    account = models.ForeignKey(Account, related_name="filled_surveys", on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, related_name="filled_by", on_delete=models.CASCADE)
+    filled_at = models.DateTimeField(auto_now_add=True)

@@ -17,6 +17,7 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import get_user_model
@@ -36,7 +37,7 @@ from azure.storage.blob import BlobServiceClient
 from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
 from requests.exceptions import HTTPError, Timeout, RequestException
 
-from .models import Project, RiskNote, Survey
+from .models import Project, RiskNote, Survey, Account, AccountSurvey
 from .serializers import (
     ProjectSerializer,
     ProjectListSerializer,
@@ -107,8 +108,16 @@ class SurveyList(generics.ListCreateAPIView):
             raise serializers.ValidationError(
                 {"project": "A project is required to create a survey."}
             )
+        
+        auth_header = self.request.headers.get('Authorization')
+        token = auth_header.split(' ')[1]
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        user_id = payload.get('user_id')
+        account = get_object_or_404(Account, user_id=user_id)
+        
         project = get_object_or_404(Project, pk=project_id)
-        serializer.save(project=project)
+        survey = serializer.save(project=project)
+        AccountSurvey.objects.create(account=account, survey=survey)
 
 # <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
 # /api/projects/<project_id>/surveys/<survey_id> or /api/surveys/<id>/
@@ -186,8 +195,6 @@ class SignIn(generics.CreateAPIView):
         if not username:
             return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        _, created = User.objects.get_or_create(username=username)
-
         if guest:
             characters = string.ascii_letters + string.digits
             id = ''.join(random.choice(characters) for _ in range(64))
@@ -199,6 +206,7 @@ class SignIn(generics.CreateAPIView):
 
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
 
+        _, created = Account.objects.get_or_create(username=username, user_id=id)
         if created:
             message = f"User '{username}' created and signed in successfully"
             status_code = status.HTTP_201_CREATED
@@ -584,3 +592,54 @@ class TranslateText(generics.CreateAPIView):
         except RequestException as e:
             error_message = f'Request error occurred: {str(e)}'
             raise RequestException(error_message) from e
+
+# <GET> /api/filled-surveys/
+class FilledSurveys(APIView):
+    """View to retrieve all surveys filled by the currently signed-in account"""
+
+    def get(self, request):
+        token = request.headers.get('Authorization').split()[1]
+        try:
+            decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = decoded_token['user_id']
+            
+            # Retrieve the Account associated with the user_id
+            account = Account.objects.get(user_id=user_id)
+            
+            # Retrieve all surveys filled by this account using the AccountSurvey model
+            filled_survey_ids = AccountSurvey.objects.filter(account=account).values_list('survey_id', flat=True)
+            filled_surveys = Survey.objects.filter(id__in=filled_survey_ids)
+            
+            # Serialize and format the filled surveys for response
+            filled_surveys_data = [
+                {
+                    "id": survey.id,
+                    "project": survey.project.project_name,  # Project name
+                    "description": survey.description,
+                    "task": survey.task,
+                    "scaffold_type": survey.scaffold_type,
+                    "created_at": survey.created_at,
+                    "risk_notes": [
+                        {
+                            "id": risk_note.id,
+                            "note": risk_note.note,
+                            "description": risk_note.description,
+                            "status": risk_note.status,
+                            "risk_type": risk_note.risk_type,
+                            "images": risk_note.images,
+                            "created_at": risk_note.created_at
+                        }
+                        for risk_note in survey.risk_notes.all()  # Retrieve related RiskNotes
+                    ]
+                } 
+                for survey in filled_surveys
+            ]
+            
+            return Response({"filled_surveys": filled_surveys_data}, status=status.HTTP_200_OK)
+        
+        except jwt.ExpiredSignatureError:
+            return Response({"error": "Token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
+        except Account.DoesNotExist:
+            return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
