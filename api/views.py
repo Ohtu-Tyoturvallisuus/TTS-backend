@@ -602,39 +602,35 @@ class FilledSurveys(APIView):
         try:
             decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
             user_id = decoded_token['user_id']
-            
-            # Retrieve the Account associated with the user_id
+
             account = Account.objects.get(user_id=user_id)
-            
-            # Retrieve all surveys filled by this account using the AccountSurvey model
+
             filled_survey_ids = AccountSurvey.objects.filter(account=account).values_list('survey_id', flat=True)
-            filled_surveys = Survey.objects.filter(id__in=filled_survey_ids)
-            
-            # Serialize and format the filled surveys for response
-            filled_surveys_data = [
-                {
+            filled_surveys = Survey.objects.filter(id__in=filled_survey_ids).order_by('-created_at')
+
+            filled_surveys_data = []
+            for survey in filled_surveys:
+                risk_notes_dict = {
+                    risk_note.note: {
+                        "description": risk_note.description,
+                        "images": risk_note.images,
+                        "risk_type": risk_note.risk_type,
+                        "status": risk_note.status,
+                    }
+                    for risk_note in survey.risk_notes.all()
+                }
+
+                filled_surveys_data.append({
                     "id": survey.id,
-                    "project": survey.project.project_name,  # Project name
+                    "project_id": survey.project.project_id,
+                    "project_name": survey.project.project_name,
                     "description": survey.description,
                     "task": survey.task,
                     "scaffold_type": survey.scaffold_type,
                     "created_at": survey.created_at,
-                    "risk_notes": [
-                        {
-                            "id": risk_note.id,
-                            "note": risk_note.note,
-                            "description": risk_note.description,
-                            "status": risk_note.status,
-                            "risk_type": risk_note.risk_type,
-                            "images": risk_note.images,
-                            "created_at": risk_note.created_at
-                        }
-                        for risk_note in survey.risk_notes.all()  # Retrieve related RiskNotes
-                    ]
-                } 
-                for survey in filled_surveys
-            ]
-            
+                    "risk_notes": risk_notes_dict,
+                })
+
             return Response({"filled_surveys": filled_surveys_data}, status=status.HTTP_200_OK)
         
         except jwt.ExpiredSignatureError:
