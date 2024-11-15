@@ -6,7 +6,6 @@ from rest_framework.permissions import IsAdminUser
 from api.models import Project
 from api.serializers import ProjectSerializer, ProjectListSerializer
 
-
 # <GET, POST, HEAD, OPTIONS> /api/projects/
 class ProjectList(generics.ListCreateAPIView):
     """Class for ProjectList"""

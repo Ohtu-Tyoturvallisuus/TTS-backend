@@ -22,7 +22,7 @@ class SignIn(generics.CreateAPIView):
         if not username:
             return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if guest:
+        if guest or not user_id:
             characters = string.ascii_letters + string.digits
             user_id = ''.join(random.choice(characters) for _ in range(64))
 

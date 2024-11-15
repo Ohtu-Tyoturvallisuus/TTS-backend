@@ -15,6 +15,7 @@ class TestSignInView:
     def setup_method(self):
         """Setup method"""
         self.url = reverse('signin')
+
     def test_signin(self, client):
         """Test SignIn view with POST request"""
         data = {'username': 'testuser'}
@@ -22,13 +23,13 @@ class TestSignInView:
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data['message'] == "User 'testuser' created and signed in successfully"
 
-    def test_signin_existing_user(self, client, create_user):
+    def test_signin_existing_user(self, client, create_account):
         """Test SignIn view with POST request for existing user"""
-        user = create_user
-        data = {'username': user.username}
+        account = create_account
+        data = {'username': account.username, 'id': account.user_id}
         response = client.post(self.url, data)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['message'] == f"User '{user.username}' signed in successfully"
+        assert response.data['message'] == f"User '{account.username}' signed in successfully"
 
     def test_signin_missing_username(self, client):
         """Test SignIn view with POST request for missing username"""

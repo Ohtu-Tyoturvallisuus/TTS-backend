@@ -12,7 +12,6 @@ from rest_framework import (
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 from api.models import Account, AccountSurvey, Project, Survey
 from api.serializers import SurveySerializer
 
@@ -43,9 +42,19 @@ class SurveyList(generics.ListCreateAPIView):
             )
 
         auth_header = self.request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            raise serializers.ValidationError(
+                {"error": "Authorization header is required"}
+            )
         token = auth_header.split(' ')[1]
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-        user_id = payload.get('user_id')
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+        except jwt.ExpiredSignatureError as exc:
+            raise serializers.ValidationError({"error": "Token has expired"}) from exc
+        except jwt.InvalidTokenError as exc:
+            raise serializers.ValidationError({"error": "Invalid token"}) from exc
+
         account = get_object_or_404(Account, user_id=user_id)
 
         project = get_object_or_404(Project, pk=project_id)
@@ -67,8 +76,14 @@ class FilledSurveys(APIView):
 
     def get(self, request):
         """Retrieve all surveys filled by the currently signed-in account"""
-        token = request.headers.get('Authorization').split()[1]
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return Response(
+                {"error": "Authorization header is required"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
         try:
+            token = auth_header.split(' ')[1]
             decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
             user_id = decoded_token['user_id']
 
