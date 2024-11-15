@@ -1,6 +1,6 @@
 """ api/tests/unit/test_models.py """
 
-from api.models import Project, Survey, RiskNote
+from api.models import Project, Survey, RiskNote, Account
 
 def test_project_str():
     """Test Project model __str__ method"""
@@ -24,3 +24,8 @@ def test_risk_note_str():
                     task='Test Task', scaffold_type='Test Scaffold')
     risk_note = RiskNote(survey=survey, note='Test Risk Note')
     assert str(risk_note) == f'{risk_note.note} ({risk_note.created_at})'
+
+def test_account_str():
+    """Test Account model __str__ method"""
+    account = Account(username='test_user')
+    assert str(account) == f'{account.username} ({account.user_id})'

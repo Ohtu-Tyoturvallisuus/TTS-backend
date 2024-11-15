@@ -1,220 +1,35 @@
-""" api/views.py """
-# pylint: disable=redefined-builtin
+""" api/views/azure_views.py """
 
+import json
 import os
 import uuid
-import json
-import random
-import string
-import jwt
 import requests
-from rest_framework import (
-    generics,
-    status,
-    permissions
-)
-from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAdminUser
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
-from rest_framework.views import APIView
-from rest_framework import serializers
-from django.shortcuts import get_object_or_404, render
-from django.contrib.auth import get_user_model
-from django.conf import settings
-from django.http import HttpResponse
-
-from pydub import AudioSegment
 from azure.cognitiveservices.speech import (
-    SpeechConfig,
     AudioConfig,
-    SpeechRecognizer,
-    ResultReason,
     CancellationReason,
+    ResultReason,
+    SpeechConfig,
+    SpeechRecognizer,
     translation
 )
 from azure.storage.blob import BlobServiceClient
-from azure.core.exceptions import AzureError, HttpResponseError, ResourceNotFoundError
-from requests.exceptions import HTTPError, Timeout, RequestException
-
-from .models import Project, RiskNote, Survey, Account, AccountSurvey
-from .serializers import (
-    ProjectSerializer,
-    ProjectListSerializer,
-    SurveySerializer,
-    RiskNoteSerializer,
-    UserSerializer,
-    SignInSerializer,
-    AudioUploadSerializer
+from azure.core.exceptions import (
+    AzureError,
+    HttpResponseError,
+    ResourceNotFoundError
 )
+from django.conf import settings
+from django.http import HttpResponse
+from pydub import AudioSegment
+from requests.exceptions import (
+    HTTPError,
+    RequestException,
+    Timeout
+)
+from rest_framework import generics, status
+from rest_framework.response import Response
 
-User = get_user_model()
-
-# Url-links to the API endpoints
-@api_view(["GET"])
-def api_root(request, format=None):
-    """ API root view """
-    context = {
-        "projects_url": reverse("project-list", request=request, format=format),
-        "surveys_url": reverse("survey-list", request=request, format=format),
-    }
-    return render(request, 'api/index.html', context)
-
-# <GET, POST, HEAD, OPTIONS> /api/projects/
-class ProjectList(generics.ListCreateAPIView):
-    """Class for ProjectList"""
-    queryset = Project.objects.all()
-    serializer_class = ProjectListSerializer
-
-    def get_permissions(self):
-        if self.request.method == 'GET':
-            return [permissions.AllowAny()]
-        return [IsAdminUser()]
-
-# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS> /api/projects/<id>/
-class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
-    """Class for ProjectDetail"""
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-    permission_classes = (IsAdminUser,)
-    lookup_field = 'pk'
-
-    def get_permissions(self):
-        if self.request.method == 'GET':
-            return [permissions.AllowAny()]
-        return [IsAdminUser()]
-
-# <GET, POST, HEAD, OPTIONS> /api/projects/<id>/surveys/ or /api/surveys/
-class SurveyList(generics.ListCreateAPIView):
-    """Class for SurveyList"""
-    serializer_class = SurveySerializer
-
-    def get_queryset(self):
-        project_id = self.kwargs.get('project_pk')
-        if project_id:
-            return Survey.objects.filter(project_id=project_id)
-        return Survey.objects.all()
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        project_id = self.kwargs.get('project_pk')
-        if project_id:
-            context['project'] = Project.objects.get(pk=project_id)
-        return context
-
-    def perform_create(self, serializer):
-        project_id = self.kwargs.get('project_pk')
-        if not project_id:
-            raise serializers.ValidationError(
-                {"project": "A project is required to create a survey."}
-            )
-        
-        auth_header = self.request.headers.get('Authorization')
-        token = auth_header.split(' ')[1]
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-        user_id = payload.get('user_id')
-        account = get_object_or_404(Account, user_id=user_id)
-        
-        project = get_object_or_404(Project, pk=project_id)
-        survey = serializer.save(project=project)
-        AccountSurvey.objects.create(account=account, survey=survey)
-
-# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
-# /api/projects/<project_id>/surveys/<survey_id> or /api/surveys/<id>/
-class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
-    """Class for SurveyDetail"""
-    queryset = Survey.objects.all()
-    serializer_class = SurveySerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    lookup_field = 'pk'
-
-# <GET, POST, HEAD, OPTIONS> /api/surveys/<id>/risk_notes/
-# or /api/projects/<project_id>/surveys/<survey_id>/risk_notes/
-# + Supports list of risk_notes as payload
-class RiskNoteCreate(generics.ListCreateAPIView):
-    """
-    Handles the creation and listing of RiskNote objects. 
-    Supports a list of RiskNote:s as payload.
-    """
-    serializer_class = RiskNoteSerializer
-
-    def get_queryset(self):
-        survey_id = self.kwargs.get('survey_pk') # no need to check if survey_id is None
-        return RiskNote.objects.filter(survey_id=survey_id)
-
-    def get_serializer_context(self):
-        # Pass the survey to the serializer context
-        context = super().get_serializer_context()
-        survey_id = self.kwargs.get('survey_pk')
-        if survey_id:
-            context['survey'] = get_object_or_404(Survey, id=survey_id)
-        return context
-
-    def perform_create(self, serializer):
-        survey_id = self.kwargs.get('survey_pk') # no need to check if survey_id is None
-        survey = get_object_or_404(Survey, pk=survey_id)
-        serializer.save(survey=survey)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
-# /api/projects/<project_id>/surveys/<survey_id>/risk_notes/<id>/
-class RiskNoteDetail(generics.RetrieveUpdateDestroyAPIView):
-    """Class for RiskNoteDetail"""
-    queryset = RiskNote.objects.all()
-    serializer_class = RiskNoteSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    lookup_field = 'pk'
-
-# <GET, POST, HEAD, OPTIONS> /api/users/
-class UserList(generics.ListCreateAPIView):
-    """Class for UserList"""
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-# <GET, PUT, PATCH, DELETE, HEAD, OPTIONS> /api/users/<id>/
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    """Class for UserDetail"""
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'pk'
-
-# <POST> /api/signin/
-class SignIn(generics.CreateAPIView):
-    """Class for SignIn"""
-    serializer_class = SignInSerializer
-
-    def create(self, request, *args, **kwargs):
-        username = request.data.get('username')
-        id = request.data.get('id')
-        guest = request.data.get('guest')
-        if not username:
-            return Response({"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        if guest:
-            characters = string.ascii_letters + string.digits
-            id = ''.join(random.choice(characters) for _ in range(64))
-
-        payload = {
-            'username': username,
-            'user_id': id,
-        }
-
-        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-
-        _, created = Account.objects.get_or_create(username=username, user_id=id)
-        if created:
-            message = f"User '{username}' created and signed in successfully"
-            status_code = status.HTTP_201_CREATED
-        else:
-            message = f"User '{username}' signed in successfully"
-            status_code = status.HTTP_200_OK
-
-        return Response({"message": message, 'access_token': token}, status=status_code)
+from api.serializers import AudioUploadSerializer
 
 # <POST> /api/transcribe/
 class TranscribeAudio(generics.CreateAPIView):
@@ -592,50 +407,3 @@ class TranslateText(generics.CreateAPIView):
         except RequestException as e:
             error_message = f'Request error occurred: {str(e)}'
             raise RequestException(error_message) from e
-
-# <GET> /api/filled-surveys/
-class FilledSurveys(APIView):
-    """View to retrieve all surveys filled by the currently signed-in account"""
-
-    def get(self, request):
-        token = request.headers.get('Authorization').split()[1]
-        try:
-            decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = decoded_token['user_id']
-
-            account = Account.objects.get(user_id=user_id)
-
-            filled_survey_ids = AccountSurvey.objects.filter(account=account).values_list('survey_id', flat=True)
-            filled_surveys = Survey.objects.filter(id__in=filled_survey_ids).order_by('-created_at')
-
-            filled_surveys_data = []
-            for survey in filled_surveys:
-                risk_notes_dict = {
-                    risk_note.note: {
-                        "description": risk_note.description,
-                        "images": risk_note.images,
-                        "risk_type": risk_note.risk_type,
-                        "status": risk_note.status,
-                    }
-                    for risk_note in survey.risk_notes.all()
-                }
-
-                filled_surveys_data.append({
-                    "id": survey.id,
-                    "project_id": survey.project.project_id,
-                    "project_name": survey.project.project_name,
-                    "description": survey.description,
-                    "task": survey.task,
-                    "scaffold_type": survey.scaffold_type,
-                    "created_at": survey.created_at,
-                    "risk_notes": risk_notes_dict,
-                })
-
-            return Response({"filled_surveys": filled_surveys_data}, status=status.HTTP_200_OK)
-        
-        except jwt.ExpiredSignatureError:
-            return Response({"error": "Token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
-        except jwt.InvalidTokenError:
-            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
-        except Account.DoesNotExist:
-            return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)

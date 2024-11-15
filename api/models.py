@@ -45,7 +45,7 @@ class Account(models.Model):
 
     def __str__(self):
         return f"{self.username} ({self.user_id})"
-    
+
 class AccountSurvey(models.Model):
     """Intermediate model to represent a user's filled survey"""
     account = models.ForeignKey(Account, related_name="filled_surveys", on_delete=models.CASCADE)
