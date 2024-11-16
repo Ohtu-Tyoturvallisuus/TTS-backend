@@ -1,4 +1,4 @@
-""" api/tests/unit/test_views.py """
+""" api/tests/unit/views/azure_views_tests/test_transcribe.py """
 # pylint: disable=attribute-defined-outside-init
 
 import json
@@ -28,9 +28,9 @@ class TestTranscribeAudioView:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.json() == {"error": "Audio file is required"}
 
-    @patch('api.views.AudioConfig')
-    @patch('api.views.SpeechRecognizer')
-    @patch('api.views.SpeechConfig')
+    @patch('api.views.azure_views.AudioConfig')
+    @patch('api.views.azure_views.SpeechRecognizer')
+    @patch('api.views.azure_views.SpeechConfig')
     def test_successful_transcription(
         self, mock_speech_config, mock_speech_recognizer, mock_audio_config
     ):
@@ -51,9 +51,9 @@ class TestTranscribeAudioView:
         mock_speech_recognizer.assert_called_once()
         mock_recognizer.recognize_once.assert_called_once()
 
-    @patch('api.views.AudioConfig')
-    @patch('api.views.SpeechRecognizer')
-    @patch('api.views.SpeechConfig')
+    @patch('api.views.azure_views.AudioConfig')
+    @patch('api.views.azure_views.SpeechRecognizer')
+    @patch('api.views.azure_views.SpeechConfig')
     def test_transcription_no_speech_recognized(
         self, mock_speech_config, mock_speech_recognizer, mock_audio_config
     ):
@@ -72,9 +72,9 @@ class TestTranscribeAudioView:
         mock_audio_config.assert_called_once()
         mock_recognizer.recognize_once.assert_called_once()
 
-    @patch('api.views.AudioConfig')
-    @patch('api.views.SpeechRecognizer')
-    @patch('api.views.SpeechConfig')
+    @patch('api.views.azure_views.AudioConfig')
+    @patch('api.views.azure_views.SpeechRecognizer')
+    @patch('api.views.azure_views.SpeechConfig')
     def test_transcription_recognition_canceled(
         self, mock_speech_config, mock_speech_recognizer, mock_audio_config
     ):
@@ -94,9 +94,9 @@ class TestTranscribeAudioView:
         mock_audio_config.assert_called_once()
         mock_recognizer.recognize_once.assert_called_once()
 
-    @patch('api.views.AudioConfig')
-    @patch('api.views.SpeechRecognizer')
-    @patch('api.views.SpeechConfig')
+    @patch('api.views.azure_views.AudioConfig')
+    @patch('api.views.azure_views.SpeechRecognizer')
+    @patch('api.views.azure_views.SpeechConfig')
     def test_transcribe_unexpected_result_reason(
         self, mock_speech_config, mock_speech_recognizer, mock_audio_config
     ):
@@ -117,7 +117,7 @@ class TestTranscribeAudioView:
         mock_recognizer.recognize_once.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     def test_transcription_is_none(self, mock_transcribe_with_azure, mock_audio_segment, client):
         """Test when transcription is None."""
         mock_transcribe_with_azure.return_value = None
@@ -138,7 +138,7 @@ class TestTranscribeAudioView:
         mock_transcribe_with_azure.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
     def test_successful_transcription_with_translation(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
@@ -174,7 +174,7 @@ class TestTranscribeAudioView:
         mock_recognizer.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
     def test_translation_canceled(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
@@ -211,7 +211,7 @@ class TestTranscribeAudioView:
         mock_audio_segment.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
     def test_translation_canceled_but_not_error(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
@@ -249,7 +249,7 @@ class TestTranscribeAudioView:
 
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
     def test_translation_no_match(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
@@ -279,7 +279,7 @@ class TestTranscribeAudioView:
         mock_transcribe_with_azure.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
     def test_translation_value_error(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
@@ -305,7 +305,7 @@ class TestTranscribeAudioView:
         mock_transcribe_with_azure.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
     def test_translation_with_no_valid_translation_languages(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client
@@ -335,7 +335,7 @@ class TestTranscribeAudioView:
         mock_transcribe_with_azure.assert_called_once()
 
     @patch('pydub.AudioSegment.from_file')
-    @patch('api.views.TranscribeAudio.transcribe_with_azure')
+    @patch('api.views.azure_views.TranscribeAudio.transcribe_with_azure')
     @patch('azure.cognitiveservices.speech.translation.TranslationRecognizer')
     def test_translation_unexpected_result_reason(
         self, mock_recognizer, mock_transcribe_with_azure, mock_audio_segment, client

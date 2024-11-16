@@ -4,7 +4,7 @@ from io import BytesIO
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
-from api.models import Project, Survey, RiskNote
+from api.models import Project, Survey, RiskNote, Account
 
 User = get_user_model()
 
@@ -44,12 +44,17 @@ def create_project_with_surveys(create_project):
 @pytest.fixture(name='create_user')
 def create_user_fixture():
     """Fixture to create a User object"""
-    return User.objects.create(username='testuser')
+    return User.objects.create(username='testuser', id='123')
 
 @pytest.fixture(name='create_superuser')
 def create_superuser_fixture():
     """Fixture to create a superuser"""
     return User.objects.create_superuser('admin')
+
+@pytest.fixture(name='create_account')
+def create_account_fixture():
+    """Fixture to create an Account object"""
+    return Account.objects.create(username='test_account', user_id='test_user_id')
 
 @pytest.fixture(name='create_survey')
 def create_survey_fixture(create_project):
