@@ -10,6 +10,7 @@ DEBUG = True
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = [
   os.environ['WEBSITE_HOSTNAME'],
+  os.environ['ADDITIONAL_ALLOWED_HOSTS'],
   '169.254.131.10',
   '169.254.131.7',
   '169.254.131',
