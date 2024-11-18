@@ -15,7 +15,8 @@ class AccessTokenMiddleware:
     def __call__(self, request):
         """This method activates each time the middleware is called"""
 
-        if request.path == '/api/signin/':
+        # Allow admin panel and the sign-in endpoint without a token
+        if request.path.startswith('/admin/') or request.path == '/api/signin/':
             return self.get_response(request)
 
         # Check that POST, PUT, PATCH and DELETE requests come from authorized users
