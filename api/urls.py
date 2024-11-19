@@ -19,6 +19,7 @@ from api.views import (
     RetrieveImage,
     RetrieveParams,
     TranslateText,
+    GetProjectsView,
 )
 
 # .../api/...
@@ -117,7 +118,12 @@ urlpatterns = [
         'filled-surveys/',
         FilledSurveys.as_view(),
         name='filled-surveys'
-    )
+    ),
+    path(
+      'get-projects/', 
+         GetProjectsView.as_view(), 
+         name='get-projects'
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
