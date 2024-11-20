@@ -37,3 +37,5 @@ env/
 # Ignore possibly created audio files
 audio*
 test_audio*
+
+run_import_projects.sh
