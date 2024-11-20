@@ -4,22 +4,31 @@ from api.models import Project, Survey, RiskNote, Account
 
 def test_project_str():
     """Test Project model __str__ method"""
-    project = Project(project_id='123', project_name='Test project',
-                      dimension_display_value='Value', project_group='Group')
+    project = Project(project_id='123', data_area_id='Area123',
+                      project_name='Test project',
+                      dimension_display_value='Value',
+                      worker_responsible_personnel_number='Worker123',
+                      customer_account='Customer123')
     assert str(project) == f'{project.project_name}'
 
 def test_survey_str():
     """Test Survey model __str__ method"""
-    project = Project(project_id='123', project_name='Test project',
-                      dimension_display_value='Value', project_group='Group')
+    project = Project(project_id='123', data_area_id='Area123',
+                      project_name='Test project',
+                      dimension_display_value='Value',
+                      worker_responsible_personnel_number='Worker123',
+                      customer_account='Customer123')
     survey = Survey(project=project, description='Test Description',
                     task='Test Task', scaffold_type='Test Scaffold')
     assert str(survey) == f'{survey.task} - {survey.scaffold_type}'
 
 def test_risk_note_str():
     """Test RiskNote model __str__ method"""
-    project = Project(project_id='123', project_name='Test project',
-                      dimension_display_value='Value', project_group='Group')
+    project = Project(project_id='123', data_area_id='Area123',
+                      project_name='Test project',
+                      dimension_display_value='Value',
+                      worker_responsible_personnel_number='Worker123',
+                      customer_account='Customer123')
     survey = Survey(project=project, description='Test Description',
                     task='Test Task', scaffold_type='Test Scaffold')
     risk_note = RiskNote(survey=survey, note='Test Risk Note')

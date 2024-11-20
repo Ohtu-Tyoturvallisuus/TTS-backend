@@ -23,6 +23,9 @@
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/uat_tts-app-uat.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-backend/actions/workflows/uat_tts-app-uat.yml/badge.svg"/>
   </a>
+  <a href="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-backend" > 
+    <img src="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-backend/branch/uat/graph/badge.svg?token=AA5KQ8B86A"/> 
+  </a>
 </p>
 
 This project is part of the autumn 2024 Software Engineering project course [TKT20007](https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/) at the University of Helsinki.

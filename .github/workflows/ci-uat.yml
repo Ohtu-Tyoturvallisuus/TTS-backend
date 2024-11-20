@@ -1,7 +1,7 @@
 name: CI-HazardHunt-UAT
 
 on:
-  pull_request:
+  push:
     branches:
       - uat
   merge_group:

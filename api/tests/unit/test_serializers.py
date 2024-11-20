@@ -19,8 +19,10 @@ def test_project_serializer(create_project):
         'id': project.id,
         'project_id': project.project_id,
         'project_name': project.project_name,
+        'data_area_id': project.data_area_id,
         'dimension_display_value': project.dimension_display_value,
-        'project_group': project.project_group,
+        'worker_responsible_personnel_number': project.worker_responsible_personnel_number,
+        'customer_account': project.customer_account,
         'surveys': []
     }
 
@@ -30,8 +32,10 @@ def test_project_deserializer(create_project):
     data = {
         'project_id': 'new_project_id',
         'project_name': 'New Project',
+        'data_area_id': 'New Data Area',
         'dimension_display_value': 'New Dimension',
-        'project_group': 'New Group'
+        'worker_responsible_personnel_number': 'New Personnel Number',
+        'customer_account': 'New Customer Account'
     }
     serializer = ProjectSerializer(project, data=data)
     assert serializer.is_valid()
@@ -48,8 +52,10 @@ def test_project_list_serializer(create_project):
         'url': request.build_absolute_uri(reverse('project-detail', kwargs={'pk': project.id})),
         'project_id': project.project_id,
         'project_name': project.project_name,
+        'data_area_id': project.data_area_id,
         'dimension_display_value': project.dimension_display_value,
-        'project_group': project.project_group,
+        'worker_responsible_personnel_number': project.worker_responsible_personnel_number,
+        'customer_account': project.customer_account,
         'last_survey_date': None,
     }
 
@@ -59,8 +65,10 @@ def test_project_list_deserializer(create_project):
     data = {
         'project_id': 'new_project_id',
         'project_name': 'New Project',
+        'data_area_id': 'New Data Area',
         'dimension_display_value': 'New Dimension',
-        'project_group': 'New Group'
+        'worker_responsible_personnel_number': 'New Personnel Number',
+        'customer_account': 'New Customer Account'
     }
     serializer = ProjectListSerializer(project, data=data)
     assert serializer.is_valid()
