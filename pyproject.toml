@@ -29,6 +29,7 @@ azure-cognitiveservices-speech = "^1.40.0"
 azure-storage-blob = "^12.23.1"
 requests = "^2.32.3"
 pyjwt = "^2.9.0"
+django-filter = "^24.3"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3.1"
