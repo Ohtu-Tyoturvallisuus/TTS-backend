@@ -1,14 +1,20 @@
-from django.test import TestCase
+""" Test cases for the import_projects management command """
 from unittest.mock import patch, MagicMock
-from api.management.commands.import_projects import get_erp_access_token, fetch_projects_from_erp
-from django.core.management import call_command
-from api.models import Project
-from django.conf import settings
 import requests
 
+from django.conf import settings
+from django.core.management import call_command
+from django.test import TestCase
+
+from api.management.commands.import_projects import get_erp_access_token, fetch_projects_from_erp
+from api.models import Project
+
 class GetErpAccessTokenTestCase(TestCase):
+    """ Test the get_erp_access_token helper function """
+
     @patch('api.management.commands.import_projects.requests.post')
     def test_get_erp_access_token_success(self, mock_post):
+        """ Test the case where the access token is successfully retrieved """
         # Mock the response to return a successful token
         mock_response = MagicMock()
         mock_response.json.return_value = {'access_token': 'fake_access_token'}
@@ -31,6 +37,7 @@ class GetErpAccessTokenTestCase(TestCase):
 
     @patch('api.management.commands.import_projects.requests.post')
     def test_get_erp_access_token_failure(self, mock_post):
+        """ Test the case where getting the access token fails """
         # Mock the response to raise an exception
         mock_post.side_effect = requests.RequestException("Authentication failed")
 
@@ -50,8 +57,11 @@ class GetErpAccessTokenTestCase(TestCase):
         )
 
 class FetchProjectsFromErpTestCase(TestCase):
+    """ Test the fetch_projects_from_erp helper function """
+
     @patch('api.management.commands.import_projects.requests.get')
     def test_fetch_projects_from_erp_success(self, mock_get):
+        """ Test the case where projects are successfully fetched """
         # Mock the response to return project data
         mock_response = MagicMock()
         mock_response.json.return_value = {
@@ -89,6 +99,7 @@ class FetchProjectsFromErpTestCase(TestCase):
 
     @patch('api.management.commands.import_projects.requests.get')
     def test_fetch_projects_from_erp_failure(self, mock_get):
+        """ Test the case where fetching projects fails """
         # Mock the response to raise an exception
         mock_get.side_effect = requests.RequestException("Failed to fetch projects")
 
@@ -111,12 +122,15 @@ class FetchProjectsFromErpTestCase(TestCase):
         )
 
 class ImportProjectsTestCase(TestCase):
+    """ Test the import_projects management command """
+
     @patch('api.management.commands.import_projects.get_erp_access_token')
     @patch('api.management.commands.import_projects.fetch_projects_from_erp')
     def test_import_projects(self, mock_fetch_projects, mock_get_token):
+        """ Test the case where projects are successfully imported """
         # Mock the access token
         mock_get_token.return_value = 'fake_access_token'
-        
+
         # Mock the projects data
         mock_projects_data = {
             'value': [
@@ -139,10 +153,10 @@ class ImportProjectsTestCase(TestCase):
             ]
         }
         mock_fetch_projects.return_value = mock_projects_data
-        
+
         # Call the management command
         call_command('import_projects')
-        
+
         # Check that the projects were imported
         self.assertEqual(Project.objects.count(), 2)
         project1 = Project.objects.get(project_id='123-45-67')
@@ -151,7 +165,7 @@ class ImportProjectsTestCase(TestCase):
         self.assertEqual(project1.dimension_display_value, 'Dimension 1')
         self.assertEqual(project1.worker_responsible_personnel_number, '12345')
         self.assertEqual(project1.customer_account, 'Cust1')
-        
+
         project2 = Project.objects.get(project_id='234-56-78')
         self.assertEqual(project2.project_name, 'Project 2')
         self.assertEqual(project2.data_area_id, 'area2')
@@ -162,9 +176,10 @@ class ImportProjectsTestCase(TestCase):
     @patch('api.management.commands.import_projects.get_erp_access_token')
     @patch('api.management.commands.import_projects.fetch_projects_from_erp')
     def test_import_projects_invalid_item_format(self, mock_fetch_projects, mock_get_token):
+        """ Test the case where a project has an invalid item format """
         # Mock the access token
         mock_get_token.return_value = 'fake_access_token'
-        
+
         # Mock the projects data with an invalid item format
         mock_projects_data = {
             'value': [
@@ -172,19 +187,20 @@ class ImportProjectsTestCase(TestCase):
             ]
         }
         mock_fetch_projects.return_value = mock_projects_data
-        
+
         # Call the management command
         call_command('import_projects')
-        
+
         # Check that no projects were imported
         self.assertEqual(Project.objects.count(), 0)
 
     @patch('api.management.commands.import_projects.get_erp_access_token')
     @patch('api.management.commands.import_projects.fetch_projects_from_erp')
     def test_import_projects_missing_project_id(self, mock_fetch_projects, mock_get_token):
+        """ Test the case where a project is missing the ProjectID """
         # Mock the access token
         mock_get_token.return_value = 'fake_access_token'
-        
+
         # Mock the projects data with a missing ProjectID
         mock_projects_data = {
             'value': [
@@ -198,39 +214,38 @@ class ImportProjectsTestCase(TestCase):
             ]
         }
         mock_fetch_projects.return_value = mock_projects_data
-        
+
         # Call the management command
         call_command('import_projects')
-        
+
         # Check that no projects were imported
         self.assertEqual(Project.objects.count(), 0)
 
     @patch('api.management.commands.import_projects.get_erp_access_token')
     @patch('api.management.commands.import_projects.fetch_projects_from_erp')
-    def test_handle_access_token_failure(self, mock_fetch_projects, mock_get_token):
+    def test_handle_access_token_failure(self, mock_fetch_projects, mock_get_token): # pylint: disable=unused-argument
+        """ Test the case where the access token cannot be retrieved """
         # Mock the access token to raise an exception
-        mock_get_token.side_effect = Exception("Error getting access token")
-        
+        mock_get_token.side_effect = requests.RequestException("Error getting access token")
+
         # Call the management command
         call_command('import_projects')
-        
+
         # Check that no projects were imported
         self.assertEqual(Project.objects.count(), 0)
 
     @patch('api.management.commands.import_projects.get_erp_access_token')
     @patch('api.management.commands.import_projects.fetch_projects_from_erp')
     def test_handle_fetch_projects_failure(self, mock_fetch_projects, mock_get_token):
+        """ Test the case where fetching projects fails """
         # Mock the access token
         mock_get_token.return_value = 'fake_access_token'
-        
+
         # Mock the fetch projects to raise an exception
-        mock_fetch_projects.side_effect = Exception("Error fetching projects")
-        
+        mock_fetch_projects.side_effect = requests.RequestException("Error fetching projects")
+
         # Call the management command
         call_command('import_projects')
-        
+
         # Check that no projects were imported
         self.assertEqual(Project.objects.count(), 0)
-
-if __name__ == '__main__':
-    TestCase.main()

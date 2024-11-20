@@ -61,16 +61,20 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Determine environment (production or sandbox)
         environment = 'sandbox' if kwargs['sandbox'] else 'production'
-        resource = settings.ERP_SANDBOX_RESOURCE if environment == 'sandbox' else settings.ERP_RESOURCE
+        resource = (
+            settings.ERP_SANDBOX_RESOURCE
+            if environment == 'sandbox'
+            else settings.ERP_RESOURCE
+        )
         self.stdout.write(f'Using {environment} ERP')
-          
+
         # Step 1: Get access token
         try:
             access_token = get_erp_access_token(resource)
-        except Exception as e:
+        except requests.RequestException as e:
             self.stdout.write(self.style.ERROR(f'Error getting access token: {str(e)}'))
             return
-        
+
         # Step 2: Fetch projects using the access token
         try:
             self.stdout.write('Fetching projects...')
@@ -78,7 +82,7 @@ class Command(BaseCommand):
             projects = projects_data.get('value', [])
             self.import_projects(projects)
             self.stdout.write(self.style.SUCCESS('Projects updated successfully'))
-        except Exception as e:
+        except requests.RequestException as e:
             self.stdout.write(self.style.ERROR(f'Error fetching projects: {str(e)}'))
 
     def import_projects(self, projects):
@@ -128,7 +132,11 @@ class Command(BaseCommand):
         existing_projects = Project.objects.all()
 
         # Create a set of ProjectIds from the given projects list
-        given_project_ids = {item.get("ProjectID") for item in projects if isinstance(item, dict) and item.get("ProjectID")}
+        given_project_ids = {
+            item.get("ProjectID")
+            for item in projects
+            if isinstance(item, dict) and item.get("ProjectID")
+        }
 
         # Delete projects that are not in the given projects list
         deleted_count = 0
@@ -136,7 +144,11 @@ class Command(BaseCommand):
             if project.project_id not in given_project_ids:
                 # project.delete()
                 deleted_count += 1 # pragma: no cover
-                # self.stdout.write(self.style.SUCCESS(f'Deleted project with ID {project.project_id}'))
+                # self.stdout.write(
+                #     self.style.SUCCESS(
+                #         f'Deleted project with ID {project.project_id}'
+                #     )
+                # )
 
         self.stdout.write(self.style.SUCCESS(f'Created {created_count} new projects'))
         self.stdout.write(self.style.WARNING(f'Found {deleted_count} obsolete projects'))
