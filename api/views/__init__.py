@@ -11,12 +11,10 @@ from .azure_views import (
     TranscribeAudio,
     TranslateText,
     UploadImages,
-    GetProjectsView,
 )
 from .utils_views import api_root
 
 __all__ = [
-    "GetProjectsView",
     "ProjectList",
     "ProjectDetail",
     "SurveyList",

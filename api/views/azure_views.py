@@ -28,7 +28,6 @@ from requests.exceptions import (
 )
 from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api.serializers import AudioUploadSerializer
 
@@ -408,91 +407,3 @@ class TranslateText(generics.CreateAPIView):
         except RequestException as e:
             error_message = f'Request error occurred: {str(e)}'
             raise RequestException(error_message) from e
-
-
-class GetProjectsView(APIView):
-    """
-    API view to retrieve projects from ERP.
-    """
-
-    # Storing the token temporarily for testing purposes
-    access_token = None  # Global variable to store the access token for testing
-
-    def get_access_token(self, resource):
-        """
-        Helper method to get an access token from Azure AD.
-        """
-        token_url = f"https://login.microsoftonline.com/{settings.ERP_TENANT_ID}/oauth2/token"
-        payload = {
-            'client_id': settings.ERP_CLIENT_ID,
-            'client_secret': settings.ERP_CLIENT_SECRET,
-            'grant_type': 'client_credentials',
-            'resource': resource,
-        }
-        try:
-            token_response = requests.post(token_url, data=payload)
-            token_response.raise_for_status()
-            return token_response.json().get('access_token')
-        except requests.RequestException as e:
-            raise Exception(f"Authentication failed: {str(e)}")
-
-    def fetch_projects(self, access_token, resource):
-        """
-        Helper method to fetch project data from Dynamics 365 FO.
-        """
-        projects_url = (
-            f"{resource}/data/Projects?cross-company=true"
-            f"&$filter=ProjectStage eq Microsoft.Dynamics.DataEntities.ProjStatus'InProcess'"
-            f"&$select=ProjectID,dataAreaId,ProjectName,DimensionDisplayValue,WorkerResponsiblePersonnelNumber,CustomerAccount"
-            f"&$top=100"
-        )
-        
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-            'Content-Type': 'application/json',
-        }
-        
-        try:
-            projects_response = requests.get(projects_url, headers=headers)
-            projects_response.raise_for_status()
-            return projects_response.json()
-        except requests.RequestException as e:
-            raise Exception(f"Failed to fetch projects: {str(e)}")
-
-    def get(self, request, *args, **kwargs):
-        """
-        Handle GET requests to fetch projects from Dynamics 365 FO.
-        """
-        # Use the stored access token if available, otherwise get a new token
-        if not self.access_token:
-            # Determine environment (production or sandbox)
-            environment = request.GET.get('environment', 'production')
-            resource = settings.ERP_SANDBOX_RESOURCE if environment == 'sandbox' else settings.ERP_RESOURCE
-            
-            # Step 1: Get access token
-            try:
-                self.access_token = self.get_access_token(resource)  # Store the token for future use
-            except Exception as e:
-                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        # Step 2: Fetch projects using the stored token
-        try:
-            projects_data = self.fetch_projects(self.access_token, resource)
-            projects = projects_data.get('value', [])  # Projects are under 'value' in the response
-            
-            # Extract required fields from projects
-            project_list = []
-            for project in projects:
-                project_info = {
-                    'ProjectID': project.get('ProjectID'),
-                    'dataAreaId': project.get('dataAreaId'),
-                    'ProjectName': project.get('ProjectName'),
-                    'DimensionDisplayValue': project.get('DimensionDisplayValue'),
-                    'WorkerResponsiblePersonnelNumber': project.get('WorkerResponsiblePersonnelNumber', ''),
-                    'CustomerAccount': project.get('CustomerAccount', ''),
-                }
-                project_list.append(project_info)
-            
-            return Response(project_list, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

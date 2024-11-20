@@ -81,7 +81,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         model = Project
         fields = ['id', 'project_id', 'project_name', 'data_area_id',
                   'dimension_display_value', 'worker_responsible_personnel_number', 
-                  'surveys']
+                  'customer_account', 'surveys']
 
 class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
     """Class for ProjectListSerializer"""
@@ -92,7 +92,8 @@ class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for ProjectListSerializer"""
         model = Project
         fields = ['id', 'url', 'project_id', 'project_name', 'data_area_id',
-                  'dimension_display_value', 'last_survey_date']
+                  'dimension_display_value', 'worker_responsible_personnel_number',
+                  'customer_account', 'last_survey_date']
 
     def get_last_survey_date(self, obj):
         """Method to get the last survey date"""
