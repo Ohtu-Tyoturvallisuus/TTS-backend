@@ -18,9 +18,11 @@ def create_project_fixture():
     """Fixture to create a Project object"""
     return Project.objects.create(
         project_id='test_project_id',
+        data_area_id='test_data_area_id',
         project_name='Test Project',
         dimension_display_value='Test Dimension',
-        project_group='Test Group'
+        worker_responsible_personnel_number='test_worker_number',
+        customer_account='test_customer_account'
     )
 
 @pytest.fixture(name='create_project_with_surveys')

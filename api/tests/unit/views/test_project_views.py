@@ -16,8 +16,10 @@ class TestProjectListView:
         self.project_data = {
             'project_id': 'test_project_id',
             'project_name': 'Test Project',
+            'data_area_id': 'Test Data Area',
             'dimension_display_value': 'Test Dimension',
-            'project_group': 'Test Group'
+            'worker_responsible_personnel_number': '12345',
+            'customer_account': 'Test Account'
         }
 
     def test_project_list(self, client, create_project):
@@ -27,8 +29,11 @@ class TestProjectListView:
         assert len(response.data) == 1
         assert response.data[0]['project_id'] == create_project.project_id
         assert response.data[0]['project_name'] == create_project.project_name
+        assert response.data[0]['data_area_id'] == create_project.data_area_id
         assert response.data[0]['dimension_display_value'] == create_project.dimension_display_value
-        assert response.data[0]['project_group'] == create_project.project_group
+        assert response.data[0]['worker_responsible_personnel_number'] == \
+            create_project.worker_responsible_personnel_number
+        assert response.data[0]['customer_account'] == create_project.customer_account
 
     def test_project_create(self, client, create_user):
         """Test ProjectList view with POST request (non-admin user)"""
@@ -44,8 +49,10 @@ class TestProjectListView:
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data['project_id'] == 'test_project_id'
         assert response.data['project_name'] == 'Test Project'
+        assert response.data['data_area_id'] == 'Test Data Area'
         assert response.data['dimension_display_value'] == 'Test Dimension'
-        assert response.data['project_group'] == 'Test Group'
+        assert response.data['worker_responsible_personnel_number'] == '12345'
+        assert response.data['customer_account'] == 'Test Account'
 
 class TestProjectDetailView:
     """Tests ProjectDetail view"""
@@ -58,8 +65,10 @@ class TestProjectDetailView:
         self.project_data = {
             'project_id': 'updated_project_id',
             'project_name': 'Updated Project',
+            'data_area_id': 'Updated Data Area',
             'dimension_display_value': 'Updated Dimension',
-            'project_group': 'Updated Group'
+            'worker_responsible_personnel_number': '54321',
+            'customer_account': 'Updated Account'
         }
 
     def test_project_detail(self, client):
@@ -68,8 +77,11 @@ class TestProjectDetailView:
         assert response.status_code == status.HTTP_200_OK
         assert response.data['project_id'] == self.project.project_id
         assert response.data['project_name'] == self.project.project_name
+        assert response.data['data_area_id'] == self.project.data_area_id
         assert response.data['dimension_display_value'] == self.project.dimension_display_value
-        assert response.data['project_group'] == self.project.project_group
+        assert response.data['worker_responsible_personnel_number'] == \
+            self.project.worker_responsible_personnel_number
+        assert response.data['customer_account'] == self.project.customer_account
 
     def test_project_detail_not_found(self, client):
         """Test ProjectDetail view with non-existing id"""
@@ -83,8 +95,10 @@ class TestProjectDetailView:
         assert response.status_code == status.HTTP_200_OK
         assert response.data['project_id'] == 'updated_project_id'
         assert response.data['project_name'] == 'Updated Project'
+        assert response.data['data_area_id'] == 'Updated Data Area'
         assert response.data['dimension_display_value'] == 'Updated Dimension'
-        assert response.data['project_group'] == 'Updated Group'
+        assert response.data['worker_responsible_personnel_number'] == '54321'
+        assert response.data['customer_account'] == 'Updated Account'
 
     def test_project_delete(self, client, create_superuser):
         """Test ProjectDetail view with DELETE request (admin user)"""
