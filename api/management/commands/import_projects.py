@@ -31,7 +31,7 @@ def fetch_projects_from_erp(erp_access_token, resource):
         f"{resource}/data/Projects?cross-company=true"
         f"&$filter=ProjectStage eq Microsoft.Dynamics.DataEntities.ProjStatus'InProcess'"
         f"&$select=ProjectID,dataAreaId,ProjectName,DimensionDisplayValue,WorkerResponsiblePersonnelNumber,CustomerAccount"
-        # f"&$top=100"
+        # f"&$top=10"
     )
     
     headers = {
@@ -48,13 +48,21 @@ def fetch_projects_from_erp(erp_access_token, resource):
 
 class Command(BaseCommand):
     """Custom Django management command to import projects from Telinekataja ERP interface"""
-    help = 'Import projects from Telinekataja ERP interface'
+    help = 'Import projects from Telinekataja ERP interface. Flags: --sandbox'
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--sandbox',
+            action='store_true',
+            help='Use the sandbox environment'
+        )
 
     def handle(self, *args, **kwargs):
         # Determine environment (production or sandbox)
-        environment = 'sandbox'  # You can change this or make it configurable
+        environment = 'sandbox' if kwargs['sandbox'] else 'production'
         resource = settings.ERP_SANDBOX_RESOURCE if environment == 'sandbox' else settings.ERP_RESOURCE
-        
+        self.stdout.write(f'Using {environment} ERP')
+          
         # Step 1: Get access token
         try:
             access_token = get_erp_access_token(resource)
@@ -64,7 +72,7 @@ class Command(BaseCommand):
         
         # Step 2: Fetch projects using the access token
         try:
-            self.stdout.write('Fetching projects from ERP interface...')
+            self.stdout.write('Fetching projects...')
             projects_data = fetch_projects_from_erp(access_token, resource)
             projects = projects_data.get('value', [])
             self.import_projects(projects)
@@ -76,7 +84,7 @@ class Command(BaseCommand):
         """
         Import projects from JSON data
         """
-        self.stdout.write(f'Going through {len(projects)} projects from ERP...')
+        self.stdout.write(f'Going through {len(projects)} projects...')
         self.stdout.write('Importing projects with id format x*-xx-xx')
         created_count = 0
         for item in projects:
