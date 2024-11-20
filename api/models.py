@@ -6,9 +6,11 @@ from django.db import models
 class Project(models.Model):
     """Class for Project model"""
     project_id = models.CharField(max_length=100, unique=True)
+    data_area_id = models.CharField(max_length=100)
     project_name = models.CharField(max_length=255)
     dimension_display_value = models.CharField(max_length=255)
-    project_group = models.CharField(max_length=100)
+    worker_responsible_personnel_number = models.CharField(max_length=100)
+    customer_account = models.CharField(max_length=100)
 
     def __str__(self):
         return str(self.project_name)
