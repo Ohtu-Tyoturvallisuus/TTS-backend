@@ -15,6 +15,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import environ
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +28,15 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+
+# Initialize the Key Vault client
+key_vault_name = os.getenv('KEY_VAULT_NAME')
+key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url=key_vault_uri, credential=credential)
+
+def get_secret(secret_name):
+    return client.get_secret(secret_name).value
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', '')
