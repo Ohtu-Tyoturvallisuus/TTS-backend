@@ -1,6 +1,7 @@
 """ api/tests/unit/views/test.survey_views.py """
 # pylint: disable=attribute-defined-outside-init
 
+import json
 import jwt
 import pytest
 from django.urls import reverse
@@ -23,8 +24,8 @@ class TestSurveyListView:
         self.project_url = reverse('survey-list', kwargs={'project_pk': self.project.id})
         self.survey_data = {
             'description': 'New Description',
-            'task': 'New Task',
-            'scaffold_type': 'New Scaffold'
+            'task': ['New Task'],
+            'scaffold_type': ['New Scaffold']
         }
 
     def test_survey_list(self, client):
@@ -56,20 +57,32 @@ class TestSurveyListView:
         token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm="HS256")
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
-        response = client.post(self.survey_url, self.survey_data)
+        response = client.post(
+            self.survey_url,
+            data=json.dumps(self.survey_data),
+            content_type='application/json'
+        )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'project' in response.data
 
-        response = client.post(self.project_url, self.survey_data)
+        response = client.post(
+            self.project_url,
+            data=json.dumps(self.survey_data),
+            content_type='application/json'
+        )
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data['project_name'] == self.project.project_name
         assert response.data['description'] == 'New Description'
-        assert response.data['task'] == 'New Task'
-        assert response.data['scaffold_type'] == 'New Scaffold'
+        assert response.data['task'] == ['New Task']
+        assert response.data['scaffold_type'] == ['New Scaffold']
 
     def test_missing_authorization_header(self, client):
         """Test SurveyList view with missing Authorization header"""
-        response = client.post(self.project_url, self.survey_data)
+        response = client.post(
+            self.project_url,
+            data=json.dumps(self.survey_data),
+            content_type='application/json'
+        )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'error' in response.data
         assert response.data['error'] == "Authorization header is required"
@@ -77,7 +90,11 @@ class TestSurveyListView:
     def test_invalid_authorization_header_format(self, client):
         """Test SurveyList view with invalid Authorization header format"""
         client.credentials(HTTP_AUTHORIZATION="InvalidHeader")
-        response = client.post(self.project_url, self.survey_data)
+        response = client.post(
+            self.project_url,
+            data=json.dumps(self.survey_data),
+            content_type='application/json'
+        )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'error' in response.data
         assert response.data['error'] == "Authorization header is required"
@@ -94,7 +111,11 @@ class TestSurveyListView:
         token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm="HS256")
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
-        response = client.post(self.project_url, self.survey_data)
+        response = client.post(
+            self.project_url,
+            data=json.dumps(self.survey_data),
+            content_type='application/json'
+        )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'error' in response.data
         assert response.data['error'] == "Token has expired"
@@ -107,7 +128,11 @@ class TestSurveyListView:
         invalid_token = "Bearer invalid.token.payload"
         client.credentials(HTTP_AUTHORIZATION=f"{invalid_token}")
 
-        response = client.post(self.project_url, self.survey_data)
+        response = client.post(
+            self.project_url,
+            data=json.dumps(self.survey_data),
+            content_type='application/json'
+        )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'error' in response.data
         assert response.data['error'] == "Invalid token"
@@ -123,8 +148,8 @@ class TestSurveyDetailView:
         self.url = reverse('survey-detail', kwargs={'pk': self.survey.id})
         self.survey_data = {
             'description': 'Updated Description',
-            'task': 'Updated Task',
-            'scaffold_type': 'Updated Scaffold'
+            'task': ['Updated Task'],
+            'scaffold_type': ['Updated Scaffold']
         }
 
     def test_survey_detail(self, client):
@@ -138,11 +163,15 @@ class TestSurveyDetailView:
     def test_survey_update(self, client, create_user):
         """Test SurveyDetail view with PUT request"""
         client.force_authenticate(user=create_user)
-        response = client.put(self.url, self.survey_data)
+        response = client.put(
+            self.url,
+            data=json.dumps(self.survey_data),
+            content_type='application/json'
+        )
         assert response.status_code == status.HTTP_200_OK
         assert response.data['description'] == 'Updated Description'
-        assert response.data['task'] == 'Updated Task'
-        assert response.data['scaffold_type'] == 'Updated Scaffold'
+        assert response.data['task'] == ['Updated Task']
+        assert response.data['scaffold_type'] == ['Updated Scaffold']
 
     def test_survey_delete(self, client, create_user):
         """Test SurveyDetail view with DELETE request"""

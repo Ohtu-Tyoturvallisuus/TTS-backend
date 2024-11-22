@@ -111,16 +111,62 @@ def test_survey_deserializer(create_survey):
     data = {
         'project': survey.project.id,
         'description': 'New Description',
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
     serializer = SurveySerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
         'description': 'New Description',
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
+
+def test_survey_serializer_invalid_task(create_project):
+    """Test SurveySerializer with invalid task"""
+    project = create_project
+    invalid_data = {
+        'project': project.id,
+        'description': 'Invalid Task Test',
+        'task': '',
+        'scaffold_type': ['Valid Scaffold']
+    }
+    serializer = SurveySerializer(data=invalid_data)
+    assert not serializer.is_valid()
+    assert 'task' in serializer.errors
+    assert serializer.errors['task'] == ["Task must be a non-empty list."]
+
+
+def test_survey_serializer_invalid_scaffold_type(create_project):
+    """Test SurveySerializer with invalid scaffold_type"""
+    project = create_project
+    invalid_data = {
+        'project': project.id,
+        'description': 'Invalid Scaffold Test',
+        'task': ['Valid Task'],
+        'scaffold_type': ''
+    }
+    serializer = SurveySerializer(data=invalid_data)
+    assert not serializer.is_valid()
+    assert 'scaffold_type' in serializer.errors
+    assert serializer.errors['scaffold_type'] == ["Scaffolding type must be a non-empty list."]
+
+
+def test_survey_serializer_both_invalid_fields(create_project):
+    """Test SurveySerializer with both invalid task and scaffold_type"""
+    project = create_project
+    invalid_data = {
+        'project': project.id,
+        'description': 'Both Invalid Test',
+        'task': '',
+        'scaffold_type': ''
+    }
+    serializer = SurveySerializer(data=invalid_data)
+    assert not serializer.is_valid()
+    assert 'task' in serializer.errors
+    assert 'scaffold_type' in serializer.errors
+    assert serializer.errors['task'] == ["Task must be a non-empty list."]
+    assert serializer.errors['scaffold_type'] == ["Scaffolding type must be a non-empty list."]
 
 def test_survey_nested_serializer(create_survey):
     """Test SurveyNestedSerializer for serialization"""
@@ -146,14 +192,14 @@ def test_survey_nested_deserializer(create_survey):
     survey = create_survey
     data = {
         'description': 'New Description',
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
     serializer = SurveyNestedSerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
 
 def test_survey_nested_serializer_get_url(create_survey, rf):

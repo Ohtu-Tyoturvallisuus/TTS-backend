@@ -35,12 +35,6 @@ class SurveyList(generics.ListCreateAPIView):
         return context
 
     def perform_create(self, serializer):
-        project_id = self.kwargs.get('project_pk')
-        if not project_id:
-            raise serializers.ValidationError(
-                {"project": "A project is required to create a survey."}
-            )
-
         auth_header = self.request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
             raise serializers.ValidationError(
@@ -55,9 +49,15 @@ class SurveyList(generics.ListCreateAPIView):
         except jwt.InvalidTokenError as exc:
             raise serializers.ValidationError({"error": "Invalid token"}) from exc
 
-        account = get_object_or_404(Account, user_id=user_id)
+        project_id = self.kwargs.get('project_pk')
+        if not project_id:
+            raise serializers.ValidationError(
+                {"project": "A project is required to create a survey."}
+            )
 
+        account = get_object_or_404(Account, user_id=user_id)
         project = get_object_or_404(Project, pk=project_id)
+
         survey = serializer.save(project=project)
         AccountSurvey.objects.create(account=account, survey=survey)
 

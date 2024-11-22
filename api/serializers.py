@@ -50,6 +50,30 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
             'scaffold_type', 'created_at', 'risk_notes'
         ]
 
+    def to_internal_value(self, data):
+        # Ensure JSONField-specific errors are handled gracefully
+        try:
+            return super().to_internal_value(data)
+        except serializers.ValidationError as exc:
+            errors = exc.detail
+            if 'task' in errors:
+                errors['task'] = ["Task must be a non-empty list."]
+            if 'scaffold_type' in errors:
+                errors['scaffold_type'] = ["Scaffolding type must be a non-empty list."]
+            raise serializers.ValidationError(errors)
+
+    def validate_task(self, value):
+        """Method to validate the task field"""
+        if not isinstance(value, list) or not value:
+            raise serializers.ValidationError("Task must be a non-empty list.")
+        return value
+
+    def validate_scaffold_type(self, value):
+        """Method to validate the scaffold_type field"""
+        if not isinstance(value, list) or not value:
+            raise serializers.ValidationError("Scaffolding type must be a non-empty list.")
+        return value
+
 class SurveyNestedSerializer(serializers.ModelSerializer):
     """
     Serializer for nested Survey objects. Contains url field for full detail view.
