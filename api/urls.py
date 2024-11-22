@@ -19,6 +19,7 @@ from api.views import (
     RetrieveImage,
     RetrieveParams,
     TranslateText,
+    SurveyByAccessCode,
 )
 
 # .../api/...
@@ -117,6 +118,11 @@ urlpatterns = [
         'filled-surveys/',
         FilledSurveys.as_view(),
         name='filled-surveys'
+    ),
+    path(
+        'surveys/code/<str:access_code>/',
+        SurveyByAccessCode.as_view(),
+        name='survey-by-code'
     ),
 ]
 

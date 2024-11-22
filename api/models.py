@@ -3,6 +3,8 @@
 import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
+import random
+import string
 
 class Project(models.Model):
     """Class for Project model"""
@@ -23,6 +25,19 @@ class Survey(models.Model):
     task = models.JSONField()
     scaffold_type = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
+    access_code = models.CharField(max_length=6, unique=True, blank=True)
+
+    def generate_access_code(self):
+        chars = string.ascii_uppercase.replace('O', '') + string.digits.replace('0', '')
+        while True:
+            code = ''.join(random.choices(chars, k=6))
+            if not Survey.objects.filter(access_code=code).exists():
+                return code
+            
+    def save(self, *args, **kwargs):
+        if not self.access_code:
+            self.access_code = self.generate_access_code()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{', '.join(self.task)} - {', '.join(self.scaffold_type)}"

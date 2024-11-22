@@ -42,12 +42,13 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
     project_name = serializers.ReadOnlyField(source='project.project_name')
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
+    project_id = serializers.ReadOnlyField(source='project.project_id')
 
     class Meta:
         model = Survey
         fields = [
-            'id', 'project_name', 'description', 'task',
-            'scaffold_type', 'created_at', 'risk_notes'
+            'id', 'project_name', 'project_id', 'description',
+            'task', 'scaffold_type', 'created_at', 'risk_notes'
         ]
 
     def to_internal_value(self, data):

@@ -125,3 +125,11 @@ class FilledSurveys(APIView):
             return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
         except Account.DoesNotExist:
             return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
+
+# <GET, HEAD, OPTIONS> /api/surveys/code/<access_code>/
+class SurveyByAccessCode(generics.RetrieveAPIView):
+    """Class for retrieving Survey by access code"""
+    serializer_class = SurveySerializer
+    permission_classes = (permissions.AllowAny,)
+    lookup_field = 'access_code'
+    queryset = Survey.objects.all()

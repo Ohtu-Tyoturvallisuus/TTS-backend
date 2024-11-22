@@ -1,7 +1,7 @@
 """  This module is used to import all the views from the views package. """
 
 from .project_views import ProjectList, ProjectDetail
-from .survey_views import SurveyList, SurveyDetail, FilledSurveys
+from .survey_views import SurveyList, SurveyDetail, FilledSurveys, SurveyByAccessCode
 from .risknote_views import RiskNoteCreate, RiskNoteDetail
 from .user_views import UserList, UserDetail
 from .auth_views import SignIn
@@ -19,6 +19,7 @@ __all__ = [
     "ProjectDetail",
     "SurveyList",
     "SurveyDetail",
+    "SurveyByAccessCode",
     "RiskNoteCreate",
     "RiskNoteDetail",
     "UserList",
