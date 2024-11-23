@@ -20,6 +20,7 @@ from api.views import (
     RetrieveParams,
     TranslateText,
     SurveyByAccessCode,
+    JoinSurvey,
 )
 
 # .../api/...
@@ -124,6 +125,11 @@ urlpatterns = [
         SurveyByAccessCode.as_view(),
         name='survey-by-code'
     ),
+    path(
+        'surveys/join/<str:access_code>/',
+        JoinSurvey.as_view(),
+        name='join-survey'
+    )
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

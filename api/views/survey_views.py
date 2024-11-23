@@ -133,3 +133,33 @@ class SurveyByAccessCode(generics.RetrieveAPIView):
     permission_classes = (permissions.AllowAny,)
     lookup_field = 'access_code'
     queryset = Survey.objects.all()
+
+# <POST> /api/surveys/join/<access_code>/
+class JoinSurvey(APIView):
+    """Class for joining a survey by access code"""
+
+    def post(self, request, access_code, *args, **kwargs):
+        """Link the user's account to a survey"""
+        survey = get_object_or_404(Survey, access_code=access_code)
+
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return Response({"error": "Authorization header is required."}, status=400)
+        
+        token = auth_header.split(' ')[1]
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+        except jwt.ExpiredSignatureError:
+            return Response({"error": "Token has expired."}, status=401)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token."}, status=401)
+
+        account = get_object_or_404(Account, user_id=user_id)
+
+        _, created = AccountSurvey.objects.get_or_create(account=account, survey=survey)
+
+        if not created:
+            return Response({"detail": "The user has already joined this survey."}, status=200)
+
+        return Response({"detail": "The user has successfully joined the survey."}, status=201)
