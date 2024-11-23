@@ -89,13 +89,11 @@ class FilledSurveys(APIView):
 
             account = Account.objects.get(user_id=user_id)
 
-            filled_survey_ids = AccountSurvey.objects.filter(
-                account=account).values_list('survey_id', flat=True
-            )
-            filled_surveys = Survey.objects.filter(id__in=filled_survey_ids).order_by('-created_at')
+            account_surveys = AccountSurvey.objects.filter(account=account).select_related('survey').order_by('-filled_at')
 
             filled_surveys_data = []
-            for survey in filled_surveys:
+            for account_survey in account_surveys:
+                survey = account_survey.survey
                 risk_notes_dict = {
                     risk_note.note: {
                         "description": risk_note.description,
@@ -113,7 +111,7 @@ class FilledSurveys(APIView):
                     "description": survey.description,
                     "task": survey.task,
                     "scaffold_type": survey.scaffold_type,
-                    "created_at": survey.created_at,
+                    "created_at": account_survey.filled_at,
                     "risk_notes": risk_notes_dict,
                 })
 
