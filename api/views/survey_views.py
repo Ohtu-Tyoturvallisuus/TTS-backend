@@ -89,7 +89,9 @@ class FilledSurveys(APIView):
 
             account = Account.objects.get(user_id=user_id)
 
-            account_surveys = AccountSurvey.objects.filter(account=account).select_related('survey').order_by('-filled_at')
+            account_surveys = AccountSurvey.objects.filter(
+                account=account
+            ).select_related('survey').order_by('-filled_at')
 
             filled_surveys_data = []
             for account_survey in account_surveys:
@@ -143,7 +145,7 @@ class JoinSurvey(APIView):
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
             return Response({"error": "Authorization header is required."}, status=400)
-        
+
         token = auth_header.split(' ')[1]
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])

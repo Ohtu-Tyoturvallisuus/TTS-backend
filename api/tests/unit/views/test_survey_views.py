@@ -2,13 +2,13 @@
 # pylint: disable=attribute-defined-outside-init
 
 import json
+from unittest.mock import patch
 import jwt
 import pytest
 from django.urls import reverse
 from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APIClient
-from unittest.mock import patch
 
 from api.models import AccountSurvey, Survey, Project, Account
 
@@ -227,7 +227,7 @@ class TestFilledSurveysView:
         token_payload = {
             "username": self.account.username,
             "user_id": self.account.user_id,
-            "exp": 0  # Immediate expiration
+            "exp": 0
         }
         token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm="HS256")
 
@@ -240,7 +240,6 @@ class TestFilledSurveysView:
 
     def test_invalid_token(self, client):
         """Test request with an invalid token"""
-        # Authenticate client with invalid token
         client.credentials(HTTP_AUTHORIZATION="Bearer invalid.token.payload")
 
         response = client.get(self.url)
@@ -250,7 +249,6 @@ class TestFilledSurveysView:
 
     def test_account_not_found(self, client):
         """Test request with a token for a non-existent account"""
-        # Generate token for non-existent account
         token_payload = {
             "username": "nonexistent_user",
             "user_id": "nonexistent_id"
@@ -266,31 +264,34 @@ class TestFilledSurveysView:
 
 @pytest.mark.django_db
 class TestJoinSurveyView:
+    """Tests for the JoinSurvey view"""
     def setup_method(self):
+        """Setup method for JoinSurvey tests"""
         self.client = APIClient()
-        # Create a sample project
         self.project = Project.objects.create(
-            project_id='123', 
+            project_id='123',
             data_area_id='Area123',
             project_name='Test project',
             dimension_display_value='Value',
             worker_responsible_personnel_number='Worker123',
             customer_account='Customer123'
         )
-        # Create a sample survey
         self.survey = Survey.objects.create(
-            project=self.project, 
-            description='Test Description', 
-            task=['Task 1'], 
+            project=self.project,
+            description='Test Description',
+            task=['Task 1'],
             scaffold_type=['Scaffold 1'],
             access_code='ABC123'
         )
-        # Create a sample account
         self.account = Account.objects.create(
-            user_id=1,  # Assuming this matches the payload's user_id
+            user_id=1,
             username="testuser"
         )
-        self.token = jwt.encode({"user_id": self.account.user_id}, settings.SECRET_KEY, algorithm='HS256')
+        self.token = jwt.encode(
+            {"user_id": self.account.user_id},
+            settings.SECRET_KEY,
+            algorithm='HS256'
+        )
         self.auth_header = f"Bearer {self.token}"
 
     def test_join_survey_successful(self):

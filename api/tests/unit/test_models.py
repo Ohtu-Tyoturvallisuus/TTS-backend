@@ -1,7 +1,7 @@
 """ api/tests/unit/test_models.py """
 
-import pytest
 from unittest.mock import patch
+import pytest
 from django.core.exceptions import ValidationError
 from api.models import Project, Survey, RiskNote, Account
 
@@ -132,7 +132,8 @@ def test_survey_generate_access_code_handles_duplicates():
                              task=['Task'], scaffold_type=['Scaffold'])
     existing_survey.save()
 
-    with patch('random.choices', side_effect=[list(existing_survey.access_code), ['A', 'B', 'C', '1', '2', '3']]):
+    with patch('random.choices',
+               side_effect=[list(existing_survey.access_code), ['A', 'B', 'C', '1', '2', '3']]):
         new_survey = Survey(project=project, description='New Survey',
                             task=['Task'], scaffold_type=['Scaffold'])
         access_code = new_survey.generate_access_code()
@@ -149,7 +150,7 @@ def test_survey_save_calls_clean():
 
     survey = Survey(project=project, description='Test Description',
                     task=['Task'], scaffold_type=['Scaffold'])
-    
+
     with patch.object(Survey, 'clean', wraps=survey.clean) as mock_clean:
         survey.save()
         mock_clean.assert_called_once()

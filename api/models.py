@@ -1,10 +1,10 @@
 """ api/models.py """
 
 import uuid
-from django.db import models
-from django.core.exceptions import ValidationError
 import random
 import string
+from django.db import models
+from django.core.exceptions import ValidationError
 
 class Project(models.Model):
     """Class for Project model"""
