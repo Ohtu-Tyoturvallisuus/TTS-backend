@@ -95,9 +95,11 @@ def test_survey_serializer(create_survey):
     serializer = SurveySerializer(survey)
     local_tz = pytz.timezone('Europe/Helsinki')
     created_at_local = survey.created_at.astimezone(local_tz).isoformat()
-    assert serializer.data == {
+    serialized_data = serializer.data
+    assert serialized_data == {
         'id': survey.id,
         'project_name': survey.project.project_name,
+        'project_id': survey.project.project_id,
         'description': survey.description,
         'task': survey.task,
         'scaffold_type': survey.scaffold_type,

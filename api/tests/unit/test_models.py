@@ -1,6 +1,7 @@
 """ api/tests/unit/test_models.py """
 
 import pytest
+from unittest.mock import patch
 from django.core.exceptions import ValidationError
 from api.models import Project, Survey, RiskNote, Account
 
@@ -100,3 +101,55 @@ def test_survey_clean_both_fields_empty():
         survey.clean()
     assert "Task field cannot be empty." in str(excinfo.value)
     assert "Scaffolding type field cannot be empty." in str(excinfo.value)
+
+def test_survey_generate_access_code_unique():
+    """Test Survey generate_access_code method generates unique codes"""
+    project = Project(project_id='123', data_area_id='Area123',
+                      project_name='Test project',
+                      dimension_display_value='Value',
+                      worker_responsible_personnel_number='Worker123',
+                      customer_account='Customer123')
+    project.save()
+
+    survey = Survey(project=project, description='Test Description',
+                    task=['Task 1'], scaffold_type=['Scaffold 1'])
+
+    access_code = survey.generate_access_code()
+    assert len(access_code) == 6
+    assert access_code.isalnum()
+    assert '0' not in access_code and 'O' not in access_code
+
+def test_survey_generate_access_code_handles_duplicates():
+    """Test Survey generate_access_code retries on duplicates"""
+    project = Project(project_id='123', data_area_id='Area123',
+                      project_name='Test project',
+                      dimension_display_value='Value',
+                      worker_responsible_personnel_number='Worker123',
+                      customer_account='Customer123')
+    project.save()
+
+    existing_survey = Survey(project=project, description='Existing Survey',
+                             task=['Task'], scaffold_type=['Scaffold'])
+    existing_survey.save()
+
+    with patch('random.choices', side_effect=[list(existing_survey.access_code), ['A', 'B', 'C', '1', '2', '3']]):
+        new_survey = Survey(project=project, description='New Survey',
+                            task=['Task'], scaffold_type=['Scaffold'])
+        access_code = new_survey.generate_access_code()
+        assert access_code != existing_survey.access_code
+
+def test_survey_save_calls_clean():
+    """Test Survey save method calls clean"""
+    project = Project(project_id='123', data_area_id='Area123',
+                      project_name='Test project',
+                      dimension_display_value='Value',
+                      worker_responsible_personnel_number='Worker123',
+                      customer_account='Customer123')
+    project.save()
+
+    survey = Survey(project=project, description='Test Description',
+                    task=['Task'], scaffold_type=['Scaffold'])
+    
+    with patch.object(Survey, 'clean', wraps=survey.clean) as mock_clean:
+        survey.save()
+        mock_clean.assert_called_once()

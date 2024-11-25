@@ -34,12 +34,14 @@ def create_project_with_surveys(create_project):
             project=project,
             description="Description 1",
             task=['Test Task'],
-            scaffold_type=['Test Scaffold']),
+            scaffold_type=['Test Scaffold'],
+            access_code='ABCDEF'),
         Survey(
             project=project,
             description="Description 2",
             task=['Test Task 1', 'Test Task 2'],
-            scaffold_type=['Test Scaffold 1', 'Test Scaffold 2'])
+            scaffold_type=['Test Scaffold 1', 'Test Scaffold 2'],
+            access_code='AABCDE')
     ])
     return project
 
@@ -65,7 +67,8 @@ def create_survey_fixture(create_project):
         project=create_project,
         description='Test Description',
         task=['Test Task'],
-        scaffold_type=['Test Scaffold']
+        scaffold_type=['Test Scaffold'],
+        access_code='AAABCD'
     )
     survey.full_clean()
     survey.save()
