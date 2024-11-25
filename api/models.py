@@ -28,16 +28,12 @@ class Survey(models.Model):
     access_code = models.CharField(max_length=6, unique=True, blank=True)
 
     def generate_access_code(self):
+        """Method to generate a unique access code"""
         chars = string.ascii_uppercase.replace('O', '') + string.digits.replace('0', '')
         while True:
             code = ''.join(random.choices(chars, k=6))
             if not Survey.objects.filter(access_code=code).exists():
                 return code
-            
-    def save(self, *args, **kwargs):
-        if not self.access_code:
-            self.access_code = self.generate_access_code()
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{', '.join(self.task)} - {', '.join(self.scaffold_type)}"
@@ -54,6 +50,8 @@ class Survey(models.Model):
 
     def save(self, *args, **kwargs):
         self.clean()
+        if not self.access_code:
+            self.access_code = self.generate_access_code()
         super().save(*args, **kwargs)
 
 class RiskNote(models.Model):
