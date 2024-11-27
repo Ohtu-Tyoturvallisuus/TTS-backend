@@ -117,7 +117,7 @@ urlpatterns = [
         'filled-surveys/',
         FilledSurveys.as_view(),
         name='filled-surveys'
-    )
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -37,6 +37,12 @@ TRANSLATOR_ENDPOINT = os.environ['TRANSLATOR_ENDPOINT']
 CLIENT_ID = os.environ['CLIENT_ID']
 TENANT_ID = os.environ['TENANT_ID']
 
+ERP_CLIENT_ID = os.environ['ERP_CLIENT_ID']
+ERP_CLIENT_SECRET = os.environ['ERP_CLIENT_SECRET']
+ERP_TENANT_ID = os.environ['ERP_TENANT_ID']
+ERP_RESOURCE = os.environ['ERP_RESOURCE']
+ERP_SANDBOX_RESOURCE = os.environ['ERP_SANDBOX_RESOURCE']
+
 conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
 conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
 DATABASES = {

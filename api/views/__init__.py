@@ -10,7 +10,7 @@ from .azure_views import (
     RetrieveParams,
     TranscribeAudio,
     TranslateText,
-    UploadImages
+    UploadImages,
 )
 from .utils_views import api_root
 

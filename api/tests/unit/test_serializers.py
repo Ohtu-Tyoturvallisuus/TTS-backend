@@ -19,8 +19,10 @@ def test_project_serializer(create_project):
         'id': project.id,
         'project_id': project.project_id,
         'project_name': project.project_name,
+        'data_area_id': project.data_area_id,
         'dimension_display_value': project.dimension_display_value,
-        'project_group': project.project_group,
+        'worker_responsible_personnel_number': project.worker_responsible_personnel_number,
+        'customer_account': project.customer_account,
         'surveys': []
     }
 
@@ -30,8 +32,10 @@ def test_project_deserializer(create_project):
     data = {
         'project_id': 'new_project_id',
         'project_name': 'New Project',
+        'data_area_id': 'New Data Area',
         'dimension_display_value': 'New Dimension',
-        'project_group': 'New Group'
+        'worker_responsible_personnel_number': 'New Personnel Number',
+        'customer_account': 'New Customer Account'
     }
     serializer = ProjectSerializer(project, data=data)
     assert serializer.is_valid()
@@ -48,8 +52,10 @@ def test_project_list_serializer(create_project):
         'url': request.build_absolute_uri(reverse('project-detail', kwargs={'pk': project.id})),
         'project_id': project.project_id,
         'project_name': project.project_name,
+        'data_area_id': project.data_area_id,
         'dimension_display_value': project.dimension_display_value,
-        'project_group': project.project_group,
+        'worker_responsible_personnel_number': project.worker_responsible_personnel_number,
+        'customer_account': project.customer_account,
         'last_survey_date': None,
     }
 
@@ -59,8 +65,10 @@ def test_project_list_deserializer(create_project):
     data = {
         'project_id': 'new_project_id',
         'project_name': 'New Project',
+        'data_area_id': 'New Data Area',
         'dimension_display_value': 'New Dimension',
-        'project_group': 'New Group'
+        'worker_responsible_personnel_number': 'New Personnel Number',
+        'customer_account': 'New Customer Account'
     }
     serializer = ProjectListSerializer(project, data=data)
     assert serializer.is_valid()
@@ -103,16 +111,62 @@ def test_survey_deserializer(create_survey):
     data = {
         'project': survey.project.id,
         'description': 'New Description',
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
     serializer = SurveySerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
         'description': 'New Description',
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
+
+def test_survey_serializer_invalid_task(create_project):
+    """Test SurveySerializer with invalid task"""
+    project = create_project
+    invalid_data = {
+        'project': project.id,
+        'description': 'Invalid Task Test',
+        'task': '',
+        'scaffold_type': ['Valid Scaffold']
+    }
+    serializer = SurveySerializer(data=invalid_data)
+    assert not serializer.is_valid()
+    assert 'task' in serializer.errors
+    assert serializer.errors['task'] == ["Task must be a non-empty list."]
+
+
+def test_survey_serializer_invalid_scaffold_type(create_project):
+    """Test SurveySerializer with invalid scaffold_type"""
+    project = create_project
+    invalid_data = {
+        'project': project.id,
+        'description': 'Invalid Scaffold Test',
+        'task': ['Valid Task'],
+        'scaffold_type': ''
+    }
+    serializer = SurveySerializer(data=invalid_data)
+    assert not serializer.is_valid()
+    assert 'scaffold_type' in serializer.errors
+    assert serializer.errors['scaffold_type'] == ["Scaffolding type must be a non-empty list."]
+
+
+def test_survey_serializer_both_invalid_fields(create_project):
+    """Test SurveySerializer with both invalid task and scaffold_type"""
+    project = create_project
+    invalid_data = {
+        'project': project.id,
+        'description': 'Both Invalid Test',
+        'task': '',
+        'scaffold_type': ''
+    }
+    serializer = SurveySerializer(data=invalid_data)
+    assert not serializer.is_valid()
+    assert 'task' in serializer.errors
+    assert 'scaffold_type' in serializer.errors
+    assert serializer.errors['task'] == ["Task must be a non-empty list."]
+    assert serializer.errors['scaffold_type'] == ["Scaffolding type must be a non-empty list."]
 
 def test_survey_nested_serializer(create_survey):
     """Test SurveyNestedSerializer for serialization"""
@@ -138,14 +192,14 @@ def test_survey_nested_deserializer(create_survey):
     survey = create_survey
     data = {
         'description': 'New Description',
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
     serializer = SurveyNestedSerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
-        'task': 'New Task',
-        'scaffold_type': 'New Scaffold',
+        'task': ['New Task'],
+        'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
     }
 
 def test_survey_nested_serializer_get_url(create_survey, rf):

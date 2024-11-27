@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'rest_framework',
     'api',
 ]
@@ -174,3 +175,10 @@ TRANSLATOR_ENDPOINT = os.getenv('TRANSLATOR_ENDPOINT')
 # Entra ID settings
 CLIENT_ID = os.getenv('CLIENT_ID')
 TENANT_ID = os.getenv('TENANT_ID')
+
+# ERP settings
+ERP_CLIENT_ID = os.getenv('ERP_CLIENT_ID')
+ERP_CLIENT_SECRET = os.getenv('ERP_CLIENT_SECRET')
+ERP_TENANT_ID = os.getenv('ERP_TENANT_ID')
+ERP_RESOURCE = os.getenv('ERP_RESOURCE')
+ERP_SANDBOX_RESOURCE = os.getenv('ERP_SANDBOX_RESOURCE')
