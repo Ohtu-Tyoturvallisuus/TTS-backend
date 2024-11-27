@@ -115,6 +115,7 @@ class FilledSurveys(APIView):
                     "scaffold_type": survey.scaffold_type,
                     "created_at": account_survey.filled_at,
                     "risk_notes": risk_notes_dict,
+                    "access_code": survey.access_code,
                 })
 
             return Response({"filled_surveys": filled_surveys_data}, status=status.HTTP_200_OK)

@@ -48,7 +48,8 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         model = Survey
         fields = [
             'id', 'project_name', 'project_id', 'description',
-            'task', 'scaffold_type', 'created_at', 'risk_notes'
+            'task', 'scaffold_type', 'created_at', 'risk_notes',
+            'access_code'
         ]
 
     def to_internal_value(self, data):
