@@ -1,10 +1,22 @@
 """ api/models.py """
 
-import uuid
+from uuid import uuid4
 import random
 import string
 from django.db import models
 from django.core.exceptions import ValidationError
+
+def generate_access_code():
+    """Method to generate a unique access code"""
+    chars = string.ascii_uppercase.replace('O', '') + string.digits.replace('0', '')
+    while True:
+        code = ''.join(random.choices(chars, k=6))
+        if not Survey.objects.filter(access_code=code).exists():
+            return code
+
+def generate_uuid():
+    """Method to generate a unique user id"""
+    return uuid4().hex
 
 class Project(models.Model):
     """Class for Project model"""
@@ -27,13 +39,6 @@ class Survey(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     access_code = models.CharField(max_length=6, unique=True, blank=True)
 
-    def generate_access_code(self):
-        """Method to generate a unique access code"""
-        chars = string.ascii_uppercase.replace('O', '') + string.digits.replace('0', '')
-        while True:
-            code = ''.join(random.choices(chars, k=6))
-            if not Survey.objects.filter(access_code=code).exists():
-                return code
 
     def __str__(self):
         return f"{', '.join(self.task)} - {', '.join(self.scaffold_type)}"
@@ -51,7 +56,7 @@ class Survey(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         if not self.access_code:
-            self.access_code = self.generate_access_code()
+            self.access_code = generate_access_code()
         super().save(*args, **kwargs)
 
 class RiskNote(models.Model):
@@ -70,8 +75,13 @@ class RiskNote(models.Model):
 class Account(models.Model):
     """Class for Account model"""
     username = models.CharField(max_length=150)
-    user_id = models.CharField(max_length=64, unique=True, default=uuid.uuid4().hex)
+    user_id = models.CharField(
+        max_length=64,
+        unique=True,
+        default=generate_uuid
+    )
     created_at = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f"{self.username} ({self.user_id})"
