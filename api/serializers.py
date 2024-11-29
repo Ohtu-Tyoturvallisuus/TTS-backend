@@ -3,7 +3,7 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import serializers
-from .models import Project, RiskNote, Survey
+from .models import Project, RiskNote, Survey, Account, AccountSurvey
 
 User = get_user_model()
 
@@ -140,3 +140,15 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
 class AudioUploadSerializer(serializers.Serializer): # pylint: disable=abstract-method
     """Serializer for audio file upload."""
     audio = serializers.FileField(required=True)
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['username', 'user_id', 'created_at']
+
+class AccountSurveySerializer(serializers.ModelSerializer):
+    account = AccountSerializer()
+
+    class Meta:
+        model = AccountSurvey
+        fields = ['account', 'filled_at']

@@ -21,6 +21,7 @@ from api.views import (
     TranslateText,
     SurveyByAccessCode,
     JoinSurvey,
+    AccountsBySurvey,
 )
 
 # .../api/...
@@ -129,6 +130,11 @@ urlpatterns = [
         'surveys/join/<str:access_code>/',
         JoinSurvey.as_view(),
         name='join-survey'
+    ),
+    path(
+        'survey-accounts/<int:survey_pk>',
+        AccountsBySurvey.as_view(),
+        name='survey-accounts'
     )
 ]
 

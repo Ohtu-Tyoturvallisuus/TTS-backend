@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import Account, AccountSurvey, Project, Survey
-from api.serializers import SurveySerializer
+from api.serializers import SurveySerializer, AccountSurveySerializer
 
 
 # <GET, POST, HEAD, OPTIONS> /api/projects/<id>/surveys/ or /api/surveys/
@@ -164,3 +164,20 @@ class JoinSurvey(APIView):
             return Response({"detail": "The user has already joined this survey."}, status=200)
 
         return Response({"detail": "The user has successfully joined the survey."}, status=201)
+
+# <GET> /api/survey-accounts/<survey_id>/
+class AccountsBySurvey(APIView):
+    """Class for retrieving accounts that are connected to a survey"""
+
+    def get(self, request, *args, **kwargs):
+        """Get all accounts connected to a survey by survey id"""
+        survey_id = kwargs['survey_pk']
+        survey = get_object_or_404(Survey, id=survey_id)
+
+        survey_accounts = AccountSurvey.objects.filter(
+            survey=survey
+        ).select_related('account').order_by('filled_at')
+
+        serialized_data = AccountSurveySerializer(survey_accounts, many=True).data
+
+        return Response({'accounts': serialized_data}, status=200)
