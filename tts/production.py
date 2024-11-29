@@ -5,9 +5,9 @@ from utils.key_vault import AzureKeyVault
 from .settings import * # pylint: disable=wildcard-import, unused-wildcard-import
 
 # Initialize the Key Vault client
-key_vault_name = os.getenv('KEY_VAULT_NAME')
-key_vault_url = f"https://{key_vault_name}.vault.azure.net"
-key_vault = AzureKeyVault(key_vault_url)
+KEY_VAULT_NAME = os.getenv('KEY_VAULT_NAME')
+KEY_VAULT_URL = f"https://{KEY_VAULT_NAME}.vault.azure.net"
+key_vault = AzureKeyVault(KEY_VAULT_URL)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
