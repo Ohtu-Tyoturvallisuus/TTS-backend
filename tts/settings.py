@@ -36,6 +36,15 @@ credential = DefaultAzureCredential()
 client = SecretClient(vault_url=key_vault_uri, credential=credential)
 
 def get_secret(secret_name):
+    """
+    Retrieve the value of a secret from Azure Key Vault.
+
+    Args:
+        secret_name (str): The name of the secret to retrieve.
+
+    Returns:
+        str: The value of the retrieved secret.
+    """
     return client.get_secret(secret_name).value
 
 # SECURITY WARNING: keep the secret key used in production secret!
