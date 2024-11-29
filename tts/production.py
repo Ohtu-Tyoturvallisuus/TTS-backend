@@ -1,7 +1,27 @@
 """ tts/production.py """
 
 import os
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 from .settings import * # pylint: disable=wildcard-import, unused-wildcard-import
+
+# Initialize the Key Vault client
+key_vault_name = os.getenv('KEY_VAULT_NAME')
+key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url=key_vault_uri, credential=credential)
+
+def get_secret(secret_name):
+    """
+    Retrieve the value of a secret from Azure Key Vault.
+
+    Args:
+        secret_name (str): The name of the secret to retrieve.
+
+    Returns:
+        str: The value of the retrieved secret.
+    """
+    return client.get_secret(secret_name).value
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -17,33 +37,33 @@ ALLOWED_HOSTS = [
   '20.105.232.53'
   ]
 
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = get_secret('SECRET-KEY')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-SPEECH_KEY = os.environ['SPEECH_KEY']
-SPEECH_SERVICE_REGION = os.environ['SPEECH_SERVICE_REGION']
+SPEECH_KEY = get_secret('SPEECH-KEY')
+SPEECH_SERVICE_REGION = get_secret('SPEECH-SERVICE-REGION')
 
-AZURE_STORAGE_ACCOUNT_NAME = os.environ['AZURE_STORAGE_ACCOUNT_NAME']
-AZURE_STORAGE_ACCOUNT_KEY = os.environ['AZURE_STORAGE_ACCOUNT_KEY']
-AZURE_CONTAINER_NAME = os.environ['AZURE_CONTAINER_NAME']
+AZURE_STORAGE_ACCOUNT_NAME = get_secret('AZURE-STORAGE-ACCOUNT-NAME')
+AZURE_STORAGE_ACCOUNT_KEY = get_secret('AZURE-STORAGE-ACCOUNT-KEY')
+AZURE_CONTAINER_NAME = get_secret('AZURE-CONTAINER-NAME')
 
-TRANSLATOR_KEY = os.environ['TRANSLATOR_KEY']
-TRANSLATOR_SERVICE_REGION = os.environ['TRANSLATOR_SERVICE_REGION']
-TRANSLATOR_ENDPOINT = os.environ['TRANSLATOR_ENDPOINT']
+TRANSLATOR_KEY = get_secret('TRANSLATOR-KEY')
+TRANSLATOR_SERVICE_REGION = get_secret('TRANSLATOR-SERVICE-REGION')
+TRANSLATOR_ENDPOINT = get_secret('TRANSLATOR-ENDPOINT')
 
-CLIENT_ID = os.environ['CLIENT_ID']
-TENANT_ID = os.environ['TENANT_ID']
+CLIENT_ID = get_secret('CLIENT-ID')
+TENANT_ID = get_secret('TENANT-ID')
 
-ERP_CLIENT_ID = os.environ['ERP_CLIENT_ID']
-ERP_CLIENT_SECRET = os.environ['ERP_CLIENT_SECRET']
-ERP_TENANT_ID = os.environ['ERP_TENANT_ID']
-ERP_RESOURCE = os.environ['ERP_RESOURCE']
-ERP_SANDBOX_RESOURCE = os.environ['ERP_SANDBOX_RESOURCE']
+ERP_CLIENT_ID = get_secret('ERP-CLIENT-ID')
+ERP_CLIENT_SECRET = get_secret('ERP-CLIENT-SECRET')
+ERP_TENANT_ID = get_secret('ERP-TENANT-ID')
+ERP_RESOURCE = get_secret('ERP-RESOURCE')
+ERP_SANDBOX_RESOURCE = get_secret('ERP-SANDBOX-RESOURCE')
 
-conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
+conn_str = get_secret('AZURE-POSTGRESQL-CONNECTIONSTRING')
 conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
 DATABASES = {
     'default': {

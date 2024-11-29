@@ -15,9 +15,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import environ
-from azure.identity import DefaultAzureCredential
-from azure.keyvault.secrets import SecretClient
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,31 +26,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# Initialize the Key Vault client
-key_vault_name = os.getenv('KEY_VAULT_NAME')
-key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
-credential = DefaultAzureCredential()
-client = SecretClient(vault_url=key_vault_uri, credential=credential)
-
-def get_secret(secret_name):
-    """
-    Retrieve the value of a secret from Azure Key Vault.
-
-    Args:
-        secret_name (str): The name of the secret to retrieve.
-
-    Returns:
-        str: The value of the retrieved secret.
-    """
-    return client.get_secret(secret_name).value
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret('SECRET-KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 # Get speech key and service region from .env
-SPEECH_KEY = get_secret('SPEECH-KEY')
-SPEECH_SERVICE_REGION = get_secret('SPEECH-SERVICE-REGION')
-
+SPEECH_KEY = os.getenv('SPEECH_KEY')
+SPEECH_SERVICE_REGION = os.getenv('SPEECH_SERVICE_REGION')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -184,22 +162,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Azure Storage settings
-AZURE_STORAGE_ACCOUNT_NAME = get_secret('AZURE-STORAGE-ACCOUNT-NAME')
-AZURE_STORAGE_ACCOUNT_KEY = get_secret('AZURE-STORAGE-ACCOUNT-KEY')
-AZURE_CONTAINER_NAME = get_secret('AZURE-CONTAINER-NAME')
+AZURE_STORAGE_ACCOUNT_NAME = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
+AZURE_STORAGE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_ACCOUNT_KEY')
+AZURE_CONTAINER_NAME = os.getenv('AZURE_CONTAINER_NAME')
 
 # Azure text translator settings
-TRANSLATOR_KEY = get_secret('TRANSLATOR-KEY')
-TRANSLATOR_SERVICE_REGION = get_secret('TRANSLATOR-SERVICE-REGION')
-TRANSLATOR_ENDPOINT = get_secret('TRANSLATOR-ENDPOINT')
+TRANSLATOR_KEY = os.getenv('TRANSLATOR_KEY')
+TRANSLATOR_SERVICE_REGION = os.getenv('TRANSLATOR_SERVICE_REGION')
+TRANSLATOR_ENDPOINT = os.getenv('TRANSLATOR_ENDPOINT')
 
 # Entra ID settings
-CLIENT_ID = get_secret('CLIENT-ID')
-TENANT_ID = get_secret('TENANT-ID')
+CLIENT_ID = os.getenv('CLIENT_ID')
+TENANT_ID = os.getenv('TENANT_ID')
 
 # ERP settings
-ERP_CLIENT_ID = get_secret('ERP-CLIENT-ID')
-ERP_CLIENT_SECRET = get_secret('ERP-CLIENT-SECRET')
-ERP_TENANT_ID = get_secret('ERP-TENANT-ID')
-ERP_RESOURCE = get_secret('ERP-RESOURCE')
-ERP_SANDBOX_RESOURCE = get_secret('ERP-SANDBOX-RESOURCE')
+ERP_CLIENT_ID = os.getenv('ERP_CLIENT_ID')
+ERP_CLIENT_SECRET = os.getenv('ERP_CLIENT_SECRET')
+ERP_TENANT_ID = os.getenv('ERP_TENANT_ID')
+ERP_RESOURCE = os.getenv('ERP_RESOURCE')
+ERP_SANDBOX_RESOURCE = os.getenv('ERP_SANDBOX_RESOURCE')
