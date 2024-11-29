@@ -33,13 +33,13 @@ def create_project_with_surveys(create_project):
         Survey(
             project=project,
             description="Description 1",
-            task='Test Task 1',
-            scaffold_type='Test Scaffold 1'),
+            task=['Test Task'],
+            scaffold_type=['Test Scaffold']),
         Survey(
             project=project,
             description="Description 2",
-            task='Test Task 2',
-            scaffold_type='Test Scaffold 2')
+            task=['Test Task 1', 'Test Task 2'],
+            scaffold_type=['Test Scaffold 1', 'Test Scaffold 2'])
     ])
     return project
 
@@ -61,12 +61,15 @@ def create_account_fixture():
 @pytest.fixture(name='create_survey')
 def create_survey_fixture(create_project):
     """Fixture to create a Survey object"""
-    return Survey.objects.create(
+    survey = Survey(
         project=create_project,
         description='Test Description',
-        task='Test Task',
-        scaffold_type='Test Scaffold'
+        task=['Test Task'],
+        scaffold_type=['Test Scaffold']
     )
+    survey.full_clean()
+    survey.save()
+    return survey
 
 @pytest.fixture(name='create_risk_note')
 def create_risk_note_fixture(create_survey):

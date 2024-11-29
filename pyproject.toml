@@ -31,6 +31,7 @@ requests = "^2.32.3"
 pyjwt = "^2.9.0"
 azure-keyvault-secrets = "^4.9.0"
 azure-identity = "^1.19.0"
+django-filter = "^24.3"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3.1"
