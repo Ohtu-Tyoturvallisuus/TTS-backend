@@ -105,6 +105,7 @@ def test_survey_serializer(create_survey):
         'scaffold_type': survey.scaffold_type,
         'created_at': created_at_local,
         'risk_notes': [],
+        'access_code': 'AAABCD',
     }
 
 def test_survey_deserializer(create_survey):
