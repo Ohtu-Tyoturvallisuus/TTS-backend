@@ -349,3 +349,73 @@ class TestJoinSurveyView:
             )
             assert response.status_code == 401
             assert response.data == {"error": "Token has expired."}
+
+@pytest.mark.django_db
+class TestAccountsBySurveyView:
+    """Tests for the AccountsBySurvey view"""
+
+    def setup_method(self):
+        """Setup method for AccountsBySurvey tests"""
+        self.client = APIClient()
+
+        self.project = Project.objects.create(
+            project_id='123',
+            data_area_id='Area123',
+            project_name='Test project',
+            dimension_display_value='Value',
+            worker_responsible_personnel_number='Worker123',
+            customer_account='Customer123'
+        )
+
+        self.survey = Survey.objects.create(
+            project=self.project,
+            description='Test Description',
+            task=['Task 1'],
+            scaffold_type=['Scaffold 1'],
+            access_code='ABC123'
+        )
+
+        self.account1 = Account.objects.create(
+            user_id='user1',
+            username="testuser1"
+        )
+        self.account2 = Account.objects.create(
+            user_id='user2',
+            username="testuser2"
+        )
+
+        AccountSurvey.objects.create(account=self.account1, survey=self.survey)
+        AccountSurvey.objects.create(account=self.account2, survey=self.survey)
+
+    def test_get_accounts_by_survey_successful(self):
+        """Test successfully retrieving accounts linked to a survey"""
+        response = self.client.get(
+            reverse('survey-accounts', args=[self.survey.id])
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data['accounts']) == 2
+        assert response.data['accounts'][0]['account']['username'] in ["testuser1", "testuser2"]
+        assert response.data['accounts'][1]['account']['username'] in ["testuser1", "testuser2"]
+
+    def test_get_accounts_by_survey_invalid_survey(self):
+        """Test retrieving accounts for a non-existent survey"""
+        response = self.client.get(
+            reverse('survey-accounts', args=[9999])
+        )
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_get_accounts_by_survey_no_accounts(self):
+        """Test retrieving accounts for a survey with no accounts linked"""
+        survey_no_accounts = Survey.objects.create(
+            project=self.project,
+            description='Test Survey Without Accounts',
+            task=['Task 2'],
+            scaffold_type=['Scaffold 2'],
+            access_code='DEF456'
+        )
+
+        response = self.client.get(
+            reverse('survey-accounts', args=[survey_no_accounts.id])
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['accounts'] == []

@@ -142,11 +142,13 @@ class AudioUploadSerializer(serializers.Serializer): # pylint: disable=abstract-
     audio = serializers.FileField(required=True)
 
 class AccountSerializer(serializers.ModelSerializer):
+    """Class for AccountSerializer"""
     class Meta:
         model = Account
         fields = ['username', 'user_id', 'created_at']
 
 class AccountSurveySerializer(serializers.ModelSerializer):
+    """Class for AccountSurveySerializer"""
     account = AccountSerializer()
 
     class Meta:
