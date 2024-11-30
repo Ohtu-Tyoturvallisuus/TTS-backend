@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import Account, AccountSurvey, Project, Survey
-from api.serializers import SurveySerializer
+from api.serializers import SurveySerializer, AccountSurveySerializer
 
 
 # <GET, POST, HEAD, OPTIONS> /api/projects/<id>/surveys/ or /api/surveys/
@@ -89,13 +89,13 @@ class FilledSurveys(APIView):
 
             account = Account.objects.get(user_id=user_id)
 
-            filled_survey_ids = AccountSurvey.objects.filter(
-                account=account).values_list('survey_id', flat=True
-            )
-            filled_surveys = Survey.objects.filter(id__in=filled_survey_ids).order_by('-created_at')
+            account_surveys = AccountSurvey.objects.filter(
+                account=account
+            ).select_related('survey').order_by('-filled_at')
 
             filled_surveys_data = []
-            for survey in filled_surveys:
+            for account_survey in account_surveys:
+                survey = account_survey.survey
                 risk_notes_dict = {
                     risk_note.note: {
                         "description": risk_note.description,
@@ -113,8 +113,9 @@ class FilledSurveys(APIView):
                     "description": survey.description,
                     "task": survey.task,
                     "scaffold_type": survey.scaffold_type,
-                    "created_at": survey.created_at,
+                    "created_at": account_survey.filled_at,
                     "risk_notes": risk_notes_dict,
+                    "access_code": survey.access_code,
                 })
 
             return Response({"filled_surveys": filled_surveys_data}, status=status.HTTP_200_OK)
@@ -125,3 +126,58 @@ class FilledSurveys(APIView):
             return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
         except Account.DoesNotExist:
             return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
+
+# <GET, HEAD, OPTIONS> /api/surveys/code/<access_code>/
+class SurveyByAccessCode(generics.RetrieveAPIView):
+    """Class for retrieving Survey by access code"""
+    serializer_class = SurveySerializer
+    permission_classes = (permissions.AllowAny,)
+    lookup_field = 'access_code'
+    queryset = Survey.objects.all()
+
+# <POST> /api/surveys/join/<access_code>/
+class JoinSurvey(APIView):
+    """Class for joining a survey by access code"""
+
+    def post(self, request, access_code, *args, **kwargs):
+        """Link the user's account to a survey"""
+        survey = get_object_or_404(Survey, access_code=access_code)
+
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return Response({"error": "Authorization header is required."}, status=400)
+
+        token = auth_header.split(' ')[1]
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+        except jwt.ExpiredSignatureError:
+            return Response({"error": "Token has expired."}, status=401)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token."}, status=401)
+
+        account = get_object_or_404(Account, user_id=user_id)
+
+        _, created = AccountSurvey.objects.get_or_create(account=account, survey=survey)
+
+        if not created:
+            return Response({"detail": "The user has already joined this survey."}, status=200)
+
+        return Response({"detail": "The user has successfully joined the survey."}, status=201)
+
+# <GET> /api/survey-accounts/<survey_id>/
+class AccountsBySurvey(APIView):
+    """Class for retrieving accounts that are connected to a survey"""
+
+    def get(self, request, *args, **kwargs):
+        """Get all accounts connected to a survey by survey id"""
+        survey_id = kwargs['survey_pk']
+        survey = get_object_or_404(Survey, id=survey_id)
+
+        survey_accounts = AccountSurvey.objects.filter(
+            survey=survey
+        ).select_related('account').order_by('filled_at')
+
+        serialized_data = AccountSurveySerializer(survey_accounts, many=True).data
+
+        return Response({'accounts': serialized_data}, status=200)

@@ -3,7 +3,7 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import serializers
-from .models import Project, RiskNote, Survey
+from .models import Project, RiskNote, Survey, Account, AccountSurvey
 
 User = get_user_model()
 
@@ -42,12 +42,14 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
     project_name = serializers.ReadOnlyField(source='project.project_name')
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
+    project_id = serializers.ReadOnlyField(source='project.project_id')
 
     class Meta:
         model = Survey
         fields = [
-            'id', 'project_name', 'description', 'task',
-            'scaffold_type', 'created_at', 'risk_notes'
+            'id', 'project_name', 'project_id', 'description',
+            'task', 'scaffold_type', 'created_at', 'risk_notes',
+            'access_code'
         ]
 
     def to_internal_value(self, data):
@@ -138,3 +140,17 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
 class AudioUploadSerializer(serializers.Serializer): # pylint: disable=abstract-method
     """Serializer for audio file upload."""
     audio = serializers.FileField(required=True)
+
+class AccountSerializer(serializers.ModelSerializer):
+    """Class for AccountSerializer"""
+    class Meta:
+        model = Account
+        fields = ['username', 'user_id', 'created_at']
+
+class AccountSurveySerializer(serializers.ModelSerializer):
+    """Class for AccountSurveySerializer"""
+    account = AccountSerializer()
+
+    class Meta:
+        model = AccountSurvey
+        fields = ['account', 'filled_at']

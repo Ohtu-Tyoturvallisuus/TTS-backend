@@ -2,13 +2,15 @@
 # pylint: disable=attribute-defined-outside-init
 
 import json
+from unittest.mock import patch
 import jwt
 import pytest
 from django.urls import reverse
 from django.conf import settings
 from rest_framework import status
+from rest_framework.test import APIClient
 
-from api.models import AccountSurvey
+from api.models import AccountSurvey, Survey, Project, Account
 
 pytestmark = pytest.mark.django_db
 
@@ -225,7 +227,7 @@ class TestFilledSurveysView:
         token_payload = {
             "username": self.account.username,
             "user_id": self.account.user_id,
-            "exp": 0  # Immediate expiration
+            "exp": 0
         }
         token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm="HS256")
 
@@ -238,7 +240,6 @@ class TestFilledSurveysView:
 
     def test_invalid_token(self, client):
         """Test request with an invalid token"""
-        # Authenticate client with invalid token
         client.credentials(HTTP_AUTHORIZATION="Bearer invalid.token.payload")
 
         response = client.get(self.url)
@@ -248,7 +249,6 @@ class TestFilledSurveysView:
 
     def test_account_not_found(self, client):
         """Test request with a token for a non-existent account"""
-        # Generate token for non-existent account
         token_payload = {
             "username": "nonexistent_user",
             "user_id": "nonexistent_id"
@@ -261,3 +261,161 @@ class TestFilledSurveysView:
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
         assert response.data['error'] == "Account not found"
+
+@pytest.mark.django_db
+class TestJoinSurveyView:
+    """Tests for the JoinSurvey view"""
+    def setup_method(self):
+        """Setup method for JoinSurvey tests"""
+        self.client = APIClient()
+        self.project = Project.objects.create(
+            project_id='123',
+            data_area_id='Area123',
+            project_name='Test project',
+            dimension_display_value='Value',
+            worker_responsible_personnel_number='Worker123',
+            customer_account='Customer123'
+        )
+        self.survey = Survey.objects.create(
+            project=self.project,
+            description='Test Description',
+            task=['Task 1'],
+            scaffold_type=['Scaffold 1'],
+            access_code='ABC123'
+        )
+        self.account = Account.objects.create(
+            user_id=1,
+            username="testuser"
+        )
+        self.token = jwt.encode(
+            {"user_id": self.account.user_id},
+            settings.SECRET_KEY,
+            algorithm='HS256'
+        )
+        self.auth_header = f"Bearer {self.token}"
+
+    def test_join_survey_successful(self):
+        """Test successfully joining a survey"""
+        response = self.client.post(
+            reverse('join-survey', args=[self.survey.access_code]),
+            HTTP_AUTHORIZATION=self.auth_header
+        )
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data == {"detail": "The user has successfully joined the survey."}
+        assert AccountSurvey.objects.filter(account=self.account, survey=self.survey).exists()
+
+    def test_join_survey_already_joined(self):
+        """Test trying to join a survey that the user already joined"""
+        AccountSurvey.objects.create(account=self.account, survey=self.survey)
+
+        response = self.client.post(
+            reverse('join-survey', args=[self.survey.access_code]),
+            HTTP_AUTHORIZATION=self.auth_header
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data == {"detail": "The user has already joined this survey."}
+
+    def test_join_survey_invalid_access_code(self):
+        """Test joining a survey with an invalid access code"""
+        response = self.client.post(
+            reverse('join-survey', args=['INVALID']),
+            HTTP_AUTHORIZATION=self.auth_header
+        )
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_join_survey_missing_authorization_header(self):
+        """Test joining a survey without an Authorization header"""
+        response = self.client.post(
+            reverse('join-survey', args=[self.survey.access_code])
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.data == {"error": "Authorization header is required."}
+
+    def test_join_survey_invalid_token(self):
+        """Test joining a survey with an invalid token"""
+        response = self.client.post(
+            reverse('join-survey', args=[self.survey.access_code]),
+            HTTP_AUTHORIZATION="Bearer invalidtoken"
+        )
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.data == {"error": "Invalid token."}
+
+    def test_join_survey_expired_token(self):
+        """Test joining a survey with an expired token"""
+        with patch('jwt.decode', side_effect=jwt.ExpiredSignatureError):
+            response = APIClient().post(
+                reverse('join-survey', args=['ABC123']),
+                HTTP_AUTHORIZATION="Bearer sometoken"
+            )
+            assert response.status_code == 401
+            assert response.data == {"error": "Token has expired."}
+
+@pytest.mark.django_db
+class TestAccountsBySurveyView:
+    """Tests for the AccountsBySurvey view"""
+
+    def setup_method(self):
+        """Setup method for AccountsBySurvey tests"""
+        self.client = APIClient()
+
+        self.project = Project.objects.create(
+            project_id='123',
+            data_area_id='Area123',
+            project_name='Test project',
+            dimension_display_value='Value',
+            worker_responsible_personnel_number='Worker123',
+            customer_account='Customer123'
+        )
+
+        self.survey = Survey.objects.create(
+            project=self.project,
+            description='Test Description',
+            task=['Task 1'],
+            scaffold_type=['Scaffold 1'],
+            access_code='ABC123'
+        )
+
+        self.account1 = Account.objects.create(
+            user_id='user1',
+            username="testuser1"
+        )
+        self.account2 = Account.objects.create(
+            user_id='user2',
+            username="testuser2"
+        )
+
+        AccountSurvey.objects.create(account=self.account1, survey=self.survey)
+        AccountSurvey.objects.create(account=self.account2, survey=self.survey)
+
+    def test_get_accounts_by_survey_successful(self):
+        """Test successfully retrieving accounts linked to a survey"""
+        response = self.client.get(
+            reverse('survey-accounts', args=[self.survey.id])
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data['accounts']) == 2
+        assert response.data['accounts'][0]['account']['username'] in ["testuser1", "testuser2"]
+        assert response.data['accounts'][1]['account']['username'] in ["testuser1", "testuser2"]
+
+    def test_get_accounts_by_survey_invalid_survey(self):
+        """Test retrieving accounts for a non-existent survey"""
+        response = self.client.get(
+            reverse('survey-accounts', args=[9999])
+        )
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_get_accounts_by_survey_no_accounts(self):
+        """Test retrieving accounts for a survey with no accounts linked"""
+        survey_no_accounts = Survey.objects.create(
+            project=self.project,
+            description='Test Survey Without Accounts',
+            task=['Task 2'],
+            scaffold_type=['Scaffold 2'],
+            access_code='DEF456'
+        )
+
+        response = self.client.get(
+            reverse('survey-accounts', args=[survey_no_accounts.id])
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['accounts'] == []
