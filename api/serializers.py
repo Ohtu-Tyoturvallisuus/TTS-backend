@@ -35,7 +35,8 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
         model = RiskNote
         fields = [
             'id', 'survey_id', 'note', 'description', 'status',
-            'risk_type', 'images', 'created_at'
+            'risk_type', 'images', 'language', 'translations',
+            'created_at'
         ]
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
@@ -50,7 +51,7 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'id', 'project_name', 'project_id', 'creator', 'access_code', 'description',
             'task', 'scaffold_type', 'created_at', 'is_completed', 'completed_at',
-            'number_of_participants', 'risk_notes']
+            'number_of_participants', 'language', 'translation_languages', 'risk_notes']
 
     def to_internal_value(self, data):
         # Ensure JSONField-specific errors are handled gracefully
