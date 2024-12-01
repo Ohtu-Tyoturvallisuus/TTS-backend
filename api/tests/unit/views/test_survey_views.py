@@ -182,6 +182,22 @@ class TestSurveyDetailView:
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert response.data is None
 
+    def test_survey_partial_update(self, client, create_user):
+        """Test SurveyDetail view with PATCH request"""
+        client.force_authenticate(user=create_user)
+        patch_data = {
+            'is_completed': True,
+            'number_of_participants': 10
+        }
+        response = client.patch(
+            self.url,
+            data=json.dumps(patch_data),
+            content_type='application/json'
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['is_completed'] is True
+        assert response.data['number_of_participants'] == 10
+
 class TestFilledSurveysView:
     """Tests for the FilledSurveys view"""
 

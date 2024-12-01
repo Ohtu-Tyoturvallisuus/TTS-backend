@@ -52,8 +52,19 @@ def test_survey_clean_valid_data():
                       worker_responsible_personnel_number='Worker123',
                       customer_account='Customer123')
     project.save()
-    survey = Survey(project=project, description='Test Description',
-                    task=['Task 1'], scaffold_type=['Scaffold 1'])
+
+    creator = Account.objects.create(
+        username='testuser',
+        user_id='test123'
+    )
+
+    survey = Survey(
+        project=project,
+        creator=creator,
+        description='Test Description',
+        task=['Task 1'],
+        scaffold_type=['Scaffold 1']
+    )
     survey.clean()
 
 def test_survey_clean_empty_task():
@@ -64,8 +75,20 @@ def test_survey_clean_empty_task():
                       worker_responsible_personnel_number='Worker123',
                       customer_account='Customer123')
     project.save()
-    survey = Survey(project=project, description='Test Description',
-                    task=[], scaffold_type=['Scaffold 1'])
+
+    # Add creator account
+    creator = Account.objects.create(
+        username='testuser',
+        user_id='test123'
+    )
+
+    survey = Survey(
+        project=project,
+        creator=creator,  # Add creator
+        description='Test Description',
+        task=[],
+        scaffold_type=['Scaffold 1']
+    )
 
     with pytest.raises(ValidationError) as excinfo:
         survey.clean()
@@ -118,11 +141,15 @@ def test_generate_access_code_handles_duplicates():
                      customer_account='Customer123')
     project.save()
 
-    existing_survey = Survey(project=project, description='Existing Survey',
-                           task=['Task'], scaffold_type=['Scaffold'])
+    creator = Account.objects.create(username='testuser')
+
+    existing_survey = Survey(project=project,
+                           creator=creator,
+                           description='Existing Survey',
+                           task=['Task'],
+                           scaffold_type=['Scaffold'])
     existing_survey.save()
 
-    # Mock random.choices to first return existing code, then new one
     with patch('random.choices',
               side_effect=[list(existing_survey.access_code), ['A', 'B', 'C', '1', '2', '3']]):
         access_code = generate_access_code()
@@ -131,15 +158,21 @@ def test_generate_access_code_handles_duplicates():
 
 def test_survey_save_calls_clean():
     """Test Survey save method calls clean"""
+    # Create test account first
+    account = Account.objects.create(username='testuser')
+
     project = Project(project_id='123', data_area_id='Area123',
-                      project_name='Test project',
-                      dimension_display_value='Value',
-                      worker_responsible_personnel_number='Worker123',
-                      customer_account='Customer123')
+                     project_name='Test project',
+                     dimension_display_value='Value',
+                     worker_responsible_personnel_number='Worker123',
+                     customer_account='Customer123')
     project.save()
 
-    survey = Survey(project=project, description='Test Description',
-                    task=['Task'], scaffold_type=['Scaffold'])
+    survey = Survey(project=project,
+                   creator=account,  # Add the creator field
+                   description='Test Description',
+                   task=['Task'],
+                   scaffold_type=['Scaffold'])
 
     with patch.object(Survey, 'clean', wraps=survey.clean) as mock_clean:
         survey.save()
