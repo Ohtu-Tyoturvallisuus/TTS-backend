@@ -58,7 +58,7 @@ class SurveyList(generics.ListCreateAPIView):
         account = get_object_or_404(Account, user_id=user_id)
         project = get_object_or_404(Project, pk=project_id)
 
-        survey = serializer.save(project=project)
+        survey = serializer.save(project=project, creator=account)
         AccountSurvey.objects.create(account=account, survey=survey)
 
 # <GET, PUT, PATCH, DELETE, HEAD, OPTIONS>
@@ -67,8 +67,21 @@ class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
     """Class for SurveyDetail"""
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     lookup_field = 'pk'
+
+    # survey_views.py
+    def patch(self, request, *args, **kwargs):
+        """Handle partial updates for survey completion and participant count"""
+        survey = self.get_object()  # Authorization handled here
+
+        if 'is_completed' in request.data:
+            survey.is_completed = request.data['is_completed']
+        if 'number_of_participants' in request.data:
+            survey.number_of_participants = request.data['number_of_participants']
+
+        survey.save()
+        serializer = self.get_serializer(survey)
+        return Response(serializer.data)
 
 # <GET> /api/filled-surveys/
 class FilledSurveys(APIView):

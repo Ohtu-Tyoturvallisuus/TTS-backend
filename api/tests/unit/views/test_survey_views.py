@@ -189,6 +189,7 @@ class TestFilledSurveysView:
     def setup_method(self, create_account, create_survey):
         """Setup method for creating test data"""
         self.account = create_account
+
         self.survey = create_survey
         self.project = self.survey.project
         self.url = reverse('filled-surveys')
@@ -268,6 +269,10 @@ class TestJoinSurveyView:
     def setup_method(self):
         """Setup method for JoinSurvey tests"""
         self.client = APIClient()
+        self.creator = Account.objects.create(
+            user_id='creator_id',
+            username="creatoruser"
+        )
         self.project = Project.objects.create(
             project_id='123',
             data_area_id='Area123',
@@ -278,6 +283,7 @@ class TestJoinSurveyView:
         )
         self.survey = Survey.objects.create(
             project=self.project,
+            creator=self.creator,
             description='Test Description',
             task=['Task 1'],
             scaffold_type=['Scaffold 1'],
@@ -367,8 +373,14 @@ class TestAccountsBySurveyView:
             customer_account='Customer123'
         )
 
+        self.creator = Account.objects.create(
+            user_id='creator_id',
+            username="creatoruser"
+        )
+
         self.survey = Survey.objects.create(
             project=self.project,
+            creator=self.creator,
             description='Test Description',
             task=['Task 1'],
             scaffold_type=['Scaffold 1'],
@@ -408,6 +420,7 @@ class TestAccountsBySurveyView:
         """Test retrieving accounts for a survey with no accounts linked"""
         survey_no_accounts = Survey.objects.create(
             project=self.project,
+            creator=self.account1,
             description='Test Survey Without Accounts',
             task=['Task 2'],
             scaffold_type=['Scaffold 2'],

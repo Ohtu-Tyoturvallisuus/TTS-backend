@@ -5,6 +5,7 @@ import random
 import string
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 def generate_access_code():
     """Method to generate a unique access code"""
@@ -17,6 +18,20 @@ def generate_access_code():
 def generate_uuid():
     """Method to generate a unique user id"""
     return uuid4().hex
+
+class Account(models.Model):
+    """Class for Account model"""
+    username = models.CharField(max_length=150)
+    user_id = models.CharField(
+        max_length=64,
+        unique=True,
+        default=generate_uuid
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f"{self.username} ({self.user_id})"
 
 class Project(models.Model):
     """Class for Project model"""
@@ -33,12 +48,15 @@ class Project(models.Model):
 class Survey(models.Model):
     """Class for Survey model"""
     project = models.ForeignKey(Project, related_name="surveys", on_delete=models.CASCADE)
+    creator = models.ForeignKey(Account, related_name="created_surveys", on_delete=models.CASCADE)
     description = models.TextField(max_length=250)
     task = models.JSONField()
     scaffold_type = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     access_code = models.CharField(max_length=6, unique=True, blank=True)
-
+    is_completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    number_of_participants = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{', '.join(self.task)} - {', '.join(self.scaffold_type)}"
@@ -57,7 +75,15 @@ class Survey(models.Model):
         self.clean()
         if not self.access_code:
             self.access_code = generate_access_code()
+        if self.is_completed and not self.completed_at:
+            self.completed_at = timezone.now()
         super().save(*args, **kwargs)
+
+class AccountSurvey(models.Model):
+    """Intermediate model to represent a user's filled survey"""
+    account = models.ForeignKey(Account, related_name="filled_surveys", on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, related_name="filled_by", on_delete=models.CASCADE)
+    filled_at = models.DateTimeField(auto_now_add=True)
 
 class RiskNote(models.Model):
     """Class for RiskNote model"""
@@ -71,23 +97,3 @@ class RiskNote(models.Model):
 
     def __str__(self):
         return f"{self.note} ({self.created_at})"
-
-class Account(models.Model):
-    """Class for Account model"""
-    username = models.CharField(max_length=150)
-    user_id = models.CharField(
-        max_length=64,
-        unique=True,
-        default=generate_uuid
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-    def __str__(self):
-        return f"{self.username} ({self.user_id})"
-
-class AccountSurvey(models.Model):
-    """Intermediate model to represent a user's filled survey"""
-    account = models.ForeignKey(Account, related_name="filled_surveys", on_delete=models.CASCADE)
-    survey = models.ForeignKey(Survey, related_name="filled_by", on_delete=models.CASCADE)
-    filled_at = models.DateTimeField(auto_now_add=True)

@@ -63,8 +63,13 @@ def create_account_fixture():
 @pytest.fixture(name='create_survey')
 def create_survey_fixture(create_project):
     """Fixture to create a Survey object"""
+    creator = Account.objects.create(
+            user_id='creator_id',
+            username="creatoruser"
+        )
     survey = Survey(
         project=create_project,
+        creator=creator,
         description='Test Description',
         task=['Test Task'],
         scaffold_type=['Test Scaffold'],
