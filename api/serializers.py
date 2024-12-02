@@ -34,23 +34,23 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for RiskNoteSerializer"""
         model = RiskNote
         fields = [
-            'id', 'survey_id', 'note', 'description', 'status', 
+            'id', 'survey_id', 'note', 'description', 'status',
             'risk_type', 'images', 'created_at'
         ]
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
     project_name = serializers.ReadOnlyField(source='project.project_name')
+    creator = UserSerializer(read_only=True)
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
     project_id = serializers.ReadOnlyField(source='project.project_id')
 
     class Meta:
         model = Survey
         fields = [
-            'id', 'project_name', 'project_id', 'description',
-            'task', 'scaffold_type', 'created_at', 'risk_notes',
-            'access_code'
-        ]
+            'id', 'project_name', 'project_id', 'creator', 'access_code', 'description',
+            'task', 'scaffold_type', 'created_at', 'is_completed', 'completed_at',
+            'number_of_participants', 'risk_notes']
 
     def to_internal_value(self, data):
         # Ensure JSONField-specific errors are handled gracefully
@@ -85,7 +85,9 @@ class SurveyNestedSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class for SurveySerializer"""
         model = Survey
-        fields = ['id', 'url', 'task', 'scaffold_type', 'created_at']
+        fields = [
+            'id', 'url', 'access_code', 'task', 'scaffold_type',
+            'created_at', 'is_completed', 'completed_at']
 
     def get_url(self, obj):
         """Method to get the URL of the survey"""
@@ -106,7 +108,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for ProjectSerializer"""
         model = Project
         fields = ['id', 'project_id', 'project_name', 'data_area_id',
-                  'dimension_display_value', 'worker_responsible_personnel_number', 
+                  'dimension_display_value', 'worker_responsible_personnel_number',
                   'customer_account', 'surveys']
 
 class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
