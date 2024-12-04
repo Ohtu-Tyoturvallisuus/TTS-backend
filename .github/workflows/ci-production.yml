@@ -1,9 +1,9 @@
-name: CI-HazardHunt-UAT
+name: CI-HazardHunt-Production
 
 on:
   push:
     branches:
-      - uat
+      - production
   workflow_dispatch:
 
 jobs:
@@ -41,7 +41,6 @@ jobs:
       - name: Create .env file
         run: |
           echo "SECRET_KEY=$DJANGO_SECRET_KEY" > .env
-
         env:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
