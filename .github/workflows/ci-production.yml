@@ -1,9 +1,9 @@
-name: CI-HazardHunt-UAT
+name: CI-HazardHunt-Production
 
 on:
   push:
     branches:
-      - uat
+      - production
   workflow_dispatch:
 
 jobs:
