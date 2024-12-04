@@ -41,9 +41,12 @@ jobs:
       - name: Create .env file
         run: |
           echo "SECRET_KEY=$DJANGO_SECRET_KEY" > .env
-
+          echo "SPEECH_KEY=$AZURE_SPEECH_KEY" >> .env
+          echo "SPEECH_SERVICE_REGION=$AZURE_SPEECH_SERVICE_REGION" >> .env
         env:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_SERVICE_REGION: ${{ secrets.AZURE_SPEECH_SERVICE_REGION }}
 
       - name: Wait for PostgreSQL to be ready
         run: |
