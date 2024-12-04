@@ -89,20 +89,55 @@ def test_project_list_serializer_get_last_survey_date(create_project_with_survey
 
     assert last_survey_date_from_serializer == last_survey_created_at
 
+def test_project_list_serializer_last_survey_date_empty(create_project):
+    """Test ProjectListSerializer's get_last_survey_date method with no surveys"""
+    project = create_project  # Project with no surveys
+    rf = RequestFactory()
+    request = rf.get('/')
+
+    serializer = ProjectListSerializer(project, context={'request': request})
+
+    assert serializer.data['last_survey_date'] is None
+
+def test_project_list_serializer_last_survey_date_exists(create_project, create_survey):
+    """Test ProjectListSerializer's get_last_survey_date method with existing survey"""
+    project = create_project
+    survey = create_survey
+    survey.project = project
+    survey.save()
+
+    rf = RequestFactory()
+    request = rf.get('/')
+
+    serializer = ProjectListSerializer(project, context={'request': request})
+    expected_date = survey.created_at.isoformat().replace('T', ' ')
+
+    assert str(serializer.data['last_survey_date']) == expected_date
+
 def test_survey_serializer(create_survey):
     """Test SurveySerializer for serialization"""
     survey = create_survey
     serializer = SurveySerializer(survey)
     local_tz = pytz.timezone('Europe/Helsinki')
     created_at_local = survey.created_at.astimezone(local_tz).isoformat()
-    assert serializer.data == {
+    serialized_data = serializer.data
+    assert serialized_data == {
         'id': survey.id,
         'project_name': survey.project.project_name,
+        'project_id': survey.project.project_id,
         'description': survey.description,
         'task': survey.task,
         'scaffold_type': survey.scaffold_type,
         'created_at': created_at_local,
         'risk_notes': [],
+        'access_code': 'AAABCD',
+        'is_completed': False,
+        'completed_at': None,
+        'creator': {
+            'id': survey.creator.id,
+            'username': survey.creator.username
+        },
+        'number_of_participants': 0
     }
 
 def test_survey_deserializer(create_survey):
@@ -185,6 +220,10 @@ def test_survey_nested_serializer(create_survey):
         'task': survey.task,
         'scaffold_type': survey.scaffold_type,
         'created_at': created_at_local,
+        'access_code': survey.access_code,
+        'is_completed': survey.is_completed,
+        'completed_at': survey.completed_at,
+
     }
 
 def test_survey_nested_deserializer(create_survey):

@@ -1,10 +1,16 @@
 """ tts/production.py """
 
 import os
+from utils.key_vault import AzureKeyVault
 from .settings import * # pylint: disable=wildcard-import, unused-wildcard-import
 
+# Initialize the Key Vault client
+KEY_VAULT_NAME = os.getenv('KEY_VAULT_NAME')
+KEY_VAULT_URL = f"https://{KEY_VAULT_NAME}.vault.azure.net"
+key_vault = AzureKeyVault(KEY_VAULT_URL)
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
@@ -17,33 +23,33 @@ ALLOWED_HOSTS = [
   '20.105.232.53'
   ]
 
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = key_vault.get_secret('SECRET-KEY')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-SPEECH_KEY = os.environ['SPEECH_KEY']
-SPEECH_SERVICE_REGION = os.environ['SPEECH_SERVICE_REGION']
+SPEECH_KEY = key_vault.get_secret('SPEECH-KEY')
+SPEECH_SERVICE_REGION = key_vault.get_secret('SPEECH-SERVICE-REGION')
 
-AZURE_STORAGE_ACCOUNT_NAME = os.environ['AZURE_STORAGE_ACCOUNT_NAME']
-AZURE_STORAGE_ACCOUNT_KEY = os.environ['AZURE_STORAGE_ACCOUNT_KEY']
-AZURE_CONTAINER_NAME = os.environ['AZURE_CONTAINER_NAME']
+AZURE_STORAGE_ACCOUNT_NAME = key_vault.get_secret('AZURE-STORAGE-ACCOUNT-NAME')
+AZURE_STORAGE_ACCOUNT_KEY = key_vault.get_secret('AZURE-STORAGE-ACCOUNT-KEY')
+AZURE_CONTAINER_NAME = key_vault.get_secret('AZURE-CONTAINER-NAME')
 
-TRANSLATOR_KEY = os.environ['TRANSLATOR_KEY']
-TRANSLATOR_SERVICE_REGION = os.environ['TRANSLATOR_SERVICE_REGION']
-TRANSLATOR_ENDPOINT = os.environ['TRANSLATOR_ENDPOINT']
+TRANSLATOR_KEY = key_vault.get_secret('TRANSLATOR-KEY')
+TRANSLATOR_SERVICE_REGION = key_vault.get_secret('TRANSLATOR-SERVICE-REGION')
+TRANSLATOR_ENDPOINT = key_vault.get_secret('TRANSLATOR-ENDPOINT')
 
-CLIENT_ID = os.environ['CLIENT_ID']
-TENANT_ID = os.environ['TENANT_ID']
+CLIENT_ID = key_vault.get_secret('CLIENT-ID')
+TENANT_ID = key_vault.get_secret('TENANT-ID')
 
-ERP_CLIENT_ID = os.environ['ERP_CLIENT_ID']
-ERP_CLIENT_SECRET = os.environ['ERP_CLIENT_SECRET']
-ERP_TENANT_ID = os.environ['ERP_TENANT_ID']
-ERP_RESOURCE = os.environ['ERP_RESOURCE']
-ERP_SANDBOX_RESOURCE = os.environ['ERP_SANDBOX_RESOURCE']
+ERP_CLIENT_ID = key_vault.get_secret('ERP-CLIENT-ID')
+ERP_CLIENT_SECRET = key_vault.get_secret('ERP-CLIENT-SECRET')
+ERP_TENANT_ID = key_vault.get_secret('ERP-TENANT-ID')
+ERP_RESOURCE = key_vault.get_secret('ERP-RESOURCE')
+ERP_SANDBOX_RESOURCE = key_vault.get_secret('ERP-SANDBOX-RESOURCE')
 
-conn_str = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
+conn_str = key_vault.get_secret('AZURE-POSTGRESQL-CONNECTIONSTRING')
 conn_str_params = {pair.split('=')[0]: pair.split('=')[1] for pair in conn_str.split(' ')}
 DATABASES = {
     'default': {

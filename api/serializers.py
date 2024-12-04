@@ -3,7 +3,7 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import serializers
-from .models import Project, RiskNote, Survey
+from .models import Project, RiskNote, Survey, Account, AccountSurvey
 
 User = get_user_model()
 
@@ -34,21 +34,23 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for RiskNoteSerializer"""
         model = RiskNote
         fields = [
-            'id', 'survey_id', 'note', 'description', 'status', 
+            'id', 'survey_id', 'note', 'description', 'status',
             'risk_type', 'images', 'created_at'
         ]
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Class for SurveySerializer"""
     project_name = serializers.ReadOnlyField(source='project.project_name')
+    creator = UserSerializer(read_only=True)
     risk_notes = RiskNoteSerializer(many=True, read_only=True)
+    project_id = serializers.ReadOnlyField(source='project.project_id')
 
     class Meta:
         model = Survey
         fields = [
-            'id', 'project_name', 'description', 'task',
-            'scaffold_type', 'created_at', 'risk_notes'
-        ]
+            'id', 'project_name', 'project_id', 'creator', 'access_code', 'description',
+            'task', 'scaffold_type', 'created_at', 'is_completed', 'completed_at',
+            'number_of_participants', 'risk_notes']
 
     def to_internal_value(self, data):
         # Ensure JSONField-specific errors are handled gracefully
@@ -83,7 +85,9 @@ class SurveyNestedSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class for SurveySerializer"""
         model = Survey
-        fields = ['id', 'url', 'task', 'scaffold_type', 'created_at']
+        fields = [
+            'id', 'url', 'access_code', 'task', 'scaffold_type',
+            'created_at', 'is_completed', 'completed_at']
 
     def get_url(self, obj):
         """Method to get the URL of the survey"""
@@ -104,7 +108,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for ProjectSerializer"""
         model = Project
         fields = ['id', 'project_id', 'project_name', 'data_area_id',
-                  'dimension_display_value', 'worker_responsible_personnel_number', 
+                  'dimension_display_value', 'worker_responsible_personnel_number',
                   'customer_account', 'surveys']
 
 class ProjectListSerializer(serializers.HyperlinkedModelSerializer):
@@ -138,3 +142,17 @@ class SignInSerializer(serializers.HyperlinkedModelSerializer):
 class AudioUploadSerializer(serializers.Serializer): # pylint: disable=abstract-method
     """Serializer for audio file upload."""
     audio = serializers.FileField(required=True)
+
+class AccountSerializer(serializers.ModelSerializer):
+    """Class for AccountSerializer"""
+    class Meta:
+        model = Account
+        fields = ['username', 'user_id', 'created_at']
+
+class AccountSurveySerializer(serializers.ModelSerializer):
+    """Class for AccountSurveySerializer"""
+    account = AccountSerializer()
+
+    class Meta:
+        model = AccountSurvey
+        fields = ['account', 'filled_at']

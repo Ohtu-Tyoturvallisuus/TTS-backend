@@ -1,8 +1,9 @@
 """ api/tests/unit/test_models.py """
 
+from unittest.mock import patch
 import pytest
 from django.core.exceptions import ValidationError
-from api.models import Project, Survey, RiskNote, Account
+from api.models import Project, Survey, RiskNote, Account, generate_access_code
 
 pytestmark = pytest.mark.django_db
 
@@ -51,8 +52,19 @@ def test_survey_clean_valid_data():
                       worker_responsible_personnel_number='Worker123',
                       customer_account='Customer123')
     project.save()
-    survey = Survey(project=project, description='Test Description',
-                    task=['Task 1'], scaffold_type=['Scaffold 1'])
+
+    creator = Account.objects.create(
+        username='testuser',
+        user_id='test123'
+    )
+
+    survey = Survey(
+        project=project,
+        creator=creator,
+        description='Test Description',
+        task=['Task 1'],
+        scaffold_type=['Scaffold 1']
+    )
     survey.clean()
 
 def test_survey_clean_empty_task():
@@ -63,8 +75,20 @@ def test_survey_clean_empty_task():
                       worker_responsible_personnel_number='Worker123',
                       customer_account='Customer123')
     project.save()
-    survey = Survey(project=project, description='Test Description',
-                    task=[], scaffold_type=['Scaffold 1'])
+
+    # Add creator account
+    creator = Account.objects.create(
+        username='testuser',
+        user_id='test123'
+    )
+
+    survey = Survey(
+        project=project,
+        creator=creator,  # Add creator
+        description='Test Description',
+        task=[],
+        scaffold_type=['Scaffold 1']
+    )
 
     with pytest.raises(ValidationError) as excinfo:
         survey.clean()
@@ -100,3 +124,56 @@ def test_survey_clean_both_fields_empty():
         survey.clean()
     assert "Task field cannot be empty." in str(excinfo.value)
     assert "Scaffolding type field cannot be empty." in str(excinfo.value)
+
+def test_generate_access_code():
+    """Test generate_access_code creates valid codes"""
+    access_code = generate_access_code()
+    assert len(access_code) == 6
+    assert access_code.isalnum()
+    assert '0' not in access_code and 'O' not in access_code
+
+def test_generate_access_code_handles_duplicates():
+    """Test generate_access_code retries on duplicates"""
+    project = Project(project_id='123', data_area_id='Area123',
+                     project_name='Test project',
+                     dimension_display_value='Value',
+                     worker_responsible_personnel_number='Worker123',
+                     customer_account='Customer123')
+    project.save()
+
+    creator = Account.objects.create(username='testuser')
+
+    existing_survey = Survey(project=project,
+                           creator=creator,
+                           description='Existing Survey',
+                           task=['Task'],
+                           scaffold_type=['Scaffold'])
+    existing_survey.save()
+
+    with patch('random.choices',
+              side_effect=[list(existing_survey.access_code), ['A', 'B', 'C', '1', '2', '3']]):
+        access_code = generate_access_code()
+        assert access_code == 'ABC123'
+        assert access_code != existing_survey.access_code
+
+def test_survey_save_calls_clean():
+    """Test Survey save method calls clean"""
+    # Create test account first
+    account = Account.objects.create(username='testuser')
+
+    project = Project(project_id='123', data_area_id='Area123',
+                     project_name='Test project',
+                     dimension_display_value='Value',
+                     worker_responsible_personnel_number='Worker123',
+                     customer_account='Customer123')
+    project.save()
+
+    survey = Survey(project=project,
+                   creator=account,  # Add the creator field
+                   description='Test Description',
+                   task=['Task'],
+                   scaffold_type=['Scaffold'])
+
+    with patch.object(Survey, 'clean', wraps=survey.clean) as mock_clean:
+        survey.save()
+        mock_clean.assert_called_once()

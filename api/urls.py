@@ -19,6 +19,9 @@ from api.views import (
     RetrieveImage,
     RetrieveParams,
     TranslateText,
+    SurveyByAccessCode,
+    JoinSurvey,
+    AccountsBySurvey,
 )
 
 # .../api/...
@@ -118,6 +121,21 @@ urlpatterns = [
         FilledSurveys.as_view(),
         name='filled-surveys'
     ),
+    path(
+        'surveys/code/<str:access_code>/',
+        SurveyByAccessCode.as_view(),
+        name='survey-by-code'
+    ),
+    path(
+        'surveys/join/<str:access_code>/',
+        JoinSurvey.as_view(),
+        name='join-survey'
+    ),
+    path(
+        'survey-accounts/<int:survey_pk>',
+        AccountsBySurvey.as_view(),
+        name='survey-accounts'
+    )
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

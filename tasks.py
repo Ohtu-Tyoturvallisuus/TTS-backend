@@ -30,10 +30,10 @@ def lint(ctx):
     ctx.run("pylint .", warn=True)
 
 @task
-def unittest(ctx):
-    ctx.run("pytest ./api/tests/unit")
+def test(ctx):
+    ctx.run("pytest")
 
 @task
 def coverage(ctx):
-    ctx.run("pytest --cov=api --cov-report=html:docs/coverage --cov-report=term-missing ./api/tests/unit")
+    ctx.run("pytest --cov=api --cov=utils --cov-report=html:docs/coverage --cov-report=term-missing")
 
