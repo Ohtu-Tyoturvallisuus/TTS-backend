@@ -29,19 +29,37 @@ def create_project_fixture():
 def create_project_with_surveys(create_project):
     """Fixture to create a Project instance with multiple surveys"""
     project = create_project
+    creator = Account.objects.create(
+        user_id='creator_id_1',
+        username="creatoruser1"
+    )
     Survey.objects.bulk_create([
         Survey(
             project=project,
+            creator=creator,
             description="Description 1",
+            description_translations={},
             task=['Test Task'],
             scaffold_type=['Test Scaffold'],
-            access_code='ABCDEF'),
+            access_code='ABCDEF',
+            is_completed=False,
+            number_of_participants=0,
+            language='en',
+            translation_languages=[]
+        ),
         Survey(
             project=project,
+            creator=creator,
             description="Description 2",
+            description_translations={},
             task=['Test Task 1', 'Test Task 2'],
             scaffold_type=['Test Scaffold 1', 'Test Scaffold 2'],
-            access_code='AABCDE')
+            access_code='AABCDE',
+            is_completed=False,
+            number_of_participants=0,
+            language='en',
+            translation_languages=[]
+        )
     ])
     return project
 
