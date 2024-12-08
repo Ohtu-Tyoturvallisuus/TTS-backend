@@ -72,7 +72,7 @@ class SurveyDetail(generics.RetrieveUpdateDestroyAPIView):
     # survey_views.py
     def patch(self, request, *args, **kwargs):
         """Handle partial updates for survey completion and participant count"""
-        survey = self.get_object()  # Authorization handled here
+        survey = self.get_object()
 
         if 'is_completed' in request.data:
             survey.is_completed = request.data['is_completed']
