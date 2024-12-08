@@ -49,7 +49,8 @@ class Survey(models.Model):
     """Class for Survey model"""
     project = models.ForeignKey(Project, related_name="surveys", on_delete=models.CASCADE)
     creator = models.ForeignKey(Account, related_name="created_surveys", on_delete=models.CASCADE)
-    description = models.TextField(max_length=250)
+    description = models.TextField(max_length=500)
+    description_translations = models.JSONField(default=dict, blank=True)
     task = models.JSONField()
     scaffold_type = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
