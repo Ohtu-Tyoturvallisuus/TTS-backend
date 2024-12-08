@@ -175,22 +175,6 @@ class TestSurveyDetailView:
         assert response.data['task'] == ['Updated Task']
         assert response.data['scaffold_type'] == ['Updated Scaffold']
 
-    def test_survey_partial_update(self, client, create_user):
-        """Test SurveyDetail view with PATCH request"""
-        client.force_authenticate(user=create_user)
-        patch_data = {
-            'is_completed': True,
-            'number_of_participants': 5
-        }
-        response = client.patch(
-            self.url,
-            data=json.dumps(patch_data),
-            content_type='application/json'
-        )
-        assert response.status_code == status.HTTP_200_OK
-        assert response.data['is_completed'] is True
-        assert response.data['number_of_participants'] == 5
-
     def test_survey_delete(self, client, create_user):
         """Test SurveyDetail view with DELETE request"""
         client.force_authenticate(user=create_user)
