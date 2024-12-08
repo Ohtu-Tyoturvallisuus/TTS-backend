@@ -49,8 +49,9 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         model = Survey
         fields = [
             'id', 'project_name', 'project_id', 'creator', 'access_code', 'description',
-            'task', 'scaffold_type', 'created_at', 'is_completed', 'completed_at',
-            'number_of_participants', 'language', 'translation_languages', 'risk_notes']
+            'description_translations', 'task', 'scaffold_type', 'created_at', 'is_completed',
+            'completed_at', 'number_of_participants', 'language', 'translation_languages',
+            'risk_notes']
 
     def to_internal_value(self, data):
         # Ensure JSONField-specific errors are handled gracefully
