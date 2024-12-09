@@ -129,9 +129,9 @@ class SurveyByAccessCode(generics.RetrieveAPIView):
     lookup_field = 'access_code'
     queryset = Survey.objects.all()
 
-# <POST> /api/surveys/join/<access_code>/
-class JoinSurvey(APIView):
-    """Class for joining a survey by access code"""
+# <POST> /api/surveys/validate/<access_code>/
+class ValidateSurvey(APIView):
+    """Class for validating a survey using access code"""
 
     def post(self, request, access_code, *args, **kwargs):
         """Link the user's account to a survey"""
@@ -155,9 +155,9 @@ class JoinSurvey(APIView):
         _, created = AccountSurvey.objects.get_or_create(account=account, survey=survey)
 
         if not created:
-            return Response({"detail": "The user has already joined this survey."}, status=200)
+            return Response({"detail": "The user has already validated this survey."}, status=200)
 
-        return Response({"detail": "The user has successfully joined the survey."}, status=201)
+        return Response({"detail": "The user has successfully validated the survey."}, status=201)
 
 # <GET> /api/survey-accounts/<survey_id>/
 class AccountsBySurvey(APIView):
