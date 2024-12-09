@@ -20,7 +20,7 @@ from api.views import (
     RetrieveParams,
     TranslateText,
     SurveyByAccessCode,
-    JoinSurvey,
+    ValidateSurvey,
     AccountsBySurvey,
 )
 
@@ -127,9 +127,9 @@ urlpatterns = [
         name='survey-by-code'
     ),
     path(
-        'surveys/join/<str:access_code>/',
-        JoinSurvey.as_view(),
-        name='join-survey'
+        'surveys/validate/<str:access_code>/',
+        ValidateSurvey.as_view(),
+        name='validate-survey'
     ),
     path(
         'survey-accounts/<int:survey_pk>',
