@@ -42,7 +42,7 @@ def test_risk_note_str():
 def test_account_str():
     """Test Account model __str__ method"""
     account = Account(username='test_user')
-    assert str(account) == f'{account.username} ({account.user_id})'
+    assert str(account) == f'{account.username} ({account.user_id}) {account.id}'
 
 def test_survey_clean_valid_data():
     """Test Survey clean method with valid data"""
