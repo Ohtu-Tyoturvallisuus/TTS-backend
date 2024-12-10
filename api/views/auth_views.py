@@ -41,4 +41,8 @@ class SignIn(generics.CreateAPIView):
             message = f"User '{username}' signed in successfully"
             status_code = status.HTTP_200_OK
 
-        return Response({"message": message, 'access_token': token, 'id': str(_).split()[-1]}, status=status_code)
+        return Response({
+            "message": message,
+            'access_token': token,
+            'id': str(_).split()[-1]
+        }, status=status_code)
