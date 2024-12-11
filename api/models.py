@@ -49,7 +49,8 @@ class Survey(models.Model):
     """Class for Survey model"""
     project = models.ForeignKey(Project, related_name="surveys", on_delete=models.CASCADE)
     creator = models.ForeignKey(Account, related_name="created_surveys", on_delete=models.CASCADE)
-    description = models.TextField(max_length=250)
+    description = models.TextField(max_length=500)
+    description_translations = models.JSONField(default=dict, blank=True)
     task = models.JSONField()
     scaffold_type = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -57,6 +58,8 @@ class Survey(models.Model):
     is_completed = models.BooleanField(default=False)
     completed_at = models.DateTimeField(null=True, blank=True)
     number_of_participants = models.IntegerField(default=0)
+    language = models.TextField(blank=True)
+    translation_languages = models.JSONField(default=list, blank=True)
 
     def __str__(self):
         return f"{', '.join(self.task)} - {', '.join(self.scaffold_type)}"
@@ -90,6 +93,8 @@ class RiskNote(models.Model):
     survey = models.ForeignKey(Survey, related_name="risk_notes", on_delete=models.CASCADE)
     note = models.TextField()
     description = models.TextField(blank=True)
+    language = models.TextField(blank=True)
+    translations = models.JSONField(default=dict, blank=True)
     status = models.TextField(blank=True)
     risk_type = models.TextField(blank=True)
     images = models.JSONField(default=list, blank=True)

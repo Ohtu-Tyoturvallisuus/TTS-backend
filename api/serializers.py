@@ -34,8 +34,8 @@ class RiskNoteSerializer(serializers.HyperlinkedModelSerializer):
         """Meta class for RiskNoteSerializer"""
         model = RiskNote
         fields = [
-            'id', 'survey_id', 'note', 'description', 'status',
-            'risk_type', 'images', 'created_at'
+            'id', 'survey_id', 'note', 'description', 'translations',
+            'status', 'risk_type', 'images', 'language', 'created_at'
         ]
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
@@ -49,8 +49,9 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         model = Survey
         fields = [
             'id', 'project_name', 'project_id', 'creator', 'access_code', 'description',
-            'task', 'scaffold_type', 'created_at', 'is_completed', 'completed_at',
-            'number_of_participants', 'risk_notes']
+            'description_translations', 'task', 'scaffold_type', 'created_at', 'is_completed',
+            'completed_at', 'number_of_participants', 'language', 'translation_languages',
+            'risk_notes']
 
     def to_internal_value(self, data):
         # Ensure JSONField-specific errors are handled gracefully
