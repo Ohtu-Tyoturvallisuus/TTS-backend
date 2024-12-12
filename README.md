@@ -49,111 +49,13 @@ The project team consists of five students.
 This is the repository for the backend of this project.
 #
 
-
 ## Development
 
 ### Links
 
-- **Product Backlog**
+- [**Documentation**](https://github.com/Ohtu-Tyoturvallisuus/TTS-documentation)
+- [**Frontend repository**](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend)
+- **Product Backlog**:
   - [Story list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/1)
   - [Task list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/2)
-- **Frontend [repository](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend)**
-- **[Timelogs](https://study.cs.helsinki.fi/projekti/timelogs)**
-
-### Documentation
-- **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/branching-practices.md)**
-- **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/commit-practices.md)**
-- **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/tts-frontend/blob/main/docs/definition-of-done.md)**
-
-### Installation and running instructions
-
-#### PostgreSQL Setup and Database Initialization Guide
-
-##### Starting PostgreSQL
-
-Assuming PostgreSQL is installed successfully.
-
-1. **Start PostgreSQL Server**:
-   - **On Windows**: Should be running by default. If not open the Services app (`services.msc`), find `PostgreSQL`, and start the service.
-   - **On macOS**: Use Homebrew services with the command:
-     ```bash
-     brew services start postgresql
-     ```
-   - **On Linux**: Use the system service manager:
-     ```bash
-     sudo systemctl start postgresql
-     ```
-
-##### Creating a Database
-
-1. **Open PostgreSQL Command Line**:
-   - Run `psql` in your terminal or command prompt:
-     ```bash
-     psql -U postgres
-     ```
-
-2. **Create the Database**:
-   - Run the following SQL command to create the `tts_testing` database:
-     ```sql
-     CREATE DATABASE tts_testing;
-     ```
----
-
-##### Setting Up Django with PostgreSQL
-
-1. **Ensure Poetry is Installed**:
-    - If you don't have Poetry installed, install it from the official Poetry website: [Poetry Installation](https://python-poetry.org/docs/).
-
-2. **Install Dependencies Using Poetry**:
-    - Install dependencies by running the command:
-         ```bash
-         poetry install
-         ```
-    - Move to virtual environment:
-        ```bash
-         poetry shell
-         ```
-
-3. **Set Up Environment Variables**:
-   - Create a `.env` file in the root of your project with the following content (adjust values as needed):
-     ```bash
-     # .env
-     SECRET_KEY=secret_key
-     DB_NAME=tts_testing
-     DB_USER=postgres
-     DB_PASSWORD=your_password
-     DB_HOST=localhost
-     ```
-   - To generate a new Django `SECRET_KEY`, run the following command:
-     ```bash
-     python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-     ```
-   
-4. **Run Migrations**:
-   - Apply the database migrations:
-     ```bash
-     poetry run invoke migrate
-     ```
-
-5. **Verify Tables and Check Table Structure**:
-   - Open psql client and connect to `tts_testing` database:
-     ```bash
-     psql -U postgres
-     ```
-     ```bash
-     \c tts_testing
-     ```
-   - List tables in the database:
-     ```bash
-     \dt
-     ```
-   - Describe a table structure:
-     ```bash
-     \d <table_name>
-     ```
-
-5. **Start the Server**:
-   - Run the Django development server:
-     ```bash
-     poetry run invoke server
-     ```
+- [**Timelogs**](https://study.cs.helsinki.fi/projekti/timelogs)
