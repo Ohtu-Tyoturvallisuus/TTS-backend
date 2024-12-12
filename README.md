@@ -53,8 +53,8 @@ This is the repository for the backend of this project.
 
 ### Links
 
-- [**Frontend repository**](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend)
 - [**Documentation**](https://github.com/Ohtu-Tyoturvallisuus/TTS-documentation)
+- [**Frontend repository**](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend)
 - **Product Backlog**:
   - [Story list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/1)
   - [Task list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/2)
