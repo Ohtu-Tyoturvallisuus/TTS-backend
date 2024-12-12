@@ -31,7 +31,7 @@ class Account(models.Model):
 
 
     def __str__(self):
-        return f"{self.username} ({self.user_id})"
+        return f"{self.username} ({self.user_id}) {self.id}"
 
 class Project(models.Model):
     """Class for Project model"""

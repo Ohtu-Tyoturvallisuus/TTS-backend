@@ -226,6 +226,7 @@ def test_survey_nested_serializer(create_survey):
         'created_at': created_at_local,
         'is_completed': survey.is_completed,
         'completed_at': survey.completed_at,
+        'creator': survey.creator.id,
     }
 
 def test_survey_nested_deserializer(create_survey):
@@ -235,12 +236,14 @@ def test_survey_nested_deserializer(create_survey):
         'description': 'New Description',
         'task': ['New Task'],
         'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
+        'creator': survey.creator.id,
     }
     serializer = SurveyNestedSerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
         'task': ['New Task'],
         'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
+        'creator': survey.creator
     }
 
 def test_survey_nested_serializer_get_url(create_survey, rf):

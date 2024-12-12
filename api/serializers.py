@@ -88,7 +88,7 @@ class SurveyNestedSerializer(serializers.ModelSerializer):
         model = Survey
         fields = [
             'id', 'url', 'access_code', 'task', 'scaffold_type',
-            'created_at', 'is_completed', 'completed_at']
+            'created_at', 'is_completed', 'completed_at', 'creator']
 
     def get_url(self, obj):
         """Method to get the URL of the survey"""
