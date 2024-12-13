@@ -42,7 +42,7 @@ def test_risk_note_str():
 def test_account_str():
     """Test Account model __str__ method"""
     account = Account(username='test_user')
-    assert str(account) == f'{account.username} ({account.user_id})'
+    assert str(account) == f'{account.username} ({account.user_id}) {account.id}'
 
 def test_survey_clean_valid_data():
     """Test Survey clean method with valid data"""
@@ -132,6 +132,25 @@ def test_generate_access_code():
     assert access_code.isalnum()
     assert '0' not in access_code and 'O' not in access_code
 
+def test_survey_completed_at():
+    """Test Survey save method sets completed_at when is_completed is True"""
+    project = Project(project_id='123', data_area_id='Area123',
+                      project_name='Test project',
+                      dimension_display_value='Value',
+                      worker_responsible_personnel_number='Worker123',
+                      customer_account='Customer123')
+    project.save()
+
+    account = Account(username='test_user')
+    account.save()
+    survey = Survey(project=project, creator=account, description='Test Description',
+                    task=['Task'], scaffold_type=['Scaffold'])
+    survey.save()
+
+    survey.is_completed = True
+    survey.save()
+    assert survey.completed_at is not None
+
 def test_generate_access_code_handles_duplicates():
     """Test generate_access_code retries on duplicates"""
     project = Project(project_id='123', data_area_id='Area123',
@@ -141,13 +160,11 @@ def test_generate_access_code_handles_duplicates():
                      customer_account='Customer123')
     project.save()
 
-    creator = Account.objects.create(username='testuser')
+    account = Account(username='test_user')
+    account.save()
 
-    existing_survey = Survey(project=project,
-                           creator=creator,
-                           description='Existing Survey',
-                           task=['Task'],
-                           scaffold_type=['Scaffold'])
+    existing_survey = Survey(project=project, creator=account, description='Existing Survey',
+                           task=['Task'], scaffold_type=['Scaffold'])
     existing_survey.save()
 
     with patch('random.choices',
@@ -168,11 +185,10 @@ def test_survey_save_calls_clean():
                      customer_account='Customer123')
     project.save()
 
-    survey = Survey(project=project,
-                   creator=account,  # Add the creator field
-                   description='Test Description',
-                   task=['Task'],
-                   scaffold_type=['Scaffold'])
+    account = Account(username='test_user')
+    account.save()
+    survey = Survey(project=project, creator=account, description='Test Description',
+                    task=['Task'], scaffold_type=['Scaffold'])
 
     with patch.object(Survey, 'clean', wraps=survey.clean) as mock_clean:
         survey.save()

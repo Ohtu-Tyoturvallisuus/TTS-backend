@@ -125,19 +125,22 @@ def test_survey_serializer(create_survey):
         'id': survey.id,
         'project_name': survey.project.project_name,
         'project_id': survey.project.project_id,
+        'creator': {
+            'id': survey.creator.id,
+            'username': survey.creator.username
+        },
         'description': survey.description,
+        'description_translations': survey.description_translations,
         'task': survey.task,
         'scaffold_type': survey.scaffold_type,
         'created_at': created_at_local,
         'risk_notes': [],
         'access_code': 'AAABCD',
-        'is_completed': False,
-        'completed_at': None,
-        'creator': {
-            'id': survey.creator.id,
-            'username': survey.creator.username
-        },
-        'number_of_participants': 0
+        'is_completed': survey.is_completed,
+        'completed_at': survey.completed_at,
+        'number_of_participants': survey.number_of_participants,
+        'language': survey.language,
+        'translation_languages': survey.translation_languages,
     }
 
 def test_survey_deserializer(create_survey):
@@ -217,13 +220,13 @@ def test_survey_nested_serializer(create_survey):
         'url': request.build_absolute_uri(reverse(
             'survey-detail', kwargs={'project_pk': project_id, 'pk': survey.id}
             )),
+        'access_code': survey.access_code,
         'task': survey.task,
         'scaffold_type': survey.scaffold_type,
         'created_at': created_at_local,
-        'access_code': survey.access_code,
         'is_completed': survey.is_completed,
         'completed_at': survey.completed_at,
-
+        'creator': survey.creator.id,
     }
 
 def test_survey_nested_deserializer(create_survey):
@@ -233,12 +236,14 @@ def test_survey_nested_deserializer(create_survey):
         'description': 'New Description',
         'task': ['New Task'],
         'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
+        'creator': survey.creator.id,
     }
     serializer = SurveyNestedSerializer(survey, data=data)
     assert serializer.is_valid()
     assert serializer.validated_data == {
         'task': ['New Task'],
         'scaffold_type': ['New Scaffold', 'New Scaffold 2'],
+        'creator': survey.creator
     }
 
 def test_survey_nested_serializer_get_url(create_survey, rf):
@@ -263,7 +268,9 @@ def test_risk_note_serializer(create_risk_note):
         'id': risk_note.id,
         'survey_id': risk_note.survey.id,
         'note': risk_note.note,
+        'language': '',
         'description': '',
+        'translations': {},
         'status': '',
         'risk_type': '',
         'images': [],

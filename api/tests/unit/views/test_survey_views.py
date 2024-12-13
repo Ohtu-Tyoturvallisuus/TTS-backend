@@ -280,10 +280,10 @@ class TestFilledSurveysView:
         assert response.data['error'] == "Account not found"
 
 @pytest.mark.django_db
-class TestJoinSurveyView:
-    """Tests for the JoinSurvey view"""
+class TestValidateSurveyView:
+    """Tests for the ValidateSurvey view"""
     def setup_method(self):
-        """Setup method for JoinSurvey tests"""
+        """Setup method for ValidateSurvey tests"""
         self.client = APIClient()
         self.creator = Account.objects.create(
             user_id='creator_id',
@@ -316,57 +316,57 @@ class TestJoinSurveyView:
         )
         self.auth_header = f"Bearer {self.token}"
 
-    def test_join_survey_successful(self):
+    def test_validate_survey_successful(self):
         """Test successfully joining a survey"""
         response = self.client.post(
-            reverse('join-survey', args=[self.survey.access_code]),
+            reverse('validate-survey', args=[self.survey.access_code]),
             HTTP_AUTHORIZATION=self.auth_header
         )
         assert response.status_code == status.HTTP_201_CREATED
-        assert response.data == {"detail": "The user has successfully joined the survey."}
+        assert response.data == {"detail": "The user has successfully validated the survey."}
         assert AccountSurvey.objects.filter(account=self.account, survey=self.survey).exists()
 
-    def test_join_survey_already_joined(self):
-        """Test trying to join a survey that the user already joined"""
+    def test_validate_survey_already_validated(self):
+        """Test trying to join a survey that the user already validated"""
         AccountSurvey.objects.create(account=self.account, survey=self.survey)
 
         response = self.client.post(
-            reverse('join-survey', args=[self.survey.access_code]),
+            reverse('validate-survey', args=[self.survey.access_code]),
             HTTP_AUTHORIZATION=self.auth_header
         )
         assert response.status_code == status.HTTP_200_OK
-        assert response.data == {"detail": "The user has already joined this survey."}
+        assert response.data == {"detail": "The user has already validated this survey."}
 
-    def test_join_survey_invalid_access_code(self):
+    def test_validate_survey_invalid_access_code(self):
         """Test joining a survey with an invalid access code"""
         response = self.client.post(
-            reverse('join-survey', args=['INVALID']),
+            reverse('validate-survey', args=['INVALID']),
             HTTP_AUTHORIZATION=self.auth_header
         )
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_join_survey_missing_authorization_header(self):
+    def test_validate_survey_missing_authorization_header(self):
         """Test joining a survey without an Authorization header"""
         response = self.client.post(
-            reverse('join-survey', args=[self.survey.access_code])
+            reverse('validate-survey', args=[self.survey.access_code])
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data == {"error": "Authorization header is required."}
 
-    def test_join_survey_invalid_token(self):
+    def test_validate_survey_invalid_token(self):
         """Test joining a survey with an invalid token"""
         response = self.client.post(
-            reverse('join-survey', args=[self.survey.access_code]),
+            reverse('validate-survey', args=[self.survey.access_code]),
             HTTP_AUTHORIZATION="Bearer invalidtoken"
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert response.data == {"error": "Invalid token."}
 
-    def test_join_survey_expired_token(self):
+    def test_validate_survey_expired_token(self):
         """Test joining a survey with an expired token"""
         with patch('jwt.decode', side_effect=jwt.ExpiredSignatureError):
             response = APIClient().post(
-                reverse('join-survey', args=['ABC123']),
+                reverse('validate-survey', args=['ABC123']),
                 HTTP_AUTHORIZATION="Bearer sometoken"
             )
             assert response.status_code == 401

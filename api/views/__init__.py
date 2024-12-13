@@ -6,7 +6,7 @@ from .survey_views import (
     SurveyDetail,
     FilledSurveys,
     SurveyByAccessCode,
-    JoinSurvey,
+    ValidateSurvey,
     AccountsBySurvey
 )
 from .risknote_views import RiskNoteCreate, RiskNoteDetail
@@ -27,7 +27,7 @@ __all__ = [
     "SurveyList",
     "SurveyDetail",
     "SurveyByAccessCode",
-    "JoinSurvey",
+    "ValidateSurvey",
     "RiskNoteCreate",
     "RiskNoteDetail",
     "UserList",
